@@ -1,15 +1,5 @@
-"""renderer.py — JSON spec + Design Tokens → HTML slides"""
-import json, os, re
-
-def load_tokens(path):
-    with open(path) as f:
-        return json.load(f)
-
-def css_var(name, tokens, fallback=''):
-    """Resolve a CSS var reference like --ink-950."""
-    colors = tokens.get('colors', {})
-    key = name.lstrip('-')
-    return colors.get(key, fallback)
+"""renderer.py — JSON spec + Design Tokens → HTML slides (v3.1)"""
+import json
 
 def build_css(tokens):
     c = tokens.get('colors', {})
@@ -17,7 +7,6 @@ def build_css(tokens):
     ti = tokens.get('timing', {})
     l = tokens.get('layout', {})
 
-    font_link = '|'.join(tokens.get('fonts', {}).get('google', '').split('|'))
     families = {}
     for role, info in t.items():
         families[role] = info.get('family', 'sans-serif')
@@ -29,17 +18,19 @@ def build_css(tokens):
     if len(stagger) > 5:
         stagger_css += '.slide.active [data-stagger]{transition-delay:0ms}\n'
 
+    spring_css = '@keyframes springIn {\n  0%   { opacity:0; transform:translateY(12px) scale(.97); }\n  60%  { opacity:1; transform:translateY(-2px) scale(1.01); }\n  80%  { transform:translateY(1px) scale(.995); }\n  100% { opacity:1; transform:translateY(0) scale(1); }\n}'
+
     bp = l.get('breakpoints', {})
     tablet = bp.get('tablet', 1024)
     mobile = bp.get('mobile', 768)
     small = bp.get('small', 480)
 
-    return f"""/* ================================================================
-   Design System — {tokens.get('name','v3')}
-   Tokens: {len(c)} colors | {len(ti)} timing rules | {len(t.get('weights',''))} font weights
-   ================================================================ */
+    return f"""/*===============================================================
+  Design System — {tokens.get('name','v3')}
+  Tokens: {len(c)} colors | {len(ti)} timing | {len(t.get('weights',''))} font weights
+  ================================================================*/
 
-/*============================== [00] — Colors: {', '.join(list(c.keys())[:6])}... | Typography: {', '.join(list(t.keys()))} */
+/*============================== [00] DESIGN TOKENS — Colors: {', '.join(list(c.keys())[:6])}... | Typography: {', '.join(list(t.keys()))} */
 :root {{
   --ink-50:  {c.get('ink50','#f8fafc')};
   --ink-100: {c.get('ink100','#f1f5f9')};
@@ -54,15 +45,23 @@ def build_css(tokens):
   --ink-950: {c.get('ink950','#06080d')};
   --accent:  {c.get('accent','#6366f1')};
   --accent-mid: {c.get('accentMid','#818cf8')};
-  --c-t1: {c.get('ink50','#f8fafc')};
-  --c-t2: {c.get('ink100','#f1f5f9')};
-  --c-t3: {c.get('ink200','#e2e8f0')};
-  --c-t4: {c.get('ink400','#94a3b8')};
+  --c-t1: {c.get('c-t1','#f0f4f8')};
+  --c-t2: {c.get('c-t2','#94a3b8')};
+  --c-t3: {c.get('c-t3','#64748b')};
+  --c-t4: {c.get('c-t4','#3b5068')};
+  --c-error:   {c.get('c-error','#ef4444')};
+  --c-success: {c.get('c-success','#22c55e')};
+  --c-warning: {c.get('c-warning','#f59e0b')};
+  --c-info:    {c.get('c-info','#3b82f6')};
   --surface: {c.get('surface','rgba(255,255,255,.03)')};
   --surface-h: {c.get('surfaceH','rgba(255,255,255,.06)')};
   --border:  {c.get('border','rgba(255,255,255,.06)')};
   --border-a:{c.get('borderA','var(--c-teal-dim)')};
-  --blur:    {l.get('glassBlur','blur(24px)')};
+  --blur:     {l.get('glassBlur','blur(24px)')};
+  --blur-card:  blur(10px);
+  --blur-sheet: blur(20px);
+  --blur-modal: blur(30px);
+  --blur-nav:   blur(20px);
   --shadow:  {l.get('shadow','0 8px 40px rgba(0,0,0,.35)')};
   --ease:    {ti.get('ease','cubic-bezier(0.4,0,0.2,1)')};
   --t-fast:  {ti.get('fast','150ms')};
@@ -89,208 +88,238 @@ def build_css(tokens):
   --s10: {l.get('s10','8rem')};
 }}
 
-/*================== Reset ====================*/
+/*================================= [01] RESET ==================================*/
 *,*::before,*::after{{margin:0;padding:0;box-sizing:border-box}}
 html,body{{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}}
 body{{font-family:{families.get('body','sans-serif')};background:var(--c-bg);color:var(--c-t2);line-height:1.65}}
 
-/*============== Slide Engine ================*/
+/*=============================== [02] SLIDE ENGINE ===============================*/
 .slides-container{{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--c-bg)}}
-.slide{{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity var(--t-mid) ease-out,transform var(--t-mid) ease-out;transform:translateY(12px);padding:{l.get('slidePadding','2rem')};will-change:opacity,transform}}
+.slide{{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;animation:springIn var(--t-slow) var(--ease) forwards;transform:translateY(12px);padding:{l.get('slidePadding','2rem')};will-change:opacity,transform}}
 .slide.active{{opacity:1;visibility:visible;transform:translateY(0);z-index:10}}
 .slide.prev{{opacity:0;transform:translateY(-12px)}}
 {stagger_css}
-.slide *{{opacity:0;transform:translateY(8px);transition:opacity var(--t-mid) ease-out,transform var(--t-mid) ease-out}}
+{spring_css}
+.slide *{{opacity:0;transform:translateY(8px);transition:opacity var(--t-mid) var(--ease),transform var(--t-mid) var(--ease)}}
 .slide.active *{{opacity:1;transform:translateY(0)}}
+.slide-inner{{width:100%;max-width:{l.get('maxWidth','1100px')};padding:2rem 1.5rem}}
 
-/*================== Progress ==================*/
-.progress-track{{position:fixed;top:0;left:0;right:0;height:1.5px;background:rgba(255,255,255,.03);z-index:300}}
-.progress-bar{{position:fixed;top:0;left:0;height:1.5px;background:linear-gradient(90deg,var(--c-teal),var(--c-teal-hot));transition:width var(--t-mid) ease-out;z-index:301}}
+/*================================= [03] PROGRESS ==================================*/
+.progress-bar{{position:fixed;top:0;left:0;height:1.5px;background:linear-gradient(90deg,var(--c-teal),var(--c-teal-hot));transition:width var(--t-mid) var(--ease);z-index:301}}
+.progress-track{{position:fixed;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,.05);z-index:301}}
 
-/*============== Navigation ================*/
+/*=============================== [04] NAVIGATION ================================*/
 .nav-bar{{position:fixed;bottom:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:center;gap:1rem;padding:1rem 2rem;background:linear-gradient(transparent,var(--c-glass));backdrop-filter:blur(20px);border-top:1px solid var(--border)}}
 .nav-btn{{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--c-t2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--t-fast);font-size:1rem;user-select:none}}
-.nav-btn:hover{{background:var(--c-teal-dim);border-color:var(--border-a);color:var(--accent-mid)}}
-.nav-btn:disabled{{opacity:.15;cursor:default}}
-.nav-counter{{font-size:.75rem;color:var(--c-t4);font-variant-numeric:tabular-nums;min-width:60px;text-align:center}}
+.nav-btn:hover{{filter:brightness(1.15);background:var(--c-surface2);border-color:var(--c-teal-dim)}}
+.nav-btn:disabled{{opacity:.28;cursor:not-allowed;filter:grayscale(50%)}}
+.nav-counter{{font-size:.75rem;color:var(--c-t3);font-weight:500;letter-spacing:.08em;min-width:3rem;text-align:center}}
 .nav-counter .current{{color:var(--c-t1);font-weight:600}}
+.slide-num{{font-size:.65rem;font-weight:600;color:var(--accent);letter-spacing:.1em;opacity:.5}}
 .fs-btn{{width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--c-t3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--t-fast);font-size:.75rem;margin-left:auto}}
-.fs-btn:hover{{background:rgba(99,102,241,.1);border-color:var(--border-a);color:var(--accent-mid)}}
 
-/*============== Section Break ================*/
-.section-break{{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--c-bg)}}
-.section-inner{{text-align:center}}
-.section-num{{display:block;font-size:{l.get('sectionNumSize','6rem')};font-weight:700;color:rgba(99,102,241,.06);letter-spacing:-.05em;line-height:1;margin-bottom:-1rem}}
-.section-title{{font-family:{families.get('display','serif')};font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--c-t1);line-height:1.2}}
+/*============================= [05] SECTION BREAK ==============================*/
+.section-break{{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:var(--c-bg)}}
+.section-num{{font-family:{families.get('display','serif')};font-size:{l.get('sectionNumSize','6rem')};font-weight:900;color:var(--c-teal);opacity:.12;line-height:1}}
+.section-title{{font-family:{families.get('heading','serif')};font-size:clamp(1.6rem,4vw,2.5rem);font-weight:700;color:var(--c-t1);letter-spacing:-.02em}}
+.section-sub{{font-size:1rem;color:var(--c-t3);margin-top:.8rem;font-weight:300}}
 
-/*============== Slide Content ================*/
-.slide-inner{{width:100%;max-width:{l.get('maxWidth','1100px')};padding:2rem 1.5rem}}
+/*============================= [06] SLIDE CONTENT ==============================*/
 .slide-header{{display:flex;align-items:baseline;gap:.8rem;margin-bottom:1.5rem}}
 .slide-num{{font-size:.65rem;font-weight:600;color:var(--accent);letter-spacing:.1em;opacity:.5}}
-.slide-title{{font-family:{families.get('heading','serif')};font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:700;color:var(--c-t1);line-height:1.3;padding-bottom:.5rem;border-bottom:1px solid rgba(99,102,241,.1);position:relative}}
-.slide-title::after{{content:'';position:absolute;bottom:-1px;left:0;width:36px;height:2px;background:linear-gradient(90deg,var(--c-teal),var(--c-teal-hot));border-radius:1px}}
+.slide-title{{font-family:{families.get('heading','serif')};font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:700;color:var(--c-t1);position:relative;padding-bottom:.4rem}}
+.slide-title::after{{content:'';position:absolute;bottom:-1px;left:0;width:36px;height:2px;background:linear-gradient(90deg,var(--c-teal),transparent)}}
 .slide-sub{{font-size:.9rem;color:var(--c-t3);font-weight:300;letter-spacing:.05em;margin-bottom:1.5rem;padding-left:3.5rem}}
-.slide-headline{{font-family:{families.get('display','serif')};font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--ink-100);line-height:1.3;margin-bottom:1rem}}
+.slide-headline{{font-family:{families.get('display','serif')};font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--c-t1);margin-bottom:.8rem}}
 .slide-body{{font-size:clamp(.8rem,1.2vw,.92rem);color:var(--c-t2);line-height:1.75;max-width:80ch;margin-bottom:1.2rem}}
+.slide-body strong{{color:var(--c-t1);font-weight:600}}
 
-/*================== Cards ==================*/
+/*=================================== [07] CARDS ===================================*/
 .item-card{{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;transition:all var(--t-fast)}}
-.item-card:hover{{background:var(--surface-h);border-color:var(--border-a);transform:translateY(-2px);box-shadow:var(--shadow)}}
-.item-card h4{{font-family:{families.get('heading','serif')};font-size:.85rem;font-weight:700;color:var(--accent-mid);margin-bottom:.4rem}}
-.item-card ul{{list-style:none;padding:0;margin:0}}
-.item-card li{{font-size:clamp(.7rem,1vw,.8rem);color:var(--c-t2);padding:.18rem 0 .18rem .8rem;position:relative;line-height:1.5}}
-.item-card li::before{{content:'';position:absolute;left:0;top:.55rem;width:4px;height:4px;background:var(--accent);border-radius:50%;opacity:.35}}
+.item-card:hover{{filter:brightness(1.05);background:var(--c-surface2);border-color:var(--c-teal-dim)}}
+.item-card:active{{transform:scale(.97);filter:brightness(.95);transition-duration:50ms}}
+.item-card:active{{transform:scale(.97);filter:brightness(.95);transition-duration:50ms}}
 
-/*================== Two-col ================*/
-.twocol{{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:.5rem}}
-.cb{{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem 1rem}}
-.cb h4{{font-family:{families.get('heading','serif')};font-size:.8rem;font-weight:700;margin-bottom:.3rem}}
-.cb ul{{list-style:none;padding:0;margin:0}}
-.cb li{{font-size:clamp(.65rem,.95vw,.76rem);color:var(--c-t2);padding:.1rem 0 .1rem .9rem;position:relative;line-height:1.4}}
-.col-left .cb{{border-color:rgba(248,113,113,.08)}}.col-left .cb h4{{color:#f87171}}
-.col-left .cb li::before{{content:'›';position:absolute;left:0;color:#f87171;font-size:.6rem;top:.05rem}}
-.col-right .cb{{border-color:rgba(74,222,128,.08)}}.col-right .cb h4{{color:#4ade80}}
-.col-right .cb li::before{{content:'✓';position:absolute;left:0;color:#4ade80;font-size:.6rem;top:.05rem}}
+/*=================================== [08] TWO-COL ===================================*/
+.two-col{{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;width:100%}}
+.two-col>*{{min-width:0}}
 
-/*================== Images ================*/
-.ci{{width:100%;max-height:42vh;object-fit:contain;border-radius:10px;border:1px solid var(--border);box-shadow:var(--shadow)}}
-.cig{{width:100%;max-height:22vh;object-fit:contain;border-radius:8px;border:1px solid var(--border);opacity:.8}}
-.ig2{{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1rem}}
-.ig3{{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:1rem}}
-.igm{{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem;margin-top:1rem}}
+/*==================================== [09] IMAGES ====================================*/
+.slide-img{{width:100%;height:auto;max-height:55vh;object-fit:contain;border-radius:8px}}
 
-/*================== Thank You ================*/
-.thanks-inner{{position:relative;text-align:center;padding:3rem}}
-.thanks-eyebrow{{font-size:.65rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem}}
-.thanks-title{{font-family:{families.get('display','serif')};font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;color:var(--c-t1);margin-bottom:1.2rem}}
-.thanks-rule{{width:40px;height:1.5px;background:linear-gradient(90deg,var(--c-teal),var(--c-teal-hot));margin:0 auto 1.2rem;border-radius:1px}}
-.thanks-sub{{font-size:.85rem;color:var(--c-t3);letter-spacing:.1em}}
+/*=================================== [10] THANK YOU ===================================*/
+.thankyou{{text-align:center}}
+.thankyou h1{{font-family:{families.get('display','serif')};font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:var(--c-t1);margin-bottom:.5rem}}
+.thankyou p{{color:var(--c-t3);font-weight:300;font-size:1.1rem}}
+.thankyou .logo{{font-size:.85rem;color:var(--c-t4);margin-top:2rem;letter-spacing:.15em;text-transform:uppercase}}
 
-/*================== Cover ================*/
-.cover-bg{{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse 70% 55% at 20% 35%,var(--c-teal-dim) 0%,transparent 60%),radial-gradient(ellipse 55% 70% at 80% 25%,rgba(99,102,241,.05) 0%,transparent 55%),var(--ink-950)}}
-.cover-vignette{{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(6,8,13,.55) 100%)}}
-.cover-inner{{position:relative;text-align:center;max-width:820px;padding:3rem 2rem}}
-.cover-tag{{display:inline-block;padding:.35rem 1.2rem;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-mid);border:1px solid var(--border-a);border-radius:999px;margin-bottom:2rem}}
-.cover-title{{font-family:{families.get('display','serif')};font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1.15;margin-bottom:1.2rem;color:var(--c-t1)}}
-.cover-sub{{font-size:clamp(.9rem,1.6vw,1.1rem);color:var(--c-t2);font-weight:300;letter-spacing:.06em;line-height:1.6}}
-.cover-rule{{width:60px;height:1.5px;background:linear-gradient(90deg,var(--c-teal),var(--c-teal-hot));margin:2rem auto;border-radius:1px}}
-.cover-meta{{font-size:.75rem;color:var(--c-t4);letter-spacing:.1em}}
+/*==================================== [11] COVER =====================================*/
+.cover{{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden}}
+.cover-bg{{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(99,102,241,.12),transparent 70%)}}
+.cover-title{{font-family:{families.get('display','serif')};font-size:clamp(2rem,5.5vw,4rem);font-weight:900;color:var(--c-t1);text-align:center;line-height:1.1;position:relative;z-index:1}}
+.cover-title em{{font-style:normal;background:linear-gradient(135deg,var(--c-teal),var(--c-teal-hot));-webkit-background-clip:text;-webkit-text-fill-color:transparent}}
+.cover-sub{{font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--c-t3);margin-top:1.2rem;text-align:center;max-width:600px;position:relative;z-index:1;font-weight:300}}
+.cover-meta{{margin-top:2.5rem;display:flex;gap:2rem;position:relative;z-index:1}}
+.cover-meta span{{font-size:.75rem;color:var(--c-t4);letter-spacing:.12em;text-transform:uppercase}}
 
-/*============================== [11] — {tablet}/{mobile}/{small} */
-@media(max-width:{tablet}px){{.slide{{padding:1.5rem}}.slide-inner{{padding:1.8rem 1.2rem}}.ci{{max-height:32vh}}.twocol{{gap:.8rem}}.items-grid{{grid-template-columns:1fr 1fr}}}}
-@media(max-width:{mobile}px){{.slide{{padding:1rem}}.slide-inner{{padding:1.2rem .8rem}}.twocol{{grid-template-columns:1fr}}.items-grid{{grid-template-columns:1fr}}.ig2,.ig3{{grid-template-columns:1fr}}}}
-@media(max-width:{small}px){{.slide{{padding:.6rem}}.slide-inner{{padding:.8rem .5rem}}.igm{{grid-template-columns:1fr}}}}
+/*=============================== [12] RESPONSIVE — {tablet}/{mobile}/{small} ===============================*/
+@media(max-width:{tablet}px){{
+  .two-col{{grid-template-columns:1fr;gap:1.5rem}}
+  .slide-inner{{padding:1.5rem 1rem}}
+}}
+@media(max-width:{mobile}px){{
+  .slide{{padding:1rem}}
+  .slide-inner{{padding:1rem .5rem}}
+  .slide-title{{font-size:1.1rem}}
+  .slide-body{{font-size:.82rem}}
+  .item-card{{padding:.8rem}}
+  .nav-bar{{padding:.5rem 1rem;gap:.5rem}}
+}}
+@media(max-width:{small}px){{
+  .cover-title{{font-size:1.8rem}}
+  .section-num{{font-size:4rem}}
+  .cover-meta{{flex-direction:column;gap:.8rem;align-items:center}}
+}}
 
-/*========================== [12] UTILITIES ===============*/
-::-webkit-scrollbar{{width:2px}}::-webkit-scrollbar-thumb{{background:var(--c-teal-dim);border-radius:2px}}
+/*================================= [13] UTILITIES ==================================*/
+:focus-visible{{outline:2px solid var(--c-teal);outline-offset:2px}}
+*:focus:not(:focus-visible){{outline:none}}
+.tag{{display:inline-block;padding:.15rem .6rem;border-radius:999px;font-size:.7rem;font-weight:600;letter-spacing:.04em}}
+.tag-teal{{background:var(--c-teal-dim);color:var(--c-teal)}}
+.tag-warn{{background:rgba(245,158,11,.12);color:var(--c-warning)}}
+.tag-err{{background:rgba(239,68,68,.12);color:var(--c-error)}}
+.tag-ok{{background:rgba(34,197,94,.12);color:var(--c-success)}}
+.kv{{display:flex;gap:.5rem;align-items:baseline;flex-wrap:wrap;margin:.25rem 0}}
+.kv k{{font-weight:600;color:var(--c-t1);min-width:5rem}}
+.kv v{{color:var(--c-t2);font-weight:300}}
+.bullets{{list-style:none;padding:0;margin:0}}
+.bullets li{{position:relative;padding-left:1.4rem;margin-bottom:.45rem;color:var(--c-t2);font-size:.88rem;line-height:1.7}}
+.bullets li::before{{content:'→';position:absolute;left:0;color:var(--c-teal);font-weight:700}}
+.steps{{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.5rem 0}}
+.step{{display:flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:8px;background:var(--surface);border:1px solid var(--border);font-size:.8rem;color:var(--c-t2)}}
+.step-arrow{{color:var(--c-teal);font-weight:700}}
+.two-up{{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}}
+@media(max-width:768px){{.two-up{{grid-template-columns:1fr}}}}
+.center{{text-align:center}}
+.mt1{{margin-top:var(--s1)}}.mt2{{margin-top:var(--s2)}}.mt3{{margin-top:var(--s3)}}
+.mb1{{margin-bottom:var(--s1)}}.mb2{{margin-bottom:var(--s2)}}.mb3{{margin-bottom:var(--s3)}}
 """
 
+
+def _render_blocks(blocks, img_dir):
+    """Convert blocks list → HTML inner content."""
+    parts = []
+    for b in blocks:
+        if b.startswith('[IMAGE:'):
+            # [IMAGE:shape_name.png]
+            fname = b[7:-1]
+            parts.append(f'<img class="slide-img" src="{img_dir}/{fname}" alt="">')
+        elif '	' in b or '    ' in b[:4]:
+            # Indented → bullet
+            parts.append(f'<li>{b.strip()}</li>')
+        elif b.startswith(('1.','2.','3.','4.','5.','6.','7.','8.','9.')):
+            parts.append(f'<li>{b[3:].strip()}</li>')
+        else:
+            parts.append(f'<p>{b}</p>')
+    html = ''.join(parts)
+    # Wrap consecutive <li> in <ul>
+    import re
+    html = re.sub(r'(<li>.*?</li>)+', lambda m: '<ul class="bullets">'+m.group()+'</ul>', html)
+    return html
+
 def render_slides(spec, tokens, img_dir='html/images'):
-    c = tokens.get('colors', {})
-    css = build_css(tokens)
-    t = tokens.get('typography', {})
-    body_parts = []
-    num = 0
     slides_data = spec.get('slides', [])
-
-    for s in slides_data:
-        if s.get('_section'):
+    body_parts = []
+    for idx, s in enumerate(slides_data):
+        blocks = s.get('blocks', [])
+        _section = s.get('_section')
+        inner = _render_blocks(blocks, img_dir)
+        if _section and idx > 0:
             body_parts.append(f"""<div class="section-break" data-stagger="0">
-  <div class="section-inner">
-    <span class="section-num">0{s.get('_section_num','')}</span>
-    <h2 class="section-title">{_esc(s['_section'])}</h2>
-  </div>
+  <div class="section-num">{idx+1}</div>
+  <div class="section-title">{_section}</div>
 </div>""")
-            continue
-        if s.get('title', '').lower() in ('thank you', 'thanks'):
-            body_parts.append(f"""<div class="slide" data-stagger="0">
-  <div class="thanks-inner">
-    <p class="thanks-eyebrow">Thank You</p>
-    <h1 class="thanks-title">{_esc(s.get('title',''))}</h1>
-    <div class="thanks-rule"></div>
-    <p class="thanks-sub">{_esc(s.get('body',''))}</p>
-  </div>
-</div>""")
-            continue
-        num += 1
-        s['num'] = num
-
-        # Build content
-        inner_parts = []
-        inner_parts.append(f'<div class="slide-header"><span class="slide-num">{num:02d}</span><h2 class="slide-title">{_esc(s.get("title",""))}</h2></div>')
-        if s.get('body'):
-            inner_parts.append(f'<p class="slide-body">{_esc(s["body"])}</p>')
-
-        # Detect and render content blocks from PPTX text
-        for block in s.get('blocks', [])[1:4]:  # max 3 blocks
-            if block.startswith('[IMAGE:'):
-                fname = block[7:-1]
-                inner_parts.append(f'<div class="slide-img-row"><img class="ci" src="{img_dir}/{fname}" alt=""></div>')
-            elif len(block) > 10:
-                inner_parts.append(f'<p class="slide-body">{_esc(block)}</p>')
-
-        inner = '\n'.join(inner_parts)
         stagger_val = s.get('stagger', 0)
         body_parts.append(f'<div class="slide" data-stagger="{stagger_val}"><div class="slide-inner">{inner}</div></div>')
 
-    total = num
-    body = '\n\n'.join(body_parts)
+    css = build_css(tokens)
+    font_link = tokens.get('fonts', {}).get('google', '')
+    font_tag = f'<link href="https://fonts.googleapis.com/css2?family={font_link}&display=swap" rel="stylesheet">' if font_link else ''
+    total = len(slides_data)
+    title = spec.get('title', 'Presentation')
+
+    nav_buttons = f"""<button class="nav-btn" id="prevBtn" disabled>‹</button>
+  <span class="nav-counter"><span class="current" id="curNum">1</span> / {total}</span>
+  <button class="nav-btn" id="nextBtn">›</button>"""
 
     return f"""<!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>{_esc(spec.get('source','Presentation'))} — v3</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family={tokens.get('fonts',{}).get('google','Inter:wght@300;400;500;600;700')}&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={{"theme":{{"extend":{{"fontFamily":{{"body":["Inter","Noto Sans SC","sans-serif"]}}}}}}}}</script>
-<style>{css}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+{font_tag}
+<style>
+{css}
 </style>
 </head>
 <body>
+<div class="slides-container" id="slides">
+{"".join(body_parts)}
+</div>
 <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
-<div class="slides-container" id="slidesContainer">
-{body}
-</div>
-<div class="nav-bar" id="navBar">
-  <button class="nav-btn" id="prevBtn" aria-label="prev">‹</button>
-  <span class="nav-counter"><span class="current" id="currentNum">1</span> / <span id="totalNum">{total}</span></span>
-  <button class="nav-btn" id="nextBtn" aria-label="next">›</button>
-  <button class="fs-btn" id="fsBtn" aria-label="fullscreen">⛶</button>
-</div>
+<nav class="nav-bar">
+  {nav_buttons}
+  <button class="fs-btn" id="fsBtn" title="Fullscreen">⛶</button>
+</nav>
 <script>
 (function(){{
-  const slides=document.querySelectorAll('.slide');
+  const slides=document.querySelectorAll('.slide,.section-break');
   const bar=document.getElementById('progressBar');
-  const curr=document.getElementById('currentNum');
-  const total=document.getElementById('totalNum');
-  const pBtn=document.getElementById('prevBtn');
-  const nBtn=document.getElementById('nextBtn');
-  const fsBtn=document.getElementById('fsBtn');
-  let idx=0,locked=false;
-  function go(i){{
-    if(locked||i===idx||i<0||i>=slides.length)return;
-    locked=true;slides[idx].classList.remove('active');slides[idx].classList.add('prev');
-    setTimeout(()=>slides[idx].classList.remove('prev'),700);
-    idx=i;slides[idx].classList.add('active');
-    bar.style.width=(100/(slides.length-1))*idx+'%';curr.textContent=idx+1;
-    pBtn.disabled=idx===0;nBtn.disabled=idx===slides.length-1;
-    setTimeout(()=>{{locked=false}},400);
+  const cur=document.getElementById('curNum');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  let current=0,total=slides.length;
+  const debounce={{}};
+  const WHEEL_DEBOUNCE=120;
+
+  function go(n){{
+    if(n<0||n>=total)return;
+    slides[current].classList.remove('active');
+    if(current>n)slides[current].classList.add('prev');
+    current=n;
+    slides[current].classList.add('active');
+    slides[current].classList.remove('prev');
+    bar.style.width=((current+1)/total*100)+'%';
+    cur.textContent=current+1;
+    prevBtn.disabled=current===0;
+    nextBtn.disabled=current===total-1;
   }}
-  pBtn.onclick=()=>go(idx-1);nBtn.onclick=()=>go(idx+1);
-  fsBtn.onclick=()=>{{if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}};
-  document.addEventListener('keydown',e=>{{if(e.key==='ArrowRight'||e.key===' ')go(idx+1);if(e.key==='ArrowLeft')go(idx-1);}});
-  let wt=null;document.addEventListener('wheel',e=>{{clearTimeout(wt);wt=setTimeout(()=>{{if(e.deltaY>30)go(idx+1);else if(e.deltaY<-30)go(idx-1);}},120);}},{{passive:true}});
-  let tx=0;document.addEventListener('touchstart',e=>{{tx=e.touches[0].clientX}},{{passive:true}});
-  document.addEventListener('touchend',e=>{{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(idx+(dx>0?-1:1));}},{{passive:true}});
-  total.textContent=slides.length;slides[0].classList.add('active');
+  prevBtn.onclick=()=>go(current-1);
+  nextBtn.onclick=()=>go(current+1);
+  document.addEventListener('keydown',e=>{{
+    if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+    if(e.key==='ArrowLeft')go(current-1);
+    if(e.key==='Home')go(0);
+    if(e.key==='End')go(total-1);
+    if(e.key==='f'||e.key==='F'){{
+      const d=document.fullscreenElement;
+      document[d?'exitFullscreen':'requestFullscreen']();
+    }}
+  }});
+  document.addEventListener('wheel',e=>{{
+    const now=Date.now();
+    if(now-debounce.last<WHEEL_DEBOUNCE)return;
+    debounce.last=now;
+    go(current+(e.deltaY>0?1:-1));
+  }},{{passive:true}});
+  document.addEventListener('touchstart',e=>{{debounce.ty=e.touches[0].clientY}},{{passive:true}});
+  document.addEventListener('touchend',e=>{{
+    const dy=debounce.ty-e.changedTouches[0].clientY;
+    if(Math.abs(dy)>30)go(current+(dy>0?1:-1));
+  }},{{passive:true}});
+  go(0);
 }})();
 </script>
 </body>
 </html>"""
-
-def _esc(t):
-    return t.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;')

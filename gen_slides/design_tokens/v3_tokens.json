@@ -33,7 +33,11 @@
     "c-t1": "#f0f4f8",
     "c-t2": "#94a3b8",
     "c-t3": "#64748b",
-    "c-t4": "#3b5068"
+    "c-t4": "#3b5068",
+    "c-error": "#ef4444",
+    "c-success": "#22c55e",
+    "c-warning": "#f59e0b",
+    "c-info": "#3b82f6"
   },
   "typography": {
     "display": {
@@ -94,7 +98,11 @@
       "tablet": 1024,
       "mobile": 768,
       "small": 480
-    }
+    },
+    "blur-card": "blur(10px)",
+    "blur-sheet": "blur(20px)",
+    "blur-modal": "blur(30px)",
+    "blur-nav": "blur(20px)"
   },
   "fonts": {
     "google": "Inter:wght@300;400;500;600;700|Playfair+Display:wght@600;700;800;900|Noto+Sans+SC:wght@300;400;500;600;700",
@@ -114,6 +122,20 @@
       "wheel",
       "touch"
     ],
-    "requireFullscreen": true
+    "requireFullscreen": true,
+    "buttonStates": [
+      "default",
+      "hover",
+      "pressed",
+      "selected",
+      "disabled"
+    ],
+    "cardModes": [
+      "elevated",
+      "filled",
+      "outlined"
+    ],
+    "focusRing": "2px solid var(--c-teal), outline-offset: 2px",
+    "springIn": "60% overshoot 1.01 scale, 80% settle .995"
   }
 }

@@ -18,7 +18,7 @@ def extract(pptx_path, section_names=None):
             if shape.shape_type is not None and hasattr(shape, 'image'):
                 try:
                     img = shape.image
-                    if img.content:
+                    if img.blob:
                         ext = img.content_type.split('/')[-1]
                         if ext in ('png','jpg','jpeg','gif','webp'):
                             blocks.append(f"[IMAGE:{shape.name}.{ext}]")
