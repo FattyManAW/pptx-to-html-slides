@@ -10,6 +10,7 @@ def main():
     ap.add_argument('--img-dir', default='html/images', help='Image directory (relative to output)')
     ap.add_argument('--section-names', help='Comma-separated section names')
     ap.add_argument('--extract-only', action='store_true', help='Only extract PPTX to JSON spec')
+    ap.add_argument('--theme', choices=['v3_dark','v3_warm','v3_green'], help='Color theme (overrides design tokens)')
     args = ap.parse_args()
 
     # Load design tokens
