@@ -25,7 +25,7 @@ def main():
     from pptx_extractor import extract
 
     secs = args.section_names.split(',') if args.section_names else None
-    spec = extract(args.pptx, secs)
+    spec = extract(args.pptx, secs, img_dir=args.img_dir)
 
     if args.extract_only:
         print(json.dumps(spec, ensure_ascii=False, indent=2))

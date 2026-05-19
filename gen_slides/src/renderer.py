@@ -207,13 +207,36 @@ body{{font-family:{families.get('body','sans-serif')};background:var(--c-bg);col
 """
 
 
-def _render_blocks(blocks, img_dir):
-    """Convert blocks list → HTML inner content."""
+def _render_blocks(blocks, img_dir, slide_num=0):
+    """Convert blocks list → HTML inner content.
+
+    Image blocks may reference either a bare filename (extractor no-img_dir
+    mode) or a shape name. We try: (1) exact filename, (2) glob slideN_*name*,
+    (3) glob *name*.
+    """
+    import glob, os
+
+    def resolve_img(raw_fname):
+        # exact match first
+        candidate = os.path.join(img_dir, raw_fname)
+        if os.path.exists(candidate):
+            return raw_fname
+        # strip extension for glob matching
+        base = os.path.splitext(raw_fname)[0]
+        # glob by slide num + base
+        matches = glob.glob(os.path.join(img_dir, f'slide{slide_num}_*{base}*'))
+        if not matches:
+            matches = glob.glob(os.path.join(img_dir, f'*{base}*'))
+        if matches:
+            return os.path.basename(matches[0])
+        return raw_fname  # fallback to original
+
     parts = []
     for b in blocks:
         if b.startswith('[IMAGE:'):
-            # [IMAGE:shape_name.png]
-            fname = b[7:-1]
+            # [IMAGE:shape_name.png] or [IMAGE:actual_filename.png]
+            raw_fname = b[7:-1]
+            fname = resolve_img(raw_fname)
             parts.append(f'<img class="slide-img" src="{img_dir}/{fname}" alt="">')
         elif '	' in b or '    ' in b[:4]:
             # Indented → bullet
@@ -234,7 +257,7 @@ def render_slides(spec, tokens, img_dir='html/images'):
     for idx, s in enumerate(slides_data):
         blocks = s.get('blocks', [])
         _section = s.get('_section')
-        inner = _render_blocks(blocks, img_dir)
+        inner = _render_blocks(blocks, img_dir, slide_num=idx+1)
         if _section and idx > 0:
             body_parts.append(f"""<div class="section-break" data-stagger="0">
   <div class="section-num">{idx+1}</div>

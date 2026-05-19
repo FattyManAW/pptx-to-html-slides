@@ -1,10 +1,15 @@
 """pptx_extractor.py — PPTX → JSON spec for gen_slides"""
-import json, sys, os
+import json, sys, os, hashlib
 from pptx import Presentation
 from pptx.util import Inches, Pt
 
-def extract(pptx_path, section_names=None):
-    """Extract PPTX content into structured JSON spec."""
+def extract(pptx_path, section_names=None, img_dir=None):
+    """Extract PPTX content into structured JSON spec.
+
+    If img_dir is provided, images are saved to that directory and the
+    [IMAGE:...] block contains the actual saved filename instead of the
+    raw shape name.
+    """
     prs = Presentation(pptx_path)
     slides = []
     for i, slide in enumerate(prs.slides):
@@ -20,15 +25,23 @@ def extract(pptx_path, section_names=None):
                     img = shape.image
                     if img.blob:
                         ext = img.content_type.split('/')[-1]
-                        if ext in ('png','jpg','jpeg','gif','webp'):
-                            blocks.append(f"[IMAGE:{shape.name}.{ext}]")
+                        if ext in ('png', 'jpg', 'jpeg', 'gif', 'webp'):
+                            if img_dir:
+                                os.makedirs(img_dir, exist_ok=True)
+                                name = shape.name.replace(' ', '_').replace('/', '_')
+                                h = hashlib.md5(img.blob).hexdigest()[:8]
+                                fname = f"slide{i+1}_{name}_{h}.{ext}"
+                                fpath = os.path.join(img_dir, fname)
+                                with open(fpath, 'wb') as f:
+                                    f.write(img.blob)
+                                blocks.append(f"[IMAGE:{fname}]")
+                            else:
+                                blocks.append(f"[IMAGE:{shape.name}.{ext}]")
                 except Exception:
                     pass
-        # Derive title from first non-empty block
         title = blocks[0] if blocks else ""
         body = " ".join(blocks[1:]) if len(blocks) > 1 else ""
         slides.append({"num": i+1, "title": title, "body": body, "blocks": blocks})
-    # Section inference: every N slides or at explicit section breaks
     if section_names:
         n = len(section_names)
         per = max(1, len(slides) // n)
