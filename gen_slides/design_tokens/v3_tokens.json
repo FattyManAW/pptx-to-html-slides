@@ -1,0 +1,51 @@
+{
+  "name": "润思IMPACTS v3 Design System",
+  "colors": {
+    "ink50": "#f8fafc", "ink100": "#f1f5f9", "ink200": "#e2e8f0",
+    "ink300": "#cbd5e1", "ink400": "#94a3b8", "ink500": "#64748b",
+    "ink600": "#475569", "ink700": "#334155", "ink800": "#1e293b",
+    "ink900": "#0f172a", "ink950": "#06080d",
+    "accent": "#6366f1", "accentMid": "#818cf8",
+    "surface": "rgba(255,255,255,.03)", "surfaceH": "rgba(255,255,255,.06)",
+    "border": "rgba(255,255,255,.06)", "borderA": "rgba(99,102,241,.2)",
+    "green": "#f87171", "greenOk": "#4ade80"
+  },
+  "typography": {
+    "display":  {"family": "'Playfair Display',serif",    "weights": "700;800;900", "use": "cover-title,section-title"},
+    "heading":  {"family": "'Playfair Display','Noto Serif SC',serif", "weights": "600;700", "use": "slide-title,item-card h4"},
+    "body":     {"family": "'Inter','Noto Sans SC',sans-serif", "weights": "300;400;500;600;700", "use": "slide-body,slide-sub"},
+    "mono":     {"family": "monospace", "weights": "400;500", "use": "code"}
+  },
+  "timing": {
+    "stagger": [0, 80, 160, 240, 320],
+    "duration": "350ms",
+    "ease": "ease-out",
+    "wheelDebounce": 120
+  },
+  "layout": {
+    "maxWidth": "1100px",
+    "slidePadding": "2rem",
+    "sectionBreakBg": "#06080d",
+    "sectionNumSize": "6rem",
+    "glassBlur": "blur(24px)",
+    "shadow": "0 8px 40px rgba(0,0,0,.35)",
+    "breakpoints": {
+      "tablet": 1024,
+      "mobile": 768,
+      "small": 480
+    }
+  },
+  "fonts": {
+    "google": "Inter:wght@300;400;500;600;700|Playfair+Display:wght@600;700;800;900|Noto+Sans+SC:wght@300;400;500;600;700",
+    "preconnect": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"]
+  },
+  "rules": {
+    "noBase64": true,
+    "noFlyInBounceRotate": true,
+    "maxMessageBlocksPerSlide": 3,
+    "minLineHeight": 1.65,
+    "minFontWeights": 3,
+    "requireNavModes": ["keyboard", "wheel", "touch"],
+    "requireFullscreen": true
+  }
+}
