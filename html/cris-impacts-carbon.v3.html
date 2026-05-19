@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMPACTs 双碳数字化管理系统 v3 — 大连润思科技</title>
+
+<!-- Fonts: 6. 字體對比階梯 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════
+   CRIS IMPACTs v3 — CSS 六大原則引擎
+   ══════════════════════════════════════════════ */
+
+/* ── 5. 材質層次：深色背景當材質用 ── */
+:root {
+  /* 深色材質 */
+  --c-bg:        #050810;
+  --c-bg2:       #0a1018;
+  --c-bg3:       #0f1620;
+  --c-surface:   rgba(255,255,255,.04);
+  --c-surface2:  rgba(255,255,255,.07);
+  --c-border:    rgba(255,255,255,.08);
+  --c-glass:     rgba(10,16,24,.65);
+
+  /* 5. 材質層次：teal accent */
+  --c-teal:      #14b8a6;
+  --c-teal-dim:  rgba(20,184,166,.12);
+  --c-teal-glow: rgba(20,184,166,.25);
+  --c-teal-hot:  #2dd4bf;
+
+  /* 文本顏色階梯 */
+  --c-t1:        #f0f4f8;   /* 主標 */
+  --c-t2:        #94a3b8;   /* 副標/說明 */
+  --c-t3:        #64748b;   /* 註解/caption */
+  --c-t4:        #3b5068;   /* 裝飾元素 */
+
+  /* 4. 約束創造品質：≤400ms, only fade+translateY */
+  --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --t-xslow:     0.6s;
+  --t-slow:      0.4s;
+  --t-mid:       0.3s;
+  --t-fast:      0.15s;
+
+  /* spacing scale */
+  --s1:  0.5rem;
+  --s2:  1rem;
+  --s3:  1.5rem;
+  --s4:  2rem;
+  --s5:  3rem;
+  --s6:  4rem;
+  --s7:  6rem;
+  --s8:  8rem;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--c-bg);
+  color: var(--c-t1);
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 5. 材質層次：mesh gradient 背景 ── */
+#deck { position: relative; width: 100vw; height: 100vh; }
+.bg-mesh {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(20,184,166,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 90%, rgba(59,130,246,.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(20,184,166,.02) 0%, transparent 80%),
+    var(--c-bg);
+  pointer-events: none;
+}
+
+/* ── Slide 引擎 ── */
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: var(--s6) var(--s5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-slow) var(--ease);
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
+.slide.prev   { opacity: 0; }
+
+/* 3. 留白即語言：深色大片留白做章節分隔 */
+.slide--divider { justify-content: flex-start; }
+
+/* 4. 約束創造品質：≤400ms, fade + translateY */
+.in {
+  animation: slideIn var(--t-slow) var(--ease) forwards;
+  opacity: 0;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 2. Timing 階梯：樂譜有休止符 */
+.slide.active .in:nth-child(1) { animation-delay: 0ms; }
+.slide.active .in:nth-child(2) { animation-delay: 80ms; }
+.slide.active .in:nth-child(3) { animation-delay: 160ms; }
+.slide.active .in:nth-child(4) { animation-delay: 240ms; }
+.slide.active .in:nth-child(5) { animation-delay: 320ms; }
+.slide.active .in:nth-child(n+6) { animation-delay: 400ms; }
+
+/* ── 字體對比階梯 (Principle 6) ── */
+.txt-display-1 {  /* Slide 大標題 */
+  font-family: 'Playfair Display', 'Noto Sans SC', serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--c-t1);
+}
+.txt-display-2 {  /* 章節標題 */
+  font-family: 'Playfair Display', 'Noto Sans SC', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--c-t1);
+}
+.txt-display-3 {  /* 功能名稱 */
+  font-family: 'Playfair Display', 'Noto Sans SC', serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--c-t2);
+}
+.txt-heading-1 {  /* 區塊標 */
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-teal);
+}
+.txt-heading-2 {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  font-weight: 500;
+  color: var(--c-t2);
+  line-height: 1.5;
+}
+.txt-body-1 {  /* 主要內文 */
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--c-t2);
+}
+.txt-body-2 {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--c-t3);
+}
+.txt-caption {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  font-weight: 400;
+  color: var(--c-t3);
+  letter-spacing: 0.04em;
+}
+
+/* ── Component: 章節編號 ── */
+.section-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5rem, 10vw, 8rem);
+  font-weight: 700;
+  color: var(--c-t4);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* ── Component: accent 字 ── */
+.accent { color: var(--c-teal-hot); }
+
+/* ── Component: tag / label ── */
+.tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.3em 0.8em;
+  border-radius: 999px;
+  border: 1px solid;
+}
+.tag--teal   { color: var(--c-teal);   border-color: var(--c-teal-dim); }
+.tag--violet { color: #a78bfa;          border-color: rgba(167,139,250,.2); }
+
+/* ── Component: glass card ── */
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 16px;
+  padding: var(--s4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.card:hover {
+  background: var(--c-surface2);
+  border-color: rgba(20,184,166,.2);
+}
+
+/* ── Component: progress ── */
+.progress-bar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--c-surface2);
+  z-index: 100;
+}
+.progress-bar::after {
+  content: '';
+  display: block; height: 100%;
+  background: var(--c-teal);
+  transition: width var(--t-fast) var(--ease);
+}
+
+/* ── Component: nav ── */
+.nav {
+  position: fixed; bottom: 24px;
+  left: 50%; transform: translateX(-50%);
+  display: flex; gap: var(--s2); align-items: center;
+  z-index: 100;
+}
+.nav button {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--c-border);
+  background: var(--c-glass);
+  color: var(--c-t2);
+  font-size: 1.1rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+}
+.nav button:hover:not(:disabled) {
+  border-color: var(--c-teal);
+  color: var(--c-teal-hot);
+}
+.nav button:disabled { opacity: .25; cursor: default; }
+.nav .page {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem; color: var(--c-t3);
+  min-width: 3ch;
+  text-align: center;
+}
+
+/* ── Layout helpers ── */
+.col-center  { display: flex; flex-direction: column; align-items: center; }
+.col-left    { display: flex; flex-direction: column; align-items: flex-start; }
+.col-right   { display: flex; flex-direction: column; align-items: flex-end; }
+.row-center  { display: flex; flex-direction: row;  align-items: center; }
+.row-space   { display: flex; flex-direction: row;  align-items: stretch; justify-content: space-between; gap: var(--s3); }
+
+/* ── Slide --layout variants ── */
+.l-tight    { gap: var(--s2); }
+.l-standard { gap: var(--s3); }
+.l-loose    { gap: var(--s5); }
+.l-relaxed  { gap: var(--s7); }
+
+/* ── 一畫面一訊息：核心訊息區 ── */
+.core-msg {
+  max-width: 720px;
+  text-align: center;
+}
+.core-msg--left { max-width: 700px; text-align: left; }
+.core-msg--right { max-width: 700px; text-align: right; }
+
+/* ── Slide: 全螢幕 button ── */
+.fs-btn {
+  position: fixed; top: 16px; right: 16px;
+  z-index: 100;
+  background: none; border: 1px solid var(--c-border);
+  color: var(--c-t3); padding: 0.3em 0.5em;
+  font-size: 1rem; cursor: pointer; border-radius: 6px;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.fs-btn:hover { border-color: var(--c-teal); color: var(--c-teal); }
+
+/* ── Slide number ── */
+.slide-num {
+  position: fixed; bottom: 24px; right: 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem; color: var(--c-t4);
+  letter-spacing: 0.1em;
+  z-index: 100;
+}
+
+/* ── Feature grid ── */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s3);
+  max-width: 960px;
+  width: 100%;
+  padding: var(--s4);
+}
+.feat-item {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  padding: var(--s3);
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.feat-item:hover {
+  background: var(--c-surface2);
+  border-color: rgba(20,184,166,.2);
+}
+.feat-item .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--c-teal); line-height: 1;
+  margin-bottom: var(--s2);
+}
+.feat-item .label {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 0.95rem; font-weight: 500;
+  color: var(--c-t1); line-height: 1.5;
+  margin-bottom: var(--s1);
+}
+.feat-item .desc {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 0.8rem; color: var(--c-t3); line-height: 1.6;
+}
+
+/* ── Stat block ── */
+.stat-row {
+  display: flex; gap: var(--s6); align-items: baseline;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700; color: var(--c-teal-hot);
+  line-height: 1;
+}
+.stat-label {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  color: var(--c-t2); line-height: 1.5;
+}
+
+/* ── Divider slide ── */
+.divider-line {
+  width: 60px; height: 2px;
+  background: var(--c-teal-dim);
+  border-radius: 2px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .slide { padding: var(--s4) var(--s3); }
+  .feat-grid { grid-template-columns: 1fr; padding: var(--s2); }
+  .stat-row { flex-direction: column; gap: var(--s2); }
+  .row-space { flex-direction: column; }
+}
+@media (max-width: 480px) {
+  .slide { padding: var(--s3) var(--s2); }
+  .nav button { width: 38px; height: 38px; }
+}
+
+/* ── 全螢幕 ── */
+:fullscreen .slide { padding: var(--s7) var(--s6); }
+</style>
+</head>
+<body>
+
+<!-- Mesh gradient bg -->
+<div class="bg-mesh" aria-hidden="true"></div>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progBar" style="width: 0%"></div>
+<button class="fs-btn" onclick="toggleFs()" title="全螢幕">⛶</button>
+
+<!-- Deck -->
+<div class="deck" id="deck">
+
+<!-- ═══════════════ S01: 封面 ═══════════════ -->
+<section class="slide active" data-i="0">
+  <div class="bg-mesh"></div>
+  <div class="in col-center l-relaxed">
+    <span class="tag tag--violet">2026 · 双碳管理</span>
+    <h1 class="txt-display-1" style="text-align:center; margin-top:var(--s2)">
+      IMPACTs<br><span class="accent">双碳数字化</span>管理系统
+    </h1>
+    <div class="divider-line"></div>
+    <p class="txt-body-2" style="text-align:center; max-width:560px">
+      助力企业实现双碳目标，构建数字化、可追溯、可报告的碳管理闭环
+    </p>
+    <p class="txt-caption" style="margin-top:var(--s6)">
+      大连润思科技 · 基于用友 BIP 平台
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════ S02: 目錄 ═══════════════ -->
+<section class="slide" data-i="1">
+  <div class="in col-left l-loose" style="gap:var(--s2)">
+    <p class="txt-caption">目錄</p>
+    <div style="display:flex; flex-direction:column; gap:var(--s2);">
+      <span class="txt-body-2" style="display:flex; align-items:center; gap:var(--s2)">
+        <span style="font-family:'Playfair Display',serif;color:var(--c-teal);font-size:1.2rem;min-width:2ch">01</span>双碳政策背景与行业趋势
+      </span>
+      <span class="txt-body-2" style="display:flex; align-items:center; gap:var(--s2)">
+        <span style="font-family:'Playfair Display',serif;color:var(--c-teal);font-size:1.2rem;min-width:2ch">02</span>企业碳管理现状与挑战
+      </span>
+      <span class="txt-body-2" style="display:flex; align-items:center; gap:var(--s2)">
+        <span style="font-family:'Playfair Display',serif;color:var(--c-teal);font-size:1.2rem;min-width:2ch">03</span>IMPACTs 双碳管理解决方案
+      </span>
+      <span class="txt-body-2" style="display:flex; align-items:center; gap:var(--s2)">
+        <span style="font-family:'Playfair Display',serif;color:var(--c-teal);font-size:1.2rem;min-width:2ch">04</span>IMPACTs 双碳管理客户案例
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S03: 章节分隔 — 政策 ═══════════════ -->
+<section class="slide slide--divider" data-i="2">
+  <div class="in col-center l-relaxed">
+    <span class="section-num">01</span>
+    <p class="txt-heading-1" style="margin-top:var(--s3)">双碳政策背景与行业趋势</p>
+  </div>
+</section>
+
+<!-- ═══════════════ S04: 全球政策加速 ═══════════════ -->
+<section class="slide" data-i="3">
+  <div class="in col-left l-standard" style="max-width:720px">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">政策背景</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s3)">
+      全球政策加速<br><span class="accent">碳管理刚性化</span>
+    </h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--s3)">
+      <div class="in" style="animation-delay:160ms">
+        <p class="txt-heading-2" style="margin-bottom:var(--s1); color:var(--c-t1)">欧盟 CBAM 碳关税</p>
+        <p class="txt-body-2">2027 年全面实施，覆盖钢铁、铝、电力；未达标面临关税惩罚或退市风险</p>
+      </div>
+      <div class="in" style="animation-delay:240ms">
+        <p class="txt-heading-2" style="margin-bottom:var(--s1); color:var(--c-t1)">中国 2030 碳达峰 / 2060 碳中和</p>
+        <p class="txt-body-2">碳市场扩容至八大行业，覆盖 45 亿吨排放量；2025 年建立 50+ 产品碳足迹标准</p>
+      </div>
+      <div class="in" style="animation-delay:320ms">
+        <p class="txt-heading-2" style="margin-bottom:var(--s1); color:var(--c-t1)">碳核查执法</p>
+        <p class="txt-body-2">违规最高罚款 200 万元 + 配额核减 50%~100%；2024 年查处 ESG 造假 87 起</p>
+      </div>
+      <div class="in" style="animation-delay:400ms">
+        <p class="txt-heading-2" style="margin-bottom:var(--s1); color:var(--c-t1)">地方激励</p>
+        <p class="txt-body-2">零碳工厂奖励 100 万元；碳足迹认证最高补贴 5 万元</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S05: ESG 三大驱动力 ═══════════════ -->
+<section class="slide" data-i="4">
+  <div class="in col-center l-relaxed">
+    <h2 class="txt-display-2" style="text-align:center; max-width:700px; margin-bottom:var(--s4)">
+      碳管理从合规成本<br>变成<span class="accent">核心竞争力</span>
+    </h2>
+    <div class="feat-grid" style="grid-template-columns:repeat(3,1fr); gap:var(--s4);">
+      <div class="in feat-item" style="animation-delay:80ms">
+        <div class="num">40T+</div>
+        <div class="label">ESG 资管规模</div>
+        <div class="desc">全球 ESG 资管规模超 40 万亿美元<br>MSCI 碳指标权重达 15%</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:160ms">
+        <div class="num">91%</div>
+        <div class="label">范围 3 排放缺口</div>
+        <div class="desc">仅 9% 企业能完整计算范围 3 排放<br>苹果、沃尔玛等巨头强制供应商 2030 碳中和</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:240ms">
+        <div class="num">-1.2%</div>
+        <div class="label">融资成本降幅</div>
+        <div class="desc">碳数据透明的企业平均融资成本降低 1.2 个百分点<br>绿色债券发行成功率提升 40%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S06: 章节分隔 — 挑战 ═══════════════ -->
+<section class="slide slide--divider" data-i="5">
+  <div class="in col-center l-relaxed">
+    <span class="section-num">02</span>
+    <p class="txt-heading-1" style="margin-top:var(--s3)">企业碳管理现状与挑战</p>
+  </div>
+</section>
+
+<!-- ═══════════════ S07: 碳中和五步 ═══════════════ -->
+<section class="slide" data-i="6">
+  <div class="in col-center l-loose">
+    <p class="txt-caption" style="margin-bottom:var(--s3)">企业碳中和实施路径</p>
+    <h2 class="txt-display-2" style="text-align:center; margin-bottom:var(--s5)">
+      从碳家底到碳中和
+    </h2>
+    <div style="display:flex; gap:var(--s3); align-items:center; flex-wrap:wrap; justify-content:center;">
+      <div class="in" style="animation-delay:0ms">
+        <div style="text-align:center; padding:var(--s3)">
+          <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:var(--c-teal); margin-bottom:var(--s1)">01</div>
+          <div class="txt-body-1">摸清碳家底</div>
+        </div>
+      </div>
+      <div style="font-size:2rem; color:var(--c-t4)">→</div>
+      <div class="in" style="animation-delay:80ms">
+        <div style="text-align:center; padding:var(--s3)">
+          <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:var(--c-t1); margin-bottom:var(--s1)">02</div>
+          <div class="txt-body-1">制定碳目标</div>
+        </div>
+      </div>
+      <div style="font-size:2rem; color:var(--c-t4)">→</div>
+      <div class="in" style="animation-delay:160ms">
+        <div style="text-align:center; padding:var(--s3)">
+          <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:var(--c-teal); margin-bottom:var(--s1)">03</div>
+          <div class="txt-body-1">执行碳减排</div>
+        </div>
+      </div>
+      <div style="font-size:2rem; color:var(--c-t4)">→</div>
+      <div class="in" style="animation-delay:240ms">
+        <div style="text-align:center; padding:var(--s3)">
+          <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:var(--c-t1); margin-bottom:var(--s1)">04</div>
+          <div class="txt-body-1">评价碳绩效</div>
+        </div>
+      </div>
+      <div style="font-size:2rem; color:var(--c-t4)">→</div>
+      <div class="in" style="animation-delay:320ms">
+        <div style="text-align:center; padding:var(--s3)">
+          <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:var(--c-teal); margin-bottom:var(--s1)">05</div>
+          <div class="txt-body-1">实现碳中和</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S08: 碳盘查四大价值 ═══════════════ -->
+<section class="slide" data-i="7">
+  <div class="in col-left l-standard" style="max-width:720px">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">为什么做碳盘查</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s5)">
+      不止是合规<br><span class="accent">更是企业竞争力的开始</span>
+    </h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--s3)">
+      <div class="in feat-item" style="animation-delay:80ms">
+        <div class="num">✓</div>
+        <div class="label">合规经营保障</div>
+        <div class="desc">精准掌握碳排放数据，规避数据不清导致的合规风险</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:160ms">
+        <div class="num">↓</div>
+        <div class="label">降本增效</div>
+        <div class="desc">识别高耗能环节，通过技术改造降低能源消耗和生产成本</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:240ms">
+        <div class="num">🌍</div>
+        <div class="label">国际通行证</div>
+        <div class="desc">CBAM 等绿色贸易壁垒下的产品出口必要凭证，避免损失海外订单</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:320ms">
+        <div class="num">↑</div>
+        <div class="label">融资新优势</div>
+        <div class="desc">碳数据透明的企业，融资成本降低 1.2pp，绿色债券成功率提升 40%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S09: 章节分隔 — 痛点 ═══════════════ -->
+<section class="slide slide--divider" data-i="8">
+  <div class="in col-center l-relaxed">
+    <span class="section-num">03</span>
+    <p class="txt-heading-1" style="margin-top:var(--s3)">企业碳管理痛点分析</p>
+  </div>
+</section>
+
+<!-- ═══════════════ S10: 四大痛点 ═══════════════ -->
+<section class="slide" data-i="9">
+  <div class="in col-center l-loose">
+    <p class="txt-caption" style="margin-bottom:var(--s2)">核心痛点</p>
+    <h2 class="txt-display-2" style="text-align:center; max-width:700px; margin-bottom:var(--s6)">
+      四道墙，堵住了<br>碳管理真正的价值
+    </h2>
+    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s3); max-width:800px">
+      <div class="in feat-item" style="animation-delay:0ms; grid-column:1">
+        <div class="num" style="font-size:1.5rem; color:var(--c-t2)">01</div>
+        <div class="label" style="margin-bottom:var(--s2)">数据孤岛</div>
+        <div class="desc">ERP、MES、SCM 分散在不同系统，碳数据无法自动汇总，人工录入错误率高达 30-40%</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:80ms; grid-column:2">
+        <div class="num" style="font-size:1.5rem; color:var(--c-t2)">02</div>
+        <div class="label" style="margin-bottom:var(--s2)">核算标准混乱</div>
+        <div class="desc">ISO 14064、GHG Protocol、PAS 2050 多套标准并存，企业难以选择，核算结果缺乏一致性</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:160ms; grid-column:1">
+        <div class="num" style="font-size:1.5rem; color:var(--c-t2)">03</div>
+        <div class="label" style="margin-bottom:var(--s2)">报告效率低</div>
+        <div class="desc">手动整理数十个数据源，报告生成耗时数周，难以满足 ESG 披露时效性要求</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:240ms; grid-column:2">
+        <div class="num" style="font-size:1.5rem; color:var(--c-t2)">04</div>
+        <div class="label" style="margin-bottom:var(--s2)">决策无数据支撑</div>
+        <div class="desc">碳排放数据碎片化，管理者无法清晰了解趋势和结构，难以制定有效的减排策略</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S11: 章节分隔 — 解决方案 ═══════════════ -->
+<section class="slide slide--divider" data-i="10">
+  <div class="in col-center l-relaxed">
+    <span class="section-num">03</span>
+    <p class="txt-heading-1" style="margin-top:var(--s3)">IMPACTs 双碳管理解决方案</p>
+  </div>
+</section>
+
+<!-- ═══════════════ S12: 一句话定位 ═══════════════ -->
+<section class="slide" data-i="11">
+  <div class="in col-center l-relaxed">
+    <p class="txt-caption" style="margin-bottom:var(--s3)">IMPACTs 双碳智能管理系统</p>
+    <h2 class="txt-display-2" style="text-align:center; max-width:700px; line-height:1.3; margin-bottom:var(--s4)">
+      <span class="accent">数据采集 → 智能核算</span><br>→ 清册报告 → 碳资产管理
+    </h2>
+    <p class="txt-body-2" style="text-align:center; max-width:600px">
+      物联网实时监测 + AI 智能算法，覆盖范围 1-3 全流程的一站式双碳管理平台
+    </p>
+    <div class="divider-line" style="margin-top:var(--s4)"></div>
+    <p class="txt-caption" style="margin-top:var(--s2)">
+      ISO 14064 · GHG Protocol · 用友 ISV 生态认证
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════ S13: 章节分隔 — 核心功能 ═══════════════ -->
+<section class="slide slide--divider" data-i="12">
+  <div class="in col-center l-relaxed">
+    <span class="section-num">03</span>
+    <p class="txt-heading-1" style="margin-top:var(--s3)">核心功能</p>
+    <p class="txt-caption" style="margin-top:var(--s2)">从数据到报告，全链路闭环</p>
+  </div>
+</section>
+
+<!-- ═══════════════ S14-S22: 核心功能逐一展示 ═══════════════ -->
+<!-- S14: 多源数据采集 -->
+<section class="slide" data-i="13">
+  <div class="in col-left l-standard" style="max-width:680px">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">01 · 多源数据采集</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s3)">打通数据孤岛</h2>
+    <p class="txt-body-1" style="margin-bottom:var(--s4)">
+      支持 ERP、MES、能源管理系统等多数据源的自动数据采集，减少人工录入的误差，让数据自动流动
+    </p>
+    <div class="txt-body-2" style="display:flex; gap:var(--s3); flex-wrap:wrap">
+      <span class="tag tag--teal">ERP</span>
+      <span class="tag tag--teal">MES</span>
+      <span class="tag tag--teal">SCM</span>
+      <span class="tag tag--teal">API 对接</span>
+      <span class="tag tag--teal">手动录入</span>
+      <span class="tag tag--teal">Excel 导入</span>
+    </div>
+  </div>
+</section>
+
+<!-- S15: 数据标准化 -->
+<section class="slide" data-i="14">
+  <div class="in col-left l-standard" style="max-width:680px">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">02 · 数据标准化处理</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s3)">统一语言，一致分析</h2>
+    <p class="txt-body-1" style="margin-bottom:var(--s4)">
+      系统自动完成格式转换、编码统一等标准化处理，确保不同来源的数据能够规范存储与分析
+    </p>
+    <div class="feat-grid" style="grid-template-columns:1fr 1fr; gap:var(--s2); padding:0">
+      <div class="feat-item">
+        <div class="label">格式转换</div>
+        <div class="desc">自动对齐不同来源的数据格式</div>
+      </div>
+      <div class="feat-item">
+        <div class="label">编码统一</div>
+        <div class="desc">跨系统编码映射，消除歧义</div>
+      </div>
+      <div class="feat-item">
+        <div class="label">完整性校验</div>
+        <div class="desc">实时检查缺失值、重复值</div>
+      </div>
+      <div class="feat-item">
+        <div class="label">快速适配</div>
+        <div class="desc">结构化和半结构化数据双支持</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S16: 动态因子库 -->
+<section class="slide" data-i="15">
+  <div class="in col-left l-standard" style="max-width:680px">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">03 · 动态因子库</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s3)">
+      <span class="accent">权威因子</span>，自动更新
+    </h2>
+    <p class="txt-body-1" style="margin-bottom:var(--s4)">
+      集成 IPCC 国际指南、PAS 2050、国家发改委行业核算指南及企业历史数据，实现排放因子版本化管理
+    </p>
+    <div class="feat-grid" style="grid-template-columns:1fr 1fr 1fr; gap:var(--s2); padding:0">
+      <div class="feat-item" style="text-align:center">
+        <div class="label">IPCC 国际指南</div>
+      </div>
+      <div class="feat-item" style="text-align:center">
+        <div class="label">PAS 2050</div>
+      </div>
+      <div class="feat-item" style="text-align:center">
+        <div class="label">国家发改委指南</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S17: 灵活参数配置 -->
+<section class="slide" data-i="16">
+  <div class="in col-left l-standard" style="max-width:680px">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">04 · 灵活参数配置</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s3)">贴合企业的核算模型</h2>
+    <p class="txt-body-1" style="margin-bottom:var(--s4)">
+      支持企业根据实际情况自定义核算参数——燃料碳排放因子、生产工艺系数——让核算结果更贴合实际排放情况
+    </p>
+  </div>
+</section>
+
+<!-- S18: 精准碳排放核算 -->
+<section class="slide" data-i="17">
+  <div class="in col-center l-loose">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">05 · 精准碳排放核算</p>
+    <h2 class="txt-display-2" style="text-align:center; max-width:700px; margin-bottom:var(--s5)">
+      自动合规核算，<br>多维度穿透分析
+    </h2>
+    <div class="feat-grid" style="grid-template-columns:repeat(3,1fr); max-width:800px">
+      <div class="in feat-item" style="animation-delay:0ms; text-align:center">
+        <div class="num" style="font-size:1.8rem">⚡</div>
+        <div class="label">自动计算</div>
+        <div class="desc">输入基础数据，自动输出准确碳排放量，符合规范</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:80ms; text-align:center">
+        <div class="num" style="font-size:1.8rem">📊</div>
+        <div class="label">时间维度</div>
+        <div class="desc">日 / 月 / 季度 / 年，追踪排放趋势变化</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:160ms; text-align:center">
+        <div class="num" style="font-size:1.8rem">🏭</div>
+        <div class="label">空间维度</div>
+        <div class="desc">厂区 / 车间 / 排放源，精准定位高排放环节</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S19: 智能化决策管理 -->
+<section class="slide" data-i="18">
+  <div class="in col-center l-relaxed">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">06 · 智能化决策管理</p>
+    <h2 class="txt-display-2" style="text-align:center; max-width:680px; margin-bottom:var(--s4)">
+      让数据<br><span class="accent">自己说话</span>
+    </h2>
+    <p class="txt-body-1" style="text-align:center; max-width:560px; margin-bottom:var(--s4)">
+      通过可视化图表与仪表盘，直观展示碳排放趋势、排放结构占比，管理者无需专业知识也能看懂
+    </p>
+    <div style="display:flex; gap:var(--s3);">
+      <div class="in" style="animation-delay:80ms">
+        <div class="card">
+          <div class="num" style="font-size:2.5rem">📈</div>
+          <div class="label" style="margin-top:var(--s1)">柱状图 / 折线图 / 饼图</div>
+        </div>
+      </div>
+      <div class="in" style="animation-delay:160ms">
+        <div class="card">
+          <div class="num" style="font-size:2.5rem">⚡</div>
+          <div class="label" style="margin-top:var(--s1)">AI 智能减排建议</div>
+        </div>
+      </div>
+      <div class="in" style="animation-delay:240ms">
+        <div class="card">
+          <div class="num" style="font-size:2.5rem">🎯</div>
+          <div class="label" style="margin-top:var(--s1)">实时碳排放监控</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S20: 一键导出 -->
+<section class="slide" data-i="19">
+  <div class="in col-center l-relaxed">
+    <p class="txt-heading-1" style="margin-bottom:var(--s2)">07 · 一键导出报告</p>
+    <h2 class="txt-display-2" style="text-align:center; margin-bottom:var(--s4)">
+      合规报告，<span class="accent">一键生成</span>
+    </h2>
+    <p class="txt-body-1" style="text-align:center; max-width:560px; margin-bottom:var(--s4)">
+      系统自动生成符合监管要求的碳盘查报告，涵盖企业基本信息、核算边界、排放源分析、碳排放量汇总等关键内容，支持 Word 格式导出
+    </p>
+    <div class="in">
+      <span class="tag tag--teal" style="font-size:0.9rem; padding:0.5em 1.2em">Word · PDF · Excel</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S21: 章节分隔 — 优势 ═══════════════ -->
+<section class="slide slide--divider" data-i="20">
+  <div class="in col-center l-relaxed">
+    <span class="section-num">03</span>
+    <p class="txt-heading-1" style="margin-top:var(--s3)">产品优势</p>
+  </div>
+</section>
+
+<!-- S22: 四大产品优势 -->
+<section class="slide" data-i="21">
+  <div class="in col-center l-loose">
+    <h2 class="txt-display-2" style="text-align:center; margin-bottom:var(--s5)">全方位优势</h2>
+    <div class="feat-grid" style="grid-template-columns:repeat(2,1fr); max-width:800px">
+      <div class="in feat-item" style="animation-delay:0ms">
+        <div class="num" style="font-size:1.4rem; color:var(--c-t2)">行业覆盖广</div>
+        <div class="label" style="margin-bottom:var(--s1)">多行业定制化模型</div>
+        <div class="desc">电力、钢铁、化工、制造、物流等大小行业全覆盖</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:80ms">
+        <div class="num" style="font-size:1.4rem; color:var(--c-t2)">数据穿透深</div>
+        <div class="label" style="margin-bottom:var(--s1)">Scope 1 · 2 · 3 全覆盖</div>
+        <div class="desc">支持直接排放、间接排放、供应链全层级核算</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:160ms">
+        <div class="num" style="font-size:1.4rem; color:var(--c-t2)">生态兼容性</div>
+        <div class="label" style="margin-bottom:var(--s1)">与用友 ISV 深度集成</div>
+        <div class="desc">ERP / APS / MES / SCM 无缝对接，数据自动流转</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:240ms">
+        <div class="num" style="font-size:1.4rem; color:var(--c-t2)">合规与认证保障</div>
+        <div class="label" style="margin-bottom:var(--s1)">12 项国际标准支持</div>
+        <div class="desc">ISO 14064-1/14067 双认证，支持欧盟 CSRD / 美国 SEC</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S23: 服务优势 -->
+<section class="slide" data-i="22">
+  <div class="in col-center l-relaxed">
+    <h2 class="txt-display-2" style="text-align:center; margin-bottom:var(--s5)">服务优势</h2>
+    <div class="feat-grid" style="grid-template-columns:repeat(3,1fr); max-width:800px">
+      <div class="in feat-item" style="animation-delay:0ms; text-align:center">
+        <div class="label">专业团队</div>
+        <div class="desc">丰富的行业经验和专业知识，提供高质量个性化服务</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:80ms; text-align:center">
+        <div class="label">一站式服务</div>
+        <div class="desc">从数据收集到报告认证，全流程闭环，节省时间和精力</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:160ms; text-align:center">
+        <div class="label">定制化方案</div>
+        <div class="desc">根据企业规模、行业特点量身定制，确保方案针对性</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:240ms; text-align:center">
+        <div class="label">持续更新</div>
+        <div class="desc">紧跟政策和标准变化，持续提供技术支持和工具更新</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:320ms; text-align:center">
+        <div class="label">数据安全</div>
+        <div class="desc">先进加密技术和严格管理流程，确保碳排放数据安全</div>
+      </div>
+      <div class="in feat-item" style="animation-delay:400ms; text-align:center">
+        <div class="label">用友生态集成</div>
+        <div class="desc">深度对接用友 ERP/APS/MES/SCM，数据自动流转，减少人工录入</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S24: 章节分隔 — 案例 ═══════════════ -->
+<section class="slide slide--divider" data-i="23">
+  <div class="in col-center l-relaxed">
+    <span class="section-num">04</span>
+    <p class="txt-heading-1" style="margin-top:var(--s3)">IMPACTs 双碳管理客户案例</p>
+  </div>
+</section>
+
+<!-- S25: 案例 — 金属制品 -->
+<section class="slide" data-i="24">
+  <div class="in col-left l-standard" style="max-width:720px">
+    <p class="txt-caption" style="margin-bottom:var(--s2)">客户案例 · 某金属制品有限公司</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s5)">
+      <span class="accent">沃尔沃绿色供应商</span><br>并通过 CBAM 首年核查
+    </h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--s3)">
+      <div class="in" style="animation-delay:80ms">
+        <div class="stat-num">8986</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">吨 CO₂ 年减排量</div>
+      </div>
+      <div class="in" style="animation-delay:160ms">
+        <div class="stat-num">✅</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">通过欧盟 CBAM 首年核查</div>
+      </div>
+      <div class="in" style="animation-delay:240ms">
+        <div class="stat-num">🏆</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">沃尔沃"绿色供应商"认证</div>
+      </div>
+      <div class="in" style="animation-delay:320ms">
+        <div class="stat-num">🚗</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">入围新能源车企核心供应商</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S26: 案例 — 胶膜 -->
+<section class="slide" data-i="25">
+  <div class="in col-left l-standard" style="max-width:720px">
+    <p class="txt-caption" style="margin-bottom:var(--s2)">客户案例 · 某胶膜有限公司</p>
+    <h2 class="txt-display-2" style="margin-bottom:var(--s5)">
+      行业内首张<span class="accent">碳足迹认证</span><br>绿色订单溢价 20%
+    </h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--s3)">
+      <div class="in" style="animation-delay:80ms">
+        <div class="stat-num">+20%</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">绿色订单溢价</div>
+      </div>
+      <div class="in" style="animation-delay:160ms">
+        <div class="stat-num">🏭</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">省级"智能工厂"示范项目</div>
+      </div>
+      <div class="in" style="animation-delay:240ms">
+        <div class="stat-num">2.5年</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">预计收回改造成本</div>
+      </div>
+      <div class="in" style="animation-delay:320ms">
+        <div class="stat-num">🏅</div>
+        <div class="txt-body-2" style="margin-top:var(--s1)">行业首个碳足迹认证胶膜企业</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S27: 合作伙伴 -->
+<section class="slide" data-i="26">
+  <div class="in col-center l-loose">
+    <p class="txt-heading-1" style="margin-bottom:var(--s3)">合作与认可</p>
+    <h2 class="txt-display-2" style="text-align:center; margin-bottom:var(--s4)">用友 ISV 生态合作伙伴</h2>
+    <p class="txt-body-2" style="text-align:center; max-width:480px; margin-bottom:var(--s5)">
+      作为用友 ISV 生态认证产品，IMPACTs 深度对接用友 BIP 平台核心系统
+    </p>
+    <div style="display:flex; gap:var(--s4); flex-wrap:wrap; justify-content:center;">
+      <div class="in" style="animation-delay:0ms"><span class="tag tag--violet">用友 ERP</span></div>
+      <div class="in" style="animation-delay:80ms"><span class="tag tag--violet">用友 APS</span></div>
+      <div class="in" style="animation-delay:160ms"><span class="tag tag--violet">用友 MES</span></div>
+      <div class="in" style="animation-delay:240ms"><span class="tag tag--violet">用友 SCM</span></div>
+      <div class="in" style="animation-delay:320ms"><span class="tag tag--violet">用友 BIP</span></div>
+      <div class="in" style="animation-delay:400ms"><span class="tag tag--violet">ISO 14064</span></div>
+      <div class="in" style="animation-delay:480ms"><span class="tag tag--violet">GHG Protocol</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S28: Thank you -->
+<section class="slide" data-i="27">
+  <div class="in col-center l-relaxed">
+    <span class="tag tag--violet" style="margin-bottom:var(--s3)">2026</span>
+    <h2 class="txt-display-1" style="text-align:center">
+      感谢<span class="accent">聆听</span>
+    </h2>
+    <div class="divider-line"></div>
+    <p class="txt-body-2" style="text-align:center; max-width:480px; margin-top:var(--s3)">
+      大连润思科技 · 制造行业及智能制造解决方案商<br>助力企业实现双碳目标
+    </p>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <button id="prevBtn" aria-label="上一頁">←</button>
+  <span class="page" id="pageNum">1 / 28</span>
+  <button id="nextBtn" aria-label="下一頁">→</button>
+</nav>
+
+<!-- Slide counter -->
+<div class="slide-num" id="slideNum"></div>
+
+<script>
+/* ══════════════════════════════════
+   Navigation Engine
+   ══════════════════════════════════ */
+const deck     = document.getElementById('deck');
+const slides   = [...deck.querySelectorAll('.slide')];
+const prevBtn  = document.getElementById('prevBtn');
+const nextBtn  = document.getElementById('nextBtn');
+const pageNum  = document.getElementById('pageNum');
+const slideNum = document.getElementById('slideNum');
+const progBar  = document.getElementById('progBar');
+let cur = 0;
+
+function go(n) {
+  if (n < 0 || n >= slides.length) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('prev');
+  cur = n;
+  slides[cur].classList.remove('prev');
+  slides[cur].classList.add('active');
+  upd();
+}
+function upd() {
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === slides.length - 1;
+  pageNum.textContent  = `${cur + 1} / ${slides.length}`;
+  slideNum.textContent = `${String(cur + 1).padStart(2, '0')}`;
+  progBar.style.width   = `${((cur + 1) / slides.length) * 100}%`;
+}
+prevBtn.addEventListener('click', () => go(cur - 1));
+nextBtn.addEventListener('click', () => go(cur + 1));
+
+/* Keyboard */
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(cur + 1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                       { e.preventDefault(); go(cur - 1); }
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End')  go(slides.length - 1);
+  if (e.key === 'f' || e.key === 'F') toggleFs();
+});
+
+/* Wheel — debounce */
+let wheeling = false;
+deck.addEventListener('wheel', e => {
+  e.preventDefault();
+  if (wheeling) return;
+  wheeling = true;
+  if (e.deltaY > 30)  go(cur + 1);
+  else if (e.deltaY < -30) go(cur - 1);
+  setTimeout(() => wheeling = false, 450);
+}, { passive: false });
+
+/* Touch */
+let touchY = 0;
+deck.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+deck.addEventListener('touchend',   e => {
+  const d = touchY - e.changedTouches[0].clientY;
+  if (Math.abs(d) > 50) go(d > 0 ? cur + 1 : cur - 1);
+}, { passive: true });
+
+/* Fullscreen */
+function toggleFs() {
+  if (!document.fullscreenElement) deck.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+upd();
+</script>
+</body>
+</html>
