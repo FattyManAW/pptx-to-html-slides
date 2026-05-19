@@ -18,7 +18,7 @@ def build_css(tokens):
     if len(stagger) > 5:
         stagger_css += '.slide.active [data-stagger]{transition-delay:0ms}\n'
 
-    spring_css = '@keyframes springIn {\n  0%   { opacity:0; transform:translateY(12px) scale(.97); }\n  60%  { opacity:1; transform:translateY(-2px) scale(1.01); }\n  80%  { transform:translateY(1px) scale(.995); }\n  100% { opacity:1; transform:translateY(0) scale(1); }\n}'
+    spring_css = '@keyframes springIn {\n  0%   { opacity:0; transform:translateY(12px) scale(.97); }\n  60%  { opacity:1; transform:translateY(-2px) scale(1.01); }\n  80%  { transform:translateY(1px) scale(.995); }\n  100% { opacity:1; transform:translateY(0) scale(1); }\n}\n@keyframes slideUp {\n  0%   { opacity:0; transform:translateY(24px); }\n  100% { opacity:1; transform:translateY(0); }\n}\n@keyframes slideFromRight {\n  0%   { opacity:0; transform:translateX(40px); }\n  100% { opacity:1; transform:translateX(0); }\n}\n@keyframes slideExit {\n  0%   { opacity:1; transform:translateY(0); }\n  100% { opacity:0; transform:translateY(-16px); }\n}\n@keyframes shimmer {\n  0%,100% { background-position:0% 50%; }\n  50%     { background-position:100% 50%; }\n}'
 
     bp = l.get('breakpoints', {})
     tablet = bp.get('tablet', 1024)
@@ -86,11 +86,13 @@ def build_css(tokens):
   --s4: {l.get('s4','2rem')};   --s5: {l.get('s5','2.5rem')}; --s6: {l.get('s6','3rem')};
   --s7: {l.get('s7','4rem')};   --s8: {l.get('s8','5rem')};  --s9: {l.get('s9','6rem')};
   --s10: {l.get('s10','8rem')};
+  --display: {families.get('display','serif')};
+  --heading: {families.get('heading','serif')};
 }}
 
 /*================================= [01] RESET ==================================*/
 *,*::before,*::after{{margin:0;padding:0;box-sizing:border-box}}
-html,body{{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}}
+html,body{{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;touch-action:pan-y}}
 body{{font-family:{families.get('body','sans-serif')};background:var(--c-bg);color:var(--c-t2);line-height:1.65}}
 
 /*=============================== [02] SLIDE ENGINE ===============================*/
@@ -138,7 +140,6 @@ body{{font-family:{families.get('body','sans-serif')};background:var(--c-bg);col
 .item-card{{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;transition:all var(--t-fast)}}
 .item-card:hover{{filter:brightness(1.05);background:var(--c-surface2);border-color:var(--c-teal-dim)}}
 .item-card:active{{transform:scale(.97);filter:brightness(.95);transition-duration:50ms}}
-.item-card:active{{transform:scale(.97);filter:brightness(.95);transition-duration:50ms}}
 
 /*=================================== [08] TWO-COL ===================================*/
 .two-col{{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;width:100%}}
@@ -156,7 +157,7 @@ body{{font-family:{families.get('body','sans-serif')};background:var(--c-bg);col
 /*==================================== [11] COVER =====================================*/
 .cover{{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden}}
 .cover-bg{{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(99,102,241,.12),transparent 70%)}}
-.cover-title{{font-family:{families.get('display','serif')};font-size:clamp(2rem,5.5vw,4rem);font-weight:900;color:var(--c-t1);text-align:center;line-height:1.1;position:relative;z-index:1}}
+.cover-title{{font-family:{families.get('display','serif')};font-size:clamp(2rem,5.5vw,4rem);font-weight:900;color:var(--c-t1);text-align:center;line-height:1.1;position:relative;z-index:1;background:linear-gradient(135deg,var(--c-t1) 0%,var(--c-teal) 50%,var(--c-t1) 100%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s ease-in-out infinite}}
 .cover-title em{{font-style:normal;background:linear-gradient(135deg,var(--c-teal),var(--c-teal-hot));-webkit-background-clip:text;-webkit-text-fill-color:transparent}}
 .cover-sub{{font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--c-t3);margin-top:1.2rem;text-align:center;max-width:600px;position:relative;z-index:1;font-weight:300}}
 .cover-meta{{margin-top:2.5rem;display:flex;gap:2rem;position:relative;z-index:1}}
@@ -259,6 +260,7 @@ def render_slides(spec, tokens, img_dir='html/images'):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 {font_tag}
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
 {css}
 </style>
@@ -270,6 +272,7 @@ def render_slides(spec, tokens, img_dir='html/images'):
 <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
 <nav class="nav-bar">
   {nav_buttons}
+  <span id="cnt" style="position:fixed;top:.8rem;right:1rem;font-size:.65rem;color:var(--c-t4);font-weight:500;z-index:301"></span>
   <button class="fs-btn" id="fsBtn" title="Fullscreen">⛶</button>
 </nav>
 <script>
@@ -285,13 +288,11 @@ def render_slides(spec, tokens, img_dir='html/images'):
 
   function go(n){{
     if(n<0||n>=total)return;
-    slides[current].classList.remove('active');
-    if(current>n)slides[current].classList.add('prev');
+    const prev=slides[current];prev.classList.remove('active');prev.classList.add('prev');
     current=n;
-    slides[current].classList.add('active');
-    slides[current].classList.remove('prev');
+    slides[current].classList.add('active');slides[current].classList.remove('prev');
     bar.style.width=((current+1)/total*100)+'%';
-    cur.textContent=current+1;
+    cur.textContent=current+1;document.getElementById('cnt').textContent=current+1+'/'+total;
     prevBtn.disabled=current===0;
     nextBtn.disabled=current===total-1;
   }}
