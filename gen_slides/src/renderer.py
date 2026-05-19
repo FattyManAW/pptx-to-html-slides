@@ -54,6 +54,10 @@ def build_css(tokens):
   --ink-950: {c.get('ink950','#06080d')};
   --accent:  {c.get('accent','#6366f1')};
   --accent-mid: {c.get('accentMid','#818cf8')};
+  --c-t1: {c.get('ink50','#f8fafc')};
+  --c-t2: {c.get('ink100','#f1f5f9')};
+  --c-t3: {c.get('ink200','#e2e8f0')};
+  --c-t4: {c.get('ink400','#94a3b8')};
   --surface: {c.get('surface','rgba(255,255,255,.03)')};
   --surface-h: {c.get('surfaceH','rgba(255,255,255,.06)')};
   --border:  {c.get('border','rgba(255,255,255,.06)')};
@@ -61,7 +65,8 @@ def build_css(tokens):
   --blur:    {l.get('glassBlur','blur(24px)')};
   --shadow:  {l.get('shadow','0 8px 40px rgba(0,0,0,.35)')};
   --t-fast:  {ti.get('fast','200ms')};
-  --t-base:  {ti.get('base','350ms')};
+  --t-mid:   {ti.get('mid','350ms')};
+  --t-slow:  {ti.get('slow','550ms')};
 }}
 
 /* Reset */

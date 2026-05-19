@@ -1,5 +1,5 @@
 {
-  "name": "润思IMPACTS v3 Design System",
+  "name": "润思IMPACTS v3 Design System — Christina Canonical",
   "colors": {
     "ink50": "#f8fafc", "ink100": "#f1f5f9", "ink200": "#e2e8f0",
     "ink300": "#cbd5e1", "ink400": "#94a3b8", "ink500": "#64748b",
@@ -8,7 +8,7 @@
     "accent": "#6366f1", "accentMid": "#818cf8",
     "surface": "rgba(255,255,255,.03)", "surfaceH": "rgba(255,255,255,.06)",
     "border": "rgba(255,255,255,.06)", "borderA": "rgba(99,102,241,.2)",
-    "green": "#f87171", "greenOk": "#4ade80"
+    "c-t1": "#f8fafc", "c-t2": "#f1f5f9", "c-t3": "#e2e8f0", "c-t4": "#94a3b8"
   },
   "typography": {
     "display":  {"family": "'Playfair Display',serif",    "weights": "700;800;900", "use": "cover-title,section-title"},
@@ -17,10 +17,15 @@
     "mono":     {"family": "monospace", "weights": "400;500", "use": "code"}
   },
   "timing": {
+    "fast": "200ms", "mid": "350ms", "slow": "550ms",
     "stagger": [0, 80, 160, 240, 320],
-    "duration": "350ms",
     "ease": "ease-out",
     "wheelDebounce": 120
+  },
+  "spacing": {
+    "s1": "4px", "s2": "8px", "s3": "12px", "s4": "16px",
+    "s5": "24px", "s6": "32px", "s7": "48px", "s8": "64px",
+    "s9": "96px", "s10": "128px"
   },
   "layout": {
     "maxWidth": "1100px",
