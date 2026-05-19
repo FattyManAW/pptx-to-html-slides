@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>润思 IMPACTS APS 生态伙伴解决方案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={"theme":{"extend":{"fontFamily":{"sans":['"Noto Sans SC"',"sans-serif"],"serif":['"Noto Serif SC"","serif"]},"colors":{"primary":{"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a"},"dark":{"900":"#0f172a","800":"#1e293b","700":"#334155"},"accent":{"DEFAULT":"#f59e0b","light":"#fbbf24"}}}}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Noto Sans SC',sans-serif;background:#0a0a0f;color:#e2e8f0}
+.slides-container{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.5s ease,transform 0.5s ease;transform:translateX(40px);padding:2rem}
+.slide.active{opacity:1;visibility:visible;transform:translateX(0);z-index:10}
+.slide.prev{transform:translateX(-40px)}
+/* Cover */
+.slide-cover{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cover-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(59,130,246,0.15) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(245,158,11,0.1) 0%,transparent 50%),linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%)}
+.cover-bg::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.cover-content{position:relative;text-align:center;max-width:900px;padding:3rem}
+.cover-badge{display:inline-block;padding:0.4rem 1.5rem;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;font-size:0.85rem;font-weight:600;letter-spacing:0.15em;border-radius:9999px;margin-bottom:2rem;box-shadow:0 4px 20px rgba(59,130,246,0.4)}
+.cover-title{font-family:'Noto Serif SC',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.2;margin-bottom:1.5rem;background:linear-gradient(135deg,#f8fafc,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cover-subtitle{font-size:clamp(1rem,2vw,1.35rem);color:#94a3b8;font-weight:300;letter-spacing:0.05em}
+.cover-line{width:80px;height:3px;background:linear-gradient(90deg,#3b82f6,#f59e0b);margin:2rem auto 0;border-radius:2px}
+/* TOC */
+.toc-slide{width:100%;max-width:1100px}
+.toc-header{margin-bottom:3rem}
+.toc-tag{font-size:0.75rem;font-weight:700;letter-spacing:0.2em;color:#3b82f6;text-transform:uppercase}
+.toc-title{font-family:'Noto Serif SC',serif;font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;margin-top:0.5rem;color:#f1f5f9}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.toc-item{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;background:rgba(30,41,59,0.5);border:1px solid rgba(59,130,246,0.15);border-radius:12px;transition:all 0.2s}
+.toc-item:hover{background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.4);transform:translateY(-2px)}
+.toc-num{font-size:1.5rem;font-weight:900;color:#3b82f6;min-width:2rem}
+.toc-label{font-size:1rem;font-weight:500;color:#cbd5e1}
+/* Slide inner */
+.slide-inner{width:100%;max-width:1200px;padding:2rem}
+.text-slide .slide-title,.mixed-slide .slide-title,.slide-inner:not(.toc-slide):not(.thanks-slide) h2.slide-title{font-family:'Noto Serif SC',serif;font-size:clamp(1.3rem,3vw,2rem);font-weight:700;color:#f1f5f9;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:2px solid rgba(59,130,246,0.3)}
+.section-heading{font-size:clamp(0.95rem,1.6vw,1.15rem);font-weight:700;color:#60a5fa;margin:1rem 0 0.4rem}
+.section-list{list-style:none;padding:0;margin:0}
+.section-list li{position:relative;padding:0.35rem 0 0.35rem 1.5rem;font-size:clamp(0.78rem,1.3vw,0.92rem);color:#cbd5e1;line-height:1.6}
+.section-list li::before{content:'';position:absolute;left:0;top:0.85rem;width:6px;height:6px;background:#3b82f6;border-radius:50%;opacity:0.6}
+.section-list li+li{border-top:1px solid rgba(255,255,255,0.04)}
+.section-text{font-size:clamp(0.8rem,1.3vw,0.95rem);color:#cbd5e1;line-height:1.7;padding:0.3rem 0}
+/* Content images */
+.content-img{width:100%;max-height:40vh;object-fit:contain;border-radius:8px;border:1px solid rgba(255,255,255,0.08)}
+.img-grid-2,.img-grid-3,.img-grid-many{display:grid;gap:0.5rem}
+.img-grid-2{grid-template-columns:1fr 1fr}.img-grid-3{grid-template-columns:1fr 1fr 1fr}.img-grid-many{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.content-img-grid{width:100%;max-height:22vh;object-fit:contain;border-radius:6px;border:1px solid rgba(255,255,255,0.06)}
+/* Two col layout */
+.two-col-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+.col-challenge .section-block{background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.12);border-radius:10px;padding:0.8rem;margin-bottom:0.6rem}
+.col-challenge .section-block h4{color:#f87171;font-size:0.85rem;font-weight:700;margin-bottom:0.4rem}
+.col-benefit .section-block{background:rgba(34,197,94,0.04);border:1px solid rgba(34,197,94,0.12);border-radius:10px;padding:0.8rem;margin-bottom:0.6rem}
+.col-benefit .section-block h4{color:#4ade80;font-size:0.85rem;font-weight:700;margin-bottom:0.4rem}
+.col-challenge .section-block ul,.col-benefit .section-block ul{list-style:none;padding:0;margin:0}
+.col-challenge .section-block li,.col-benefit .section-block li{font-size:clamp(0.68rem,1.1vw,0.82rem);color:#cbd5e1;padding:0.15rem 0 0.15rem 1rem;position:relative;line-height:1.45}
+.col-challenge .section-block li::before{content:'▸';position:absolute;left:0;color:#f87171;font-size:0.65rem;top:0.2rem}
+.col-benefit .section-block li::before{content:'✓';position:absolute;left:0;color:#4ade80;font-size:0.65rem;top:0.1rem}
+.slide-image-row{margin-top:1rem}
+/* Image only */
+.image-only{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:1rem}
+.slide-full-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+/* Thanks */
+.thanks-slide{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.thanks-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(59,130,246,0.1) 0%,transparent 60%),linear-gradient(135deg,#0f172a 0%,#1e293b 100%)}
+.thanks-title{position:relative;font-family:'Noto Serif SC',serif;font-size:clamp(2.5rem,6vw,4rem);font-weight:900;background:linear-gradient(135deg,#3b82f6,#60a5fa,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem}
+.thanks-sub{position:relative;font-size:1.2rem;color:#64748b;letter-spacing:0.1em}
+/* Nav */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:1rem 2rem;background:linear-gradient(transparent,rgba(15,23,42,0.95));backdrop-filter:blur(10px)}
+.nav-btn{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(30,41,59,0.6);color:#94a3b8;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:1.2rem}
+.nav-btn:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+.nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+.nav-counter{font-size:0.85rem;color:#64748b;font-variant-numeric:tabular-nums;min-width:80px;text-align:center}
+.nav-counter .current{color:#f1f5f9;font-weight:600}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#3b82f6,#f59e0b);transition:width 0.3s ease;z-index:100}
+.keyboard-hint{position:fixed;bottom:5rem;right:1.5rem;font-size:0.7rem;color:rgba(100,116,139,0.5);z-index:50}
+/* Responsive */
+@media(max-width:768px){.slide{padding:1rem}.slide-inner{padding:1rem}.two-col-layout{grid-template-columns:1fr;gap:1rem}.toc-grid{grid-template-columns:1fr 1fr}.nav-bar{gap:0.75rem;padding:0.75rem 1rem}}
+@media(max-width:480px){.toc-grid{grid-template-columns:1fr}.img-grid-2,.img-grid-3{grid-template-columns:1fr}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.3);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="slides-container" id="slidesContainer">
+
+<section class="slide active" data-i="0">
+  <div class="slide-cover">
+    <div class="cover-bg"></div>
+    <div class="cover-content">
+      <div class="cover-badge">IMPACTS APS</div>
+      <h1 class="cover-title">IPMACTs APS智能先进排程系统</h1>
+      <p class="cover-subtitle">大连润思科技制造行业及智能制造解决方案商</p>
+      <div class="cover-line"></div>
+    </div>
+  </div>
+</section>
+<section class="slide" data-i="1">
+  <div class="slide-inner toc-slide">
+    <div class="toc-header">
+      <span class="toc-tag">CONTENTS</span>
+      <h2 class="toc-title">目标客户</h2>
+    </div>
+    <div class="toc-grid">
+            <div class="toc-item">
+              <span class="toc-num">1</span>
+              <span class="toc-label">1</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">应用场景</span>
+              <span class="toc-label">应用场景</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">2</span>
+              <span class="toc-label">2</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">APS智慧排程解决方案</span>
+              <span class="toc-label">APS智慧排程解决方案</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">3</span>
+              <span class="toc-label">3</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">APS</span>
+              <span class="toc-label"> AI Agent解决方案</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">4</span>
+              <span class="toc-label">4</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">成功案例</span>
+              <span class="toc-label">成功案例</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-num">5</span>
+              <span class="toc-label">5</span>
+            </div></div>
+  </div>
+</section>
+<section class="slide" data-i="2">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">目标客户</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide3_0.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="3">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">目标客户及需求关键字</h2>
+    <div class="content-body"><h3 class="section-heading">主要细分行业</h3><h3 class="section-heading">整车制造、汽车零部件生产</h3><h3 class="section-heading">半导体、电子元器件生产</h3><h3 class="section-heading">工业设备、农业机械、建筑机械、机床机械设备制造</h3><h3 class="section-heading">化妆品、涂料、新材料制造。</h3><h3 class="section-heading">食品饮料制造</h3><h3 class="section-heading">医药制造</h3><h3 class="section-heading">客户诉求描述关键字</h3><h3 class="section-heading">敏捷生产计划</h3><h3 class="section-heading">工序级设备管理</h3><h3 class="section-heading">生产效率提升</h3><h3 class="section-heading">生产过程可视化</h3><h3 class="section-heading">实时监控</h3><h3 class="section-heading">物料跟踪与追溯</h3><h3 class="section-heading">供应链优化</h3><h3 class="section-heading">库存管理</h3><h3 class="section-heading">交货期承诺</h3><h3 class="section-heading">智能制造</h3><h3 class="section-heading">成本控制</h3><h3 class="section-heading">自动化流程</h3><h3 class="section-heading">数据分析与决策支持</h3><h3 class="section-heading">设备维护管理</h3><h3 class="section-heading">多品种小批量生产</h3><h3 class="section-heading">大规模定制化生产</h3><h3 class="section-heading">订单排程</h3><h3 class="section-heading">供应链协同</h3><h3 class="section-heading">约束管理</h3><h3 class="section-heading">产能规划</h3><h3 class="section-heading">纺织服装制造</h3><h3 class="section-heading">金属制品制造</h3><h3 class="section-heading">家具制造</h3><h3 class="section-heading">纸制品制造</h3><h3 class="section-heading">智能算法</h3><h3 class="section-heading">实时数据处理</h3><h3 class="section-heading">多约束条件优化</h3><h3 class="section-heading">动态调整</h3><h3 class="section-heading">集成ERP/MES系统</h3><h3 class="section-heading">云计算与SaaS模式</h3><h3 class="section-heading">大数据分析</h3><h3 class="section-heading">可视化排程界面</h3><h3 class="section-heading">生产计划优化</h3><h3 class="section-heading">资源调度</h3></div>
+    <div class="slide-image-row"><img src="images/slide4_1.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="4">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">主要适用于离散型制造行业</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide5_2.jpg" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="5">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">应用场景</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide6_3.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="6">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">制造行业企业面临的挑战与效益目标-PCB行业</h2>
+    <div class="text-content"><h3 class="section-heading">产品设计与制造的复杂性</h3><p class="section-text">PCB 设计需要多层次的精密工艺（如高密度互连、高频高速应用），工艺要求高且生产难度大。</p><h3 class="section-heading">设计变更频繁，导致生产计划调整困难。</h3><h3 class="section-heading">成本压力与竞争激烈</h3><ul class="section-list"><li>原材料价格波动（如铜箔、玻纤）增加了成本控制难度。</li><li>全球 PCB 业竞争激烈，中小型企业面临降价竞争的压力。</li></ul><h3 class="section-heading">生产效率与资源利用率不足</h3><p class="section-text">生产瓶颈环节（如钻孔、蚀刻）限制产能发挥，影响交期。</p><h3 class="section-heading">设备使用效率不高，停机时间与生产切换损失增加。</h3><h3 class="section-heading">质量管理难度大</h3><p class="section-text">缺乏数据化的追溯系统，无法快速定位问题根源，导致返工与报废成本增加。</p><h3 class="section-heading">供应链与物流协调困难</h3><ul class="section-list"><li>全球供应链的波动性（如疫情、地缘政治）使得材料供应不稳定，导致生产中断风险增加。</li><li>PCB 生产涉及多阶段工艺流程，供应链与生产计划的协同性不足。</li></ul><h3 class="section-heading">环保与合规压力</h3><ul class="section-list"><li>PCB 生产过程中涉及大量废水、废气及化学物质排放，需满足越来越严格的环保法规要求。</li><li>客户对碳排放数据的透明性要求提升，企业需建立完善的碳管理系统。</li></ul><h3 class="section-heading">提升生产效率与降低成本</h3><ul class="section-list"><li>优化排程： APS 系统可根据订单优先级、资源可用性等动态优化生产计划，减少生产瓶颈与停机时间。</li><li>缩短交期： 精准规划生产路径与资源分配，缩短OTD时间。</li></ul><h3 class="section-heading">降低成本： 减少库存积压与过多生产。</h3><h3 class="section-heading">强化供应链协同</h3><ul class="section-list"><li>供应链计划同步： APS 系统整合上下游供应链数据，实现需求计划、物料计划与生产计划的同步更新。</li><li>提升准确性： 实现生产与物流的协同，降低延误风险。</li></ul><h3 class="section-heading">提高产品质量</h3><p class="section-text">支持追溯机制： 记录生产全流程数据，快速定位问题根源，提高质量管理效率。</p><h3 class="section-heading">增强市场回应能力</h3><p class="section-text">实时应对需求变化： APS 系统支持快速调整排程以应对市场需求波动与客户订单变更。</p><h3 class="section-heading">动态配置资源，支持少量多样化产品生产。</h3><h3 class="section-heading">助力智慧工厂建设</h3><ul class="section-list"><li>数据实时共享： APS 系统与 IoT、MES、ERP 系统联动，实现生产过程透明化。</li><li>预测性分析： 结合 AI 技术进行生产预测，提高生产决策效率。</li></ul><h3 class="section-heading">促进 ESG 与绿色制造</h3><ul class="section-list"><li>能源优化： 优化排程计划，减少设备运行能源浪费与碳排放。</li><li>资源节约： APS 系统能准确预测物料需求，减少材料浪费，提升资源使用率。</li></ul></div>
+  </div>
+</section>
+<section class="slide" data-i="7">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">制造行业企业面临的挑战与效益目标- (金属加工业)</h2>
+    <div class="text-content"><h3 class="section-heading">生产效率低下</h3><ul class="section-list"><li>传统设备与工艺流程依赖人工操作，难以实现生产自动化与效率优化。</li><li>产品迭代频繁，批量小、订单多样化，生产排程复杂，容易导致交期延误。</li></ul><h3 class="section-heading">生产数据管理不足</h3><ul class="section-list"><li>现场生产资料未能实时收集与分析，无法快速识别问题并进行调整。</li><li>缺乏数据支持的决策过程，导致资源利用率低下、生产过剩或不足。</li></ul><h3 class="section-heading">质量控制困难</h3><p class="section-text">产品零件精度要求高，但缺乏实时检测与追溯机制，可能导致不良品率提升。</p><h3 class="section-heading">质量检测依赖经验与人工检测，效率低且错漏风险高。</h3><h3 class="section-heading">供应链韧性不足</h3><h3 class="section-heading">原材料价格波动与供应链中断会直接影响生产稳定性。</h3><h3 class="section-heading">库存管理与需求预测不准确，造成库存过多或短缺。</h3><h3 class="section-heading">能源与碳排放压力</h3><h3 class="section-heading">生产过程能源消耗大，设备效率低，能源成本高昂。</h3><ul class="section-list"><li>面对严格的碳排放政策，缺乏清晰的排放资料与减碳规划。</li><li>提高生产效率和灵活性   APS系统能够实时调整生产排程，快速响应市场变化和客户需求，减少生产延迟，提高生产效率。这对于要求高度定制化的金属加工制造业尤为重要。</li><li>优化资源利用    通过先进的算法，APS系统能够更有效地分配机器、原材料和人力资源，从而最大化生产能力，减少资源浪费。</li><li>减少库存和提高资金周转率    APS系统说明企业实现更准确的需求预测和生产计划，从而减少过剩库存和相关成本，改善企业的资金周转。</li><li>提升产品质量和客户满意度    透过更加精准和灵活的生产排程，能够保证产品质量和交货期，进而提升客户满意度和忠诚度。</li><li>支持数字化转型和智能制造    APS系统是实现数字化工厂和智能制造的关键技术之一，它能够整合企业信息系统（如ERP、MES等），提供数据驱动的决策支持，促进生产自动化和信息流的透明化。</li><li>提高应对紧急事件的能力    在面对突发事件（如供应链中断、机器故障等）时，APS系统能够迅速重新规划生产排程，最小化对生产的影响。</li><li>促进持续改进和创新      APS系统提供的详细数据分析和报告功能，能够帮助企业识别生产过程中的效率瓶颈和改进机会，推动持续改进和创新。</li></ul></div>
+  </div>
+</section>
+<section class="slide" data-i="8">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">制造行业企业面临的挑战与效益目标- (离散型制造业)</h2>
+    <div class="text-content"><h3 class="section-heading">生产方面的痛点</h3><ul class="section-list"><li>生产排程复杂：多样化、小批量、定制化的生产需求导致排程困难，经常出现交期延误。</li><li>生产效率低：机台利用率不足、换线频繁，导致生产效率不佳。</li><li>质量管理难度高：质量检测依赖人工，容易因人为疏失导致不良率提升。</li><li>设备维护滞后：设备老化或维护计划不足，常因突发故障影响生产进度。</li><li>能源与成本压力：能源成本上升，缺乏精准的能源与材料耗用管理。</li></ul><h3 class="section-heading">管理方面的痛点</h3><ul class="section-list"><li>供应链透明度不足：零件与原物料来自多国供货商，物流与库存状态不透明，增加管理难度。</li><li>数据分散：生产、物流、质量等数据未整合，无法实现实时监控与数据驱动决策。</li><li>人力资源压力：专业技术人力短缺，无法满足数字化需求。</li><li>跨国法规与客户需求：不同市场对质量标准、ESG合规要求差异大，增加管理负担。</li><li>风险管理不足：疫情、地缘政治、物流中断等外部风险导致供应链脆弱性。</li></ul><h3 class="section-heading">提升竞争优势</h3><h3 class="section-heading">降低生产成本</h3><h3 class="section-heading">精准排程减少资源浪费（如材料浪费与生产过剩）。</h3><h3 class="section-heading">优化设备利用率，降低设备闲置与换线时间。</h3><h3 class="section-heading">提高交货准时率</h3><p class="section-text">实现生产计划与供应链计划的无缝衔接，缩短订单交付周期。</p><h3 class="section-heading">提升供应链韧性，快速应对突发情况。</h3><p class="section-text">提升客户满意度：APS系统规划灵活生产与快速响应客户。</p><h3 class="section-heading">推动数字化与智慧化转型</h3><h3 class="section-heading">数据驱动决策</h3><p class="section-text">通过数据可视化，提供高层决策者生产与供应链的实时状态。</p><h3 class="section-heading">结合历史数据与AI分析，进行需求预测与生产优化。</h3><h3 class="section-heading">流程自动化与标准化</h3><p class="section-text">减少人工介入，降低人为错误，提升生产与管理的一致性。</p><h3 class="section-heading">建立标准化流程，为智能工厂的建设奠定基础。</h3><p class="section-text">能源与碳排管理：APS系统可结合能源管理，降低生产碳排放。</p><h3 class="section-heading">具体应用场景效益</h3><ul class="section-list"><li>需求驱动的生产排程：根据客户需求与订单优先级，动态调整生产计划，避免过度生产或缺货。</li><li>跨部门协同：销售、计划、物流等部门的数据共享，提升协作效率。</li><li>供应链优化：根据原材料供应与产能状态，调整生产排程。</li><li>设备与人力资源利用：通过排程优化，平衡设备运行负荷与人力资源分配，提升整体生产效率。</li><li>支持永续与韧性发展           ESG、碳足迹管理、绿色制造与供应链透明化。</li></ul></div>
+  </div>
+</section>
+<section class="slide" data-i="9">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">APS智慧排程解决方案</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide10_4.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="10">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">iuap云平台</h2>
+    <div class="text-content"><h3 class="section-heading">YonBIP制造云：助力制造企业数字化转型</h3><h3 class="section-heading">制造云</h3><h3 class="section-heading">制造中台</h3><h3 class="section-heading">生产制造</h3><h3 class="section-heading">设备后服务</h3><h3 class="section-heading">智能工厂</h3><h3 class="section-heading">制造执行</h3><h3 class="section-heading">安环管理</h3><h3 class="section-heading">营销云</h3><h3 class="section-heading">采购云</h3><h3 class="section-heading">人力云</h3><h3 class="section-heading">财务云</h3><h3 class="section-heading">供应链云</h3><h3 class="section-heading">质量管理</h3><h3 class="section-heading">协同云</h3><h3 class="section-heading">资产云</h3><h3 class="section-heading">应用平台</h3><h3 class="section-heading">项目云</h3><h3 class="section-heading">工业大脑</h3><h3 class="section-heading">智能物流</h3><h3 class="section-heading">研发云</h3><h3 class="section-heading">AIoT 智能物联网平台</h3><h3 class="section-heading">资料中台、智慧中台</h3><h3 class="section-heading">废钢判级</h3><h3 class="section-heading">智能排程</h3><h3 class="section-heading">连续车间作业</h3><h3 class="section-heading">生产物流</h3><h3 class="section-heading">能源管理</h3><h3 class="section-heading">离散车间作业</h3><h3 class="section-heading">制程质检</h3><h3 class="section-heading">罐区管理</h3><h3 class="section-heading">计划中心</h3><h3 class="section-heading">质检中心</h3><h3 class="section-heading">工厂模型</h3><h3 class="section-heading">储运中心</h3><h3 class="section-heading">车间作业中心</h3><h3 class="section-heading">辅助调中心</h3><h3 class="section-heading">智造算法中心</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="11">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">YonBIP制造云：制造核心业务模型+IT+OT+AI</h2>
+    <div class="text-content"><h3 class="section-heading">IT</h3><h3 class="section-heading">ERP</h3><h3 class="section-heading">PLM</h3><h3 class="section-heading">CAx……</h3><h3 class="section-heading">AI</h3><h3 class="section-heading">优化配料工艺预测</h3><h3 class="section-heading">劣势分析</h3><h3 class="section-heading">……</h3><h3 class="section-heading">OT</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="12">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">用友APS：决策支持「工具」</h2>
+    <div class="text-content"><h3 class="section-heading">AI人工智能预测</h3><h3 class="section-heading">订单生产决策</h3><h3 class="section-heading">Big Data 数据</h3><h3 class="section-heading">IoT/机联网</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="13">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">「工具」搭配「流程」始能发挥效果</h2>
+    <div class="text-content"><h3 class="section-heading">改写生产订单</h3><h3 class="section-heading">（订单 开/完工时间、建议分配设备）</h3><h3 class="section-heading">生产订单（成品/半制品）</h3><h3 class="section-heading">生产计划（成品/半制品）</h3><h3 class="section-heading">MPS/MRP</h3><h3 class="section-heading">计算成品/半制品需求量</h3><h3 class="section-heading">运算结果</h3><h3 class="section-heading">下推生产</h3><h3 class="section-heading">APS</h3><h3 class="section-heading">产能/物料规划</h3><h3 class="section-heading">APS结果下发页面</h3><h3 class="section-heading">（多版本对比）</h3><h3 class="section-heading">拉取订单信息</h3><h3 class="section-heading">下发待生产的版本</h3><h3 class="section-heading">排程结果</h3><h3 class="section-heading">自动下推</h3><h3 class="section-heading">工序流转卡</h3><h3 class="section-heading">根据生产订单交易类型</h3><h3 class="section-heading">拉取执行状态</h3><h3 class="section-heading">车间任务</h3><h3 class="section-heading">MES 报工</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="14">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">每家企业皆有各自生产规划「流程」与「工具」</h2>
+    <div class="text-content"><h3 class="section-heading">建立新厂</h3><h3 class="section-heading">/</h3><h3 class="section-heading">年度计划</h3><h3 class="section-heading">季度规划</h3><h3 class="section-heading">/</h3><h3 class="section-heading">月度规划</h3><h3 class="section-heading">每日排程</h3><h3 class="section-heading">/</h3><h3 class="section-heading">即时规划</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="15">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">APS 、 EPR &amp; MES</h2>
+    <div class="text-content"><h3 class="section-heading">智能化生产现场</h3><h3 class="section-heading">采购运营管理</h3><h3 class="section-heading">ERP</h3><h3 class="section-heading">APS</h3><h3 class="section-heading">MES</h3><h3 class="section-heading">采购规划</h3><h3 class="section-heading">存货管理（工厂/配送中心）</h3><h3 class="section-heading">配送运营管理</h3><h3 class="section-heading">物料需求规划</h3><h3 class="section-heading">产能需求规划</h3><h3 class="section-heading">主排程规划</h3><h3 class="section-heading">现场控制</h3><h3 class="section-heading">订单检阅</h3><h3 class="section-heading">一般生产现场</h3><h3 class="section-heading">文员</h3><h3 class="section-heading">计划员</h3><h3 class="section-heading">班长</h3><h3 class="section-heading">进销存资料控管</h3><h3 class="section-heading">人工排程与调整</h3><h3 class="section-heading">人工记件与报工</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="16">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">合理化</h2>
+    <div class="text-content"><h3 class="section-heading">目前生产规划方式合理性？ 产能有效利用率？</h3><h3 class="section-heading">流程化</h3><h3 class="section-heading">目前OTD流程有无浪费存在？</h3><h3 class="section-heading">标准化</h3><h3 class="section-heading">每次生产规划的逻辑一致性？</h3><h3 class="section-heading">系统化</h3><h3 class="section-heading">我们用了什么工具？</h3><h3 class="section-heading">01</h3><h3 class="section-heading">02</h3><h3 class="section-heading">03</h3><h3 class="section-heading">04</h3><h3 class="section-heading">管理效益</h3><h3 class="section-heading">「开始」提升</h3><p class="section-text">「正确的管理策略」搭配「对的工具」  始能发挥「真正的」管理能力</p></div>
+  </div>
+</section>
+<section class="slide" data-i="17">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">制造业痛点</h2>
+    <div class="text-content"><h3 class="section-heading">多品种小批量生产调度难</h3><p class="section-text">离散型制造业，通常面临多品种、小批量的生产模式，生产调度难度大，容易出现生产冲突和资源浪费。</p><h3 class="section-heading">紧急订单打乱生产节奏</h3><p class="section-text">市场需求变化快，紧急订单频繁，容易打乱正常的生产节奏，影响生产效率和交付能力。</p><h3 class="section-heading">工艺复杂管理难度大</h3><p class="section-text">电子加工行业，产品的生产工艺复杂，精密度高，有严格的质量标准，质量管理难度大，容易出现废品率高。</p><h3 class="section-heading">设备利用率低</h3><p class="section-text">由于生产计划不合理导致的频繁换线，设备维护不及时导致停机……</p><h3 class="section-heading">制造业设备利用率普遍较低，造成了设备资源的浪费。</h3><h3 class="section-heading">库存成本高</h3><p class="section-text">由于生产计划的不准确和物料供应的不及时，制造企业往往需要保持较高的原材料库存水平，导致库存成本居高不下。</p><h3 class="section-heading">产能利用不足</h3><p class="section-text">部分制造业有特殊工艺，对设备容积或载量有需求。导致设备在特定工序下无法充分利用。</p></div>
+  </div>
+</section>
+<section class="slide" data-i="18">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">生产管理</h2>
+    <div class="content-body"><h3 class="section-heading">面临的挑战</h3><h3 class="section-heading">高级主管</h3><h3 class="section-heading">业务人员</h3><h3 class="section-heading">车间主管</h3><h3 class="section-heading">物料管理人员</h3><h3 class="section-heading">生管人员</h3><h3 class="section-heading">IT 人员</h3><h3 class="section-heading">系统整合困难</h3><p class="section-text">现有 ERP/MES/WMS之间数据割裂，难以做到即时共享。</p><h3 class="section-heading">导入风险顾虑</h3><p class="section-text">新系统上线常担心资料转移、维护成本与跨系统兼容性问题，影响效率。</p><h3 class="section-heading">下单时点不明确</h3><p class="section-text">长交期物料何时下单难以判断，容易造成提前备料或缺料。</p><h3 class="section-heading">库存管理压力</h3><p class="section-text">常出现缺料风险与库存积压并存的状况，造成资金占用与供应不稳定。</p><h3 class="section-heading">利润与决策压力</h3><p class="section-text">需要清楚掌握企业运营状况，但缺乏即时的产能、成本与资金运转数据。</p><h3 class="section-heading">策略风险</h3><p class="section-text">在信息不完整或延迟的情况下，投资与资源配置决策容易失误，导致企业利润与竞争力下降。</p><h3 class="section-heading">需求变动大</h3><p class="section-text">根据预测备料, 长交期物料需提早备料但是预测不准确, 常常需要做需求变更, 生产计划如何快速因应</p><h3 class="section-heading">计划难度高</h3><p class="section-text">安排的生产计划是同时考虑物料及产能的限制 (BOM庞大)</p><h3 class="section-heading">信息孤岛</h3><p class="section-text">目前各厂ERP数据库独立，导致跨厂物料调拨有困难。</p><h3 class="section-heading">需求不确定性</h3><h3 class="section-heading">需知道客户的需求何时可被满足</h3><h3 class="section-heading">(e.g.顾客询单、交期回复)</h3><h3 class="section-heading">突发异常频出</h3><h3 class="section-heading">设备故障、工序延迟、紧急插单等情况时常发生。</h3><h3 class="section-heading">瓶颈管理困难</h3><p class="section-text">缺乏实时排程调整工具，导致产线待工、换线次数过多，生产效率下降。</p></div>
+    <div class="slide-image-row"><div class="img-grid-many"><img src="images/slide19_5.jpg" alt="" class="content-img-grid" loading="lazy"><img src="images/slide19_6.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide19_7.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide19_8.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide19_9.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide19_10.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide19_11.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="19">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">MRP与APS的区别</h2>
+    <div class="text-content"></div>
+  </div>
+</section>
+<section class="slide" data-i="20">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">用友 APS 产品架构图</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide21_12.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="21">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">APS 排程派工仿真引擎与输入/输出</h2>
+    <div class="text-content"><h3 class="section-heading">原生数据串接</h3><h3 class="section-heading">时间限制逻辑</h3><h3 class="section-heading">排程</h3><h3 class="section-heading">数据输入模块</h3><h3 class="section-heading">初始化模块</h3><h3 class="section-heading">排程仿真引擎</h3><h3 class="section-heading">数据输出模块</h3><h3 class="section-heading">派工规则 ＆ 生产限制</h3><h3 class="section-heading">对象属性</h3><h3 class="section-heading">输入</h3><h3 class="section-heading">停滞时间限制逻辑</h3><h3 class="section-heading">资源基本数据</h3><h3 class="section-heading">需求基本数据</h3><h3 class="section-heading">工艺路线资料</h3><h3 class="section-heading">销售订单总表</h3><h3 class="section-heading">输出</h3><h3 class="section-heading">生产订单总表</h3><h3 class="section-heading">物料规划总表</h3><h3 class="section-heading">资源排程计划明细</h3><h3 class="section-heading">资源群组排程计划明细</h3><h3 class="section-heading">资源稼动率</h3><h3 class="section-heading">资源群组稼动率</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="22">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">资源产能约束条件</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide23_13.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="23">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">应用场景</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide24_14.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="24">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">APS解决方案-选配模块</h2>
+    <div class="text-content"><h3 class="section-heading">自动换线支援</h3><h3 class="section-heading">模具/资源指派</h3><h3 class="section-heading">批量生产</h3><h3 class="section-heading">资源指派模块</h3><h3 class="section-heading">剩余产能产品试算</h3><h3 class="section-heading">产能平衡优化</h3><h3 class="section-heading">生产周期优化</h3><h3 class="section-heading">AI决策优化模块</h3><h3 class="section-heading">（定制化）</h3><h3 class="section-heading">组合件自动投料</h3><h3 class="section-heading">物料需求规划</h3><h3 class="section-heading">严守交期逆向排程</h3><h3 class="section-heading">物料与产能</h3><h3 class="section-heading">同步规划模块</h3><h3 class="section-heading">加工人员派工模块</h3><h3 class="section-heading">换线人员指派模块</h3><h3 class="section-heading">人机搭配加工模块</h3><h3 class="section-heading">人员指派模块</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="25">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">APS解决方案-产业包(1/2)</h2>
+    <div class="text-content"><h3 class="section-heading">1. 小家电产业</h3><h3 class="section-heading">物料规划导向</h3><h3 class="section-heading">采购追料频繁</h3><h3 class="section-heading">部分人工组装</h3><h3 class="section-heading">人机搭配排程</h3><h3 class="section-heading">加工人员派工模块</h3><h3 class="section-heading">人员指派模块</h3><h3 class="section-heading">人机搭配加工模块</h3><h3 class="section-heading">组合件自动投料</h3><h3 class="section-heading">物料需求规划</h3><h3 class="section-heading">4. 手工具业</h3><h3 class="section-heading">5. CNC 设备</h3><h3 class="section-heading">订单少量多样</h3><h3 class="section-heading">90%制程外包</h3><h3 class="section-heading">订单交期长量少</h3><h3 class="section-heading">人工制程偏多</h3><h3 class="section-heading">厂内仅少量加工</h3><h3 class="section-heading">齐料后包装出货</h3><h3 class="section-heading">工时较难预测</h3><h3 class="section-heading">换线时间需排程</h3><h3 class="section-heading">派工模块</h3><h3 class="section-heading">派工模块</h3><h3 class="section-heading">任务指派</h3><h3 class="section-heading">任务指派</h3><h3 class="section-heading">报工模块</h3><h3 class="section-heading">报工模块</h3><h3 class="section-heading">组合件自动投料</h3><h3 class="section-heading">物料与产能同步规划模块</h3><h3 class="section-heading">严守交期逆向排程</h3><h3 class="section-heading">2. 五金加工</h3><h3 class="section-heading">订单量多样</h3><h3 class="section-heading">50%设备自动化</h3><h3 class="section-heading">产能规划导向</h3><h3 class="section-heading">换线时间需排程</h3><h3 class="section-heading">自动换线支持</h3><h3 class="section-heading">资源指派模块</h3><h3 class="section-heading">模具/资源指派</h3><h3 class="section-heading">换线人员指派模块</h3><h3 class="section-heading">人员指派模块</h3><h3 class="section-heading">人机搭配加工模块</h3><h3 class="section-heading">组合件自动投料</h3><h3 class="section-heading">严守交期逆向排程</h3><h3 class="section-heading">3. 模具业</h3><h3 class="section-heading">6. 订制家居</h3><h3 class="section-heading">产能规划导向</h3><h3 class="section-heading">全定制化订单</h3><h3 class="section-heading">产能规划导向</h3><h3 class="section-heading">订单少量多样</h3><h3 class="section-heading">工时不确定性高</h3><h3 class="section-heading">需灵活调度产能</h3><h3 class="section-heading">接单后组装</h3><h3 class="section-heading">可批量生产</h3><h3 class="section-heading">自动换线支持</h3><h3 class="section-heading">批量生产</h3><h3 class="section-heading">自动换线支持</h3><h3 class="section-heading">加工人员派工模块</h3><h3 class="section-heading">资源指派模块</h3><h3 class="section-heading">资源指派模块</h3><h3 class="section-heading">资源指派模块</h3><h3 class="section-heading">人员指派模块</h3><h3 class="section-heading">模具/资源指派</h3><h3 class="section-heading">模具/资源指派</h3><h3 class="section-heading">换线人员指派模块</h3><h3 class="section-heading">组合件自动投料</h3><h3 class="section-heading">人员指派模块</h3><h3 class="section-heading">物料与产能同步规划模块</h3><h3 class="section-heading">人机搭配加工模块</h3><h3 class="section-heading">严守交期逆向排程</h3><h3 class="section-heading">物料与产能同步规划模块</h3><h3 class="section-heading">物料与产能同步规划模块</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="26">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">APS解决方案-产业包(2/2)</h2>
+    <div class="text-content"><h3 class="section-heading">7. 智慧装备</h3><h3 class="section-heading">产能/物料同步规划</h3><h3 class="section-heading">要求精准排程</h3><h3 class="section-heading">ENG生产订单偏多</h3><h3 class="section-heading">系统协作要求高</h3><h3 class="section-heading">8. 板金业</h3><h3 class="section-heading">人机搭配排程</h3><h3 class="section-heading">大量人工焊接</h3><h3 class="section-heading">激光照排瓶颈</h3><h3 class="section-heading">产能规划导向</h3><h3 class="section-heading">派工模块</h3><h3 class="section-heading">报工模块</h3><h3 class="section-heading">加工人员派工模块</h3><h3 class="section-heading">人机搭配加工模块</h3><h3 class="section-heading">自动换线支持</h3><h3 class="section-heading">物料需求规划</h3><h3 class="section-heading">加工人员派工模块</h3><h3 class="section-heading">产能平衡优化</h3><h3 class="section-heading">任务指派</h3><h3 class="section-heading">人员指派模块</h3><h3 class="section-heading">资源指派模块</h3><h3 class="section-heading">物料与产能</h3><h3 class="section-heading">同步规划模块</h3><h3 class="section-heading">人员指派模块</h3><h3 class="section-heading">决策优化模块</h3><h3 class="section-heading">（定制化）</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="27">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">严守交期逆向排产</h2>
+    <div class="text-content"><h3 class="section-heading">接单后组装</h3><h3 class="section-heading">选配模块</h3><h3 class="section-heading">适用情境</h3><h3 class="section-heading">导入效益</h3><p class="section-text">齐料后组装问题，可运用此模块准确规划各零件进料和投产时间，贯彻ATO生产模式，无料时执行MTS，将库存WIP降至最低。</p><h3 class="section-heading">物料需求规划</h3><h3 class="section-heading">齐料后组装</h3><p class="section-text">将物料状况纳入排产考虑限制，或产生缺料预测，供采购与供货商安排送货计划，齐料后即刻安排MTO生产。</p><h3 class="section-heading">集批生产</h3><h3 class="section-heading">减少换线整备</h3><p class="section-text">制程设定需要移转批量或多货批集中生产，小工单合并大工单，或同属性产品连续生产等皆适用。</p><h3 class="section-heading">人机搭配加工模块</h3><h3 class="section-heading">一人操多机</h3><p class="section-text">加工过程需透过人员控制设备进行生产，且一人可同时操作多台设备，可运用此模块准确规划各资源操作时间。</p><h3 class="section-heading">自动换线模块</h3><h3 class="section-heading">更换加工参数</h3><p class="section-text">设备参数调教换线会造成产能损失，可用此模块仿真不同换线频率与方案，规划出产能损失与达交兼顾的排产计划。</p><h3 class="section-heading">建议导入功能模块</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="28">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">29</h2>
+    <div class="text-content"><h3 class="section-heading">29</h3><h3 class="section-heading">APS预期效益</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="29">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">改善阶段：稳步发展，莫求一步登天</h2>
+    <div class="text-content"><h3 class="section-heading">50%</h3><h3 class="section-heading">基础数据与流程完整性要求</h3><h3 class="section-heading">65%</h3><h3 class="section-heading">80%</h3><h3 class="section-heading">95%</h3><h3 class="section-heading">整体生产模式优化</h3><p class="section-text">已经熟悉排程系统与相关流程的运作后，可配合算法及AI进行寻优，找到更符合企业策略的计划及执行方式。</p><h3 class="section-heading">自动化智能排程</h3><p class="section-text">建立所有可能发生状态及事件库后，根据生产现场发生的任何情境如：缺料、当机、不良率过高、设计变更等等，皆可自动触发重新排程并实时规划应变策略，在不需要人为过度干预情况下，最短时间内复产，将不确定性对产线的冲击降至最低。</p></div>
+  </div>
+</section>
+<section class="slide" data-i="30">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果（销售订单总表）</h2>
+    <div class="content-body"><ul class="section-list"><li>业务或生管人员，通过【销售订单总表】，可查看每笔订单完工日期，生产周期等信息，以快速响应顾客交期答复，并对可能延后的订单提出警讯。</li><li>通过销售订单优先级的设定，保证高价值客户/订单优先交付</li></ul></div>
+    <div class="slide-image-row"><div class="img-grid-2"><img src="images/slide31_15.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide31_16.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="31">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果(订单BOM展开)</h2>
+    <div class="content-body"><p class="section-text">不同订单，使用不同颜色做区分。更支持订单逐层展开。（销售订单→派工单→工序→设备）</p><h3 class="section-heading">销售订单</h3><h3 class="section-heading">派工单</h3><h3 class="section-heading">工序</h3><h3 class="section-heading">机台</h3></div>
+    <div class="slide-image-row"><img src="images/slide32_17.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="32">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果(插单场景）</h2>
+    <div class="content-body"><p class="section-text">通过销售订单优先级的设定，急插单的订单优先排产，但在VVIP订单后</p></div>
+    <div class="slide-image-row"><div class="img-grid-2"><img src="images/slide33_18.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide33_19.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="33">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果(物料规划总表)</h2>
+    <div class="content-body"><ul class="section-list"><li>原材料采购周期内的物料需求，合并到一次采购建议中。</li><li>采购周期内的物料需求，自动合并给出建议采购到料时间与数量</li></ul></div>
+    <div class="slide-image-row"><div class="img-grid-2"><img src="images/slide34_20.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide34_21.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="34">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果(采购建议单)</h2>
+    <div class="content-body"><p class="section-text">根据生产进度和物料规划，自动生成采购建议单，合并采购周期内物料需求量。有利于帮助企业快速制定采购计划。</p></div>
+    <div class="slide-image-row"><img src="images/slide35_22.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="35">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">机台模治具限制</h2>
+    <div class="content-body"><h3 class="section-heading">在资源群组设定模具</h3><h3 class="section-heading">在排程规则，设定“启用” 模具限制</h3></div>
+    <div class="slide-image-row"><div class="img-grid-2"><img src="images/slide36_23.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide36_24.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="36">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果(机台模治具限制)</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><div class="img-grid-2"><img src="images/slide37_25.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide37_26.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="37">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">多排程版本对比分析</h2>
+    <div class="content-body"><p class="section-text">多版本排程结果比较，清晰呈现版本差异，方便生管人员择优选择。</p></div>
+    <div class="slide-image-row"><img src="images/slide38_27.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="38">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果下发</h2>
+    <div class="content-body"><h3 class="section-heading">多版本结果比较后，选择最优排程版本做结果下发。</h3><h3 class="section-heading">结果下发，会把工序的开/完工时间，带到生产订单上</h3></div>
+    <div class="slide-image-row"><img src="images/slide39_28.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="39">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果（生产订单）</h2>
+    <div class="content-body"><p class="section-text">在生产订单上可以查整个订单的开/完工日，以及各工序的计划开/完工时间。</p><h3 class="section-heading">排程结果，开/完工时间会带到生产订单工序上</h3><h3 class="section-heading">工序派工到设备也会显示</h3></div>
+    <div class="slide-image-row"><img src="images/slide40_29.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="40">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">工单/资源锁定</h2>
+    <div class="content-body"><p class="section-text">【资源锁定甘特图】提供对已审核&amp;已开工的工单做资源锁定，避免误操作干扰，保证任务的稳定性，提高排产的可靠性。</p></div>
+    <div class="slide-image-row"><img src="images/slide41_30.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="41">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">订单执行度跟踪</h2>
+    <div class="content-body"><p class="section-text">【执行度分析甘特图】提供对生产订单开工状态的跟踪。方便生管人员随时跟踪进度，快速定位延迟订单，及时调整生产计划，降低交期延误风险。</p></div>
+    <div class="slide-image-row"><img src="images/slide42_31.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="42">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">排程结果(设备故障)</h2>
+    <div class="content-body"><h3 class="section-heading">正常排程工序010，数控车床1</h3><h3 class="section-heading">排程规则设定该设备，故障维修</h3><h3 class="section-heading">重新排程后，19日派工时，没有对数控车床1派工</h3></div>
+    <div class="slide-image-row"><div class="img-grid-3"><img src="images/slide43_32.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide43_33.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide43_34.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="43">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">APS  AI Agent解决方案</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide44_35.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="44">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">AI Agent 产品介绍</h2>
+    <div class="content-body"><p class="section-text">专注于制造业生产计划与排程的APS（高级计划与排程）智能体，可无缝适配用友ERP、MES等生态现有系统，通过AI驱动的有限产能优化算法，整合订单、物料、产能等核心数据，生成精准、可执行的生产排程方案，解决企业排程低效、交期延误、资源冲突等痛点，成为用友生态制造业客户生产智能化升级的核心支撑工具。</p><h3 class="section-heading">产品定位</h3></div>
+    <div class="slide-image-row"><img src="images/slide45_36.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="45">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">AI Agent 核心功能</h2>
+    <div class="text-content"><p class="section-text">AI Agent  聚焦制造业生产排程核心痛点，提炼4大核心APS能力，兼顾精准性、敏捷性与可执行性。</p><h3 class="section-heading">智能插单与自动排程</h3><h3 class="section-heading">“一键式”订单创建与排程</h3><h3 class="section-heading">排程优化与智能建议</h3><h3 class="section-heading">排程结果多版本对比</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="46">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">AI Agent 应用场景</h2>
+    <div class="text-content"><h3 class="section-heading">离散制造柔性排程场景</h3><h3 class="section-heading">装备制造</h3><h3 class="section-heading">非标订单排程场景</h3><h3 class="section-heading">制造批次优化场景</h3><h3 class="section-heading">紧急插单</h3><h3 class="section-heading">快速响应场景</h3><h3 class="section-heading">用友生态多系统协同场景</h3><h3 class="section-heading">多工厂产能协同场景</h3><h3 class="section-heading">产能瓶颈预警场景</h3><h3 class="section-heading">预测性排程决策场景</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="47">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">AI Agent 智能体业务流程</h2>
+    <div class="text-content"><h3 class="section-heading">Start</h3><h3 class="section-heading">新增订单(SO)</h3><h3 class="section-heading">用户于窗口输入</h3><h3 class="section-heading">客户编号</h3><h3 class="section-heading">产品编号/名称</h3><h3 class="section-heading">数量</h3><h3 class="section-heading">交期</h3><h3 class="section-heading">优先序</h3><h3 class="section-heading">AI Agent</h3><h3 class="section-heading">呼叫验证API</h3><h3 class="section-heading">AI Agent呼叫新增订单API</h3><h3 class="section-heading">AI Agent呼叫发起排程API</h3><h3 class="section-heading">End</h3><h3 class="section-heading">End</h3><h3 class="section-heading">Start</h3><h3 class="section-heading">AI Agent呼叫</h3><h3 class="section-heading">查看排程API</h3><h3 class="section-heading">返回结果</h3><h3 class="section-heading">返回状态，建议使用者可以进行分析</h3><h3 class="section-heading">返回状态，继续等待排程</h3><h3 class="section-heading">成功</h3><h3 class="section-heading">尚未完成</h3><h3 class="section-heading">看是请使用者自行发起，还是多久后自动发起</h3><h3 class="section-heading">Start</h3><h3 class="section-heading">排程结果分析</h3><h3 class="section-heading">AI Agent</h3><h3 class="section-heading">拉取排程版本API</h3><h3 class="section-heading">选择版本(可多选)</h3><h3 class="section-heading">AI Agent</h3><h3 class="section-heading">拉取排程结果指标API</h3><h3 class="section-heading">呈现结果表格或图表</h3><h3 class="section-heading">End</h3><p class="section-text">可以的话提供List供使用者选取。或请使用者手动输入版本号</p><h3 class="section-heading">请使用者等待排程完成</h3><h3 class="section-heading">AIP Login</h3><h3 class="section-heading">AIP AddSO</h3><h3 class="section-heading">AIP APSVer/Create</h3><p class="section-text">AIP APSResult/GetAPSRadar</p></div>
+  </div>
+</section>
+<section class="slide" data-i="48">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">AI Agent 使用情境介绍-零门槛交互入口，智能问答精准导航</h2>
+    <div class="content-body"><h3 class="section-heading">零门槛交互入口</h3><h3 class="section-heading">智能问答精准导航</h3><p class="section-text">无需复杂操作，可输入任意文字内容与智能体互动咨询。新人轻松上手，团队协作效率翻倍，彻底打通排程操作沟通壁垒。</p></div>
+    <div class="slide-image-row"><img src="images/slide49_37.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="49">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">AI Agent 使用情境介绍-数据查询零等待，多版本对比秒出结论</h2>
+    <div class="content-body"><h3 class="section-heading">数据查询零等待，多版本对比秒出结论</h3><h3 class="section-heading">告别数小时手动数据整理！</h3><p class="section-text">自然语言清晰下达查询需求，智能体精准识别筛选条件，秒级完成数据抓取、汇总与核心指标提炼。</p></div>
+    <div class="slide-image-row"><img src="images/slide50_38.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="50">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">AI Agent 使用情境介绍-自然语言指令驱动，订单到排程全流程自动化</h2>
+    <div class="content-body"><h3 class="section-heading">自然语言指令驱动，订单到排程全流程自动化</h3><h3 class="section-heading">告别跨系统切换、手动填单的繁琐！</h3><p class="section-text">APS智能体以自然语言为交互核心，只需进入智能体入口，用户下达指令，即可自动根据用户指令完成如订单生成、审核流转与智慧排程全链路操作。</p></div>
+    <div class="slide-image-row"><img src="images/slide51_39.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="51">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">成功案例</h2>
+    <div class="content-body"></div>
+    <div class="slide-image-row"><img src="images/slide52_40.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="52">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">成功客户案例-广东某模具有限公司</h2>
+    <div class="content-body"><p class="section-text">已导入MES但无法解决产能不透明问题，多方询问后得知有APS此种解决方案，便即刻导入；以解决产能无法有效应用，想解决在约束限制的条件下，实现生产效率最大化，生产产能最优化。</p><h3 class="section-heading">应用功能</h3><h3 class="section-heading">资源均衡与优化分派</h3><h3 class="section-heading">订单交期承诺</h3><h3 class="section-heading">计划版本对比</h3><h3 class="section-heading">瓶颈分析</h3><h3 class="section-heading">物料约束</h3><h3 class="section-heading">智能一键排程</h3><h3 class="section-heading">多种排程方向(正/逆)</h3><h3 class="section-heading">自动处理紧急插单</h3><p class="section-text">导入IMPACTs APS后，结合销售订单、BOM、生产工艺、设备资源、人员资源、排班、库存、采购订单等要素，通过人工智能技术，智能动态仿真排程算法为核心，在云端提供实时性的产能运算，进行一键智慧排程，15分钟得出排程方案，完全掌握工厂产能与生产资源。</p><h3 class="section-heading">客户痛点</h3></div>
+    <div class="slide-image-row"><img src="images/slide53_41.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="53">
+  <div class="slide-inner">
+    <h2 class="slide-title">成功客户案例-佛山某新能源汽车部件企业</h2>
+    <div class="two-col-layout">
+      <div class="col-challenge"><div class="section-block"><h4></h4><ul><li>产   品</li><li>痛点与需求</li><li>客户出货计划频繁变更，需要快速调整内部生产计划</li><li>效   益</li></ul></div></div>
+      <div class="col-benefit"><div class="section-block"><h4></h4><ul><li>制   程</li><li>订单井喷式增长，交期回复困难、存在大量瓶颈，交付困难</li><li>解决方案</li><li>基于客户多订单、出货计划频繁调整，建立动态模拟排程，快速提供排程建议。</li><li>结合排程结果进行稼动率、WIP等多维度的瓶颈漂移分析，突破关键资源、工艺、工时等“隐形”瓶颈，优化生产排程。</li></ul></div></div>
+    </div>
+    <div class="slide-image-row"><div class="img-grid-many"><img src="images/slide54_42.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide54_43.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide54_44.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide54_45.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide54_46.jpg" alt="" class="content-img-grid" loading="lazy"><img src="images/slide54_47.jpg" alt="" class="content-img-grid" loading="lazy"><img src="images/slide54_48.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="54">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">成功客户案例-吉某电子股份有限公司</h2>
+    <div class="text-content"><p class="section-text">(1) 产品及制程中的质量检验精度与效率不足，希望透过数字检测工具及数字品管系统改善；(2) 生产效率(含人力规划)及外包管理有待提升，希望导入先进规划与排程(APS)系统来提升生产效率、缩短接单至出货时间(OTD)、降低库存成本。</p><h3 class="section-heading">应用功能</h3><ul class="section-list"><li>接单至出货OTD时间由112天减至100天 (减少10.7%)，其中厂内制作组立时间由80天缩短为70天，缩短12.5% (=10/80)。</li><li>制造人工成本可降低约$106万元(9.375％)，以人工排程与导入APS系统排程后相较。</li></ul><h3 class="section-heading">整体达交率由平均85%提升至97%。</h3><p class="section-text">厂内制作组立时间缩短12.5%，代表制造产能提升9.375% (=12.5%*75%)。</p><h3 class="section-heading">客户痛点</h3><h3 class="section-heading">资产：2.5 亿</h3><h3 class="section-heading">去年营业额：36亿</h3><h3 class="section-heading">公司人数：320人</h3><h3 class="section-heading">APS上线时间：2023</h3><h3 class="section-heading">客户资料</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="55">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">成功客户案例-耿某企业股份有限公司（设备组装）</h2>
+    <div class="text-content"><p class="section-text">因目前全球市场不景气与通货膨胀及持续进行的贸易战，不断垫高产品销售成本；为保持产品市场竞争力且在不改变产品终端售价前提下，耿舜必须持续推动精实生产、减少浪费，同时希望借由智慧化转型，导入 APS系统，以缩短接单至出货(Ordering To Deliver; OTD)时间、降低生产与存货成本。</p><h3 class="section-heading">应用功能</h3><h3 class="section-heading">资源均衡与优化分析</h3><h3 class="section-heading">订单交期试算</h3><h3 class="section-heading">计划版本对比</h3><h3 class="section-heading">外包瓶颈分析</h3><h3 class="section-heading">物料约束</h3><h3 class="section-heading">智能一键排程</h3><h3 class="section-heading">多种排程方向(正/逆)</h3><h3 class="section-heading">紧急插单快速响应</h3><h3 class="section-heading">客户痛点</h3><ul class="section-list"><li>OTD时间由30天减至24天，其中厂内加工及组装时间由10天减至8天，时间缩短20%。</li><li>本公司产线的加工与等待时间比率约为75%与25%，表示产能可提升15%。</li></ul><h3 class="section-heading">整体外包准交率由65％提升至85％。</h3><p class="section-text">以2022年产线人工成本1,800万计注，约可减少 $ 189万加工成本 (=1,800万*15%*70%)</p></div>
+  </div>
+</section>
+<section class="slide" data-i="56">
+  <div class="slide-inner text-slide">
+    <h2 class="slide-title">成功客户案例-浦某行有限公司（SMT测试产线）</h2>
+    <div class="text-content"><ul class="section-list"><li>客户要求高质量的制造与服务水平，P公司必须持续研发新的制程技术及引进新的设备(如SMT锡膏检查机、回焊炉)。SMT产线物联网技术(IoT)的结合，让生产线能够实时监测重要机台的生产参数，提供客户实时生产信息及生产履历。</li><li>优化生产流程，提高生产效率与质量，例如整体设备效率(Overall Equipment Efficiency; OEE)、缩短接单至出货时间(OTD)、降低库存成本，这些目标可透过先进规划与排程(APS)系统达成。</li></ul><h3 class="section-heading">应用功能</h3><ul class="section-list"><li>OTD接单至出货OTD (包括SMT、DIP、Assembly、Testing、Packing)时间由13天减至8天(交期回复0.5天，产线生产时间7.5天)，OTD时间减少38.5%，生产时间缩短6.25%。</li><li>以过去历史资料统计，本公司产线的加工与等待时间比率约为70%与30%；以2022年制造总成本:2.38亿注1，产线人工成本 8,100万计，约可减少 $ 354万加工成本 (=8,000万*6.25%*70%)</li></ul><h3 class="section-heading">客户痛点</h3><h3 class="section-heading">资产：3,700万</h3><h3 class="section-heading">去年营业额：3.5亿</h3><h3 class="section-heading">公司人数：249人</h3><h3 class="section-heading">APS上线时间：2024</h3><h3 class="section-heading">客户资料</h3></div>
+  </div>
+</section>
+<section class="slide" data-i="57">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">成功客户案例-深圳市某科技股份有限公司</h2>
+    <div class="content-body"><h3 class="section-heading">此次智能排程与调度系统（后面简称AIPS系统）的应用范围是组装-测试-包装工段，其中测试主要包括了初测、逆变、老化、终测等细化工艺网站。现阶段存在以下问题点</h3><ul class="section-list"><li>在制品库存高：人工排程难以全面考虑订单交期、优先级、生产工艺、设备资源、排班、批量生产等多个限制因素，排出来的生产计划容易导致生产工序的连贯性差，工序大量等待，导致在制品库存高。</li><li>生产过程不透明：测试工段存在不同产品兼容设备多，接插件复杂，老化集批等问题，导致生产过程不透明，完工时间不确定。</li><li>设备产能难评估：现有的产能不透明，难以科学评估资源的综合稼动率情况（工序设备产能、资源群组产能等），也难以提前做出产能规划。</li></ul><h3 class="section-heading">应用功能</h3><h3 class="section-heading">依据以上所提问题点，AIPS系统主要输出生产订单排程计划、工序级资源群组日生产计划、资源群组利用率、工序级资源利用率、高负载资源群组警示、工序级详细生产排程窗体，实现以下价值点</h3><ul class="section-list"><li>提高订单交付能力：以订单交期和优先序作为主要的排程依据，进行拉动式排程。</li><li>快速回复交期：将订单信息录入SAP系统后，AIPS系统拿到SAP最新的订单信息进行有限产能的合理排程，快速给出合理的交期。</li><li>减少在制品库存：系统基于精益理念拉动式生产理念给出的生产计划，提高工序的连贯性生产，在所需的时间生产所需的数量，最大限度减少在制品库存。</li><li>快速响应生产异常和紧急插单：如果出现生产异常或紧急插单，可以由计划人员在系统更新排程数据，迅速发起一次新的排程。</li><li>产能揭露：结合订单+预测，开展长周期的产能评估，科学分析出资源利用率，揭露真实产能。</li></ul><h3 class="section-heading">客户痛点</h3></div>
+    <div class="slide-image-row"><img src="images/slide58_49.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="58">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">成功客户案例-郑州某医学技术有限公司</h2>
+    <div class="content-body"><p class="section-text">人工排程效率低落，须提高排程所考虑限制条件以及复杂派工逻辑，进而以系统取代人力排程。并将APS系统与ERP系统完全打通，实现工厂智能化及透明化，以便及时掌握及应变工厂所有状况。</p><h3 class="section-heading">应用功能</h3><h3 class="section-heading">资源均衡与优化分派</h3><h3 class="section-heading">订单交期承诺</h3><h3 class="section-heading">计划版本对比</h3><h3 class="section-heading">瓶颈分析</h3><h3 class="section-heading">物料约束</h3><h3 class="section-heading">智能一键排程</h3><h3 class="section-heading">多种排程方向(正/逆)</h3><h3 class="section-heading">自动处理紧急插单</h3><p class="section-text">导入IMPACTs APS后，结合销售订单、BOM、生产工艺、设备资源、人员资源、排班、库存、采购订单等要素，通过人工智能技术，智能动态仿真排程算法为核心，在云端提供实时性的产能运算，进行一键智慧排程，5分钟得出排程方案，并同步至ERP执行开生产订单。</p><h3 class="section-heading">客户痛点</h3></div>
+    <div class="slide-image-row"><img src="images/slide59_50.png" alt="" class="content-img" loading="lazy"></div>
+  </div>
+</section>
+<section class="slide" data-i="59">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">成功客户案例-深圳某新能源零部件上市公司</h2>
+    <div class="content-body"><h3 class="section-heading">1.订单井喷式增长，产能评估困难</h3><p class="section-text">2.订单调整频繁，生产异常较多，需要及时调整生产计划</p><h3 class="section-heading">3.设备数量多，难以排程到工序和设备级别</h3><ul class="section-list"><li>4. 生产工序的连贯性差，工序大量等待，导致在制品库存高</li><li>5.人工排程难以考虑生产批量、工装、不同的加工时间等复杂的生产要素</li></ul><h3 class="section-heading">痛点与需求</h3><h3 class="section-heading">车载DC/DC变换器</h3><h3 class="section-heading">车载充电机</h3><h3 class="section-heading">CDU系统集成</h3><h3 class="section-heading">氢燃料电池车</h3><h3 class="section-heading">产品介绍</h3><h3 class="section-heading">产品制程</h3><h3 class="section-heading">SMT</h3><h3 class="section-heading">组装</h3><h3 class="section-heading">测试</h3><h3 class="section-heading">包装</h3></div>
+    <div class="slide-image-row"><div class="img-grid-many"><img src="images/slide60_51.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide60_52.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide60_53.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide60_54.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide60_55.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide60_56.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide60_57.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide60_58.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="60">
+  <div class="slide-inner mixed-slide">
+    <h2 class="slide-title">成功客户案例-深圳某新能源零部件上市公司</h2>
+    <div class="content-body"><h3 class="section-heading">解决方案</h3><p class="section-text">以订单交付为基础，结合精益生产-拉式生产为主要理念，综合考虑生产工艺、设备资源、工装、排班、集批等多个生产要素，自动排出工序级生产排程，提高订单交付能力、充分运用机台产能、减少在制品库存</p><h3 class="section-heading">效益</h3></div>
+    <div class="slide-image-row"><div class="img-grid-3"><img src="images/slide61_59.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide61_60.png" alt="" class="content-img-grid" loading="lazy"><img src="images/slide61_61.png" alt="" class="content-img-grid" loading="lazy"></div></div>
+  </div>
+</section>
+<section class="slide" data-i="61">
+  <div class="slide-inner thanks-slide">
+    <div class="thanks-bg"></div>
+    <h1 class="thanks-title">Thank you！</h1>
+    <p class="thanks-sub">大连润思科技</p>
+  </div>
+</section>
+</div>
+<nav class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="goPrev()">&#8249;</button>
+  <div class="nav-counter"><span class="current" id="currentPage">1</span> / <span id="totalPages">62</span></div>
+  <button class="nav-btn" id="nextBtn" onclick="goNext()">&#8250;</button>
+</nav>
+<div class="keyboard-hint">&#8592; &#8594; 鍵盤翻頁</div>
+<script>
+const totalSlides=62;let current=0;
+function goToSlide(n){if(n<0||n>=totalSlides)return;const slides=document.querySelectorAll('.slide');slides[current].classList.remove('active');slides[current].classList.add('prev');current=n;slides.forEach((s,i)={s.classList.remove('active','prev');if(i===current)s.classList.add('active');else if(i<current)s.classList.add('prev')});document.getElementById('currentPage').textContent=current+1;document.getElementById('progressBar').style.width=((current+1)/totalSlides*100)+'%';document.getElementById('prevBtn').disabled=current===0;document.getElementById('nextBtn').disabled=current===totalSlides-1}
+function goNext(){goToSlide(current+1)}function goPrev(){goToSlide(current-1)}
+document.addEventListener('keydown',(e) =>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')goNext();if(e.key==='ArrowLeft'||e.key==='PageUp')goPrev();if(e.key==='Home')goToSlide(0);if(e.key==='End')goToSlide(totalSlides-1)});
+let touchStartX=0;document.getElementById('slidesContainer').addEventListener('touchstart',(e) => {touchStartX=e.changedTouches[0].screenX});document.getElementById('slidesContainer').addEventListener('touchend',(e) => {const diff=touchStartX-e.changedTouches[0].screenX;if(Math.abs(diff)>50){if(diff>0)goNext();else goPrev()}});
+document.getElementById('prevBtn').disabled=true;document.getElementById('progressBar').style.width=(1/totalSlides*100)+'%';
+</script>
+</body>
+</html>
