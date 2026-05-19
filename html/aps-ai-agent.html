@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APS AI Agent — 智能体解决方案</title>
+
+<!-- ═══════════════════════════════════════
+     FONTS — Google Fonts CDN
+     嚴格遵循字體對比階梯：
+     Playfair Display  = Display / 最頂層
+     Inter             = Heading  / 英文字體層次
+     Noto Sans SC      = Body     / 中文字體層次
+     ═══════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — 全域設計代幣
+   來源：Stripe CSS variables 系統 + 8px spacing grid
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* ── 色彩：深色材質層次 ── */
+  --ink-900: #05060a;       /* 最深：隱藏在底色 */
+  --ink-800: #0a0c14;       /* 主要背景 */
+  --ink-700: #0f131d;       /* 次要背景 */
+  --ink-600: #151b28;       /* 卡片背景 */
+  --ink-500: #1c2336;       /* hover 狀態 */
+  --border:   rgba(255,255,255,.06);   /* 最細分割線 */
+  --border-md: rgba(255,255,255,.10);  /* 區塊邊界 */
+
+  /* ── 文字：嚴格字體對比階梯 ── */
+  /* Display — 封面/章節大標，Playfair Display，最大衝擊 */
+  --display-1:    clamp(3.2rem, 7vw, 5.6rem);  /* ~51-90px */
+  --display-2:    clamp(2.4rem, 5vw, 3.6rem);  /* ~38-58px */
+  /* Heading — Inter 層次，中等關注度 */
+  --heading-1:    2.25rem;   /* 36px */
+  --heading-2:    1.625rem;  /* 26px */
+  --heading-3:    1.25rem;   /* 20px */
+  /* Body — Noto Sans SC + Inter，預設閱讀級 */
+  --body-1:       1rem;      /* 16px */
+  --body-2:       0.875rem;  /* 14px */
+  --body-3:       0.75rem;   /* 12px */
+
+  /* ── 色彩 acc — Accent 色階 ── */
+  --accent:       #635bff;   /* violet-blue Stripe signature */
+  --accent-2:     #a78bfa;   /* light violet */
+  --accent-blue:  #4f8ef7;   /* blue */
+  --accent-em:    #34d399;   /* emerald */
+  --accent-rose:  #fb7185;   /* rose */
+  --accent-amber: #fbbf24;   /* amber */
+
+  /* ── 文字顏色階梯 ── */
+  --t1:   rgba(255,255,255,.95);   /* 主要文字 */
+  --t2:   rgba(255,255,255,.72);   /* 次要文字 */
+  --t3:   rgba(255,255,255,.46);   /* 輔助文字 */
+  --t4:   rgba(255,255,255,.28);   /* 最低層級 */
+
+  /* ── 間距：8px base grid ── */
+  --s1:  8px;   --s2:  16px;  --s3:  24px;
+  --s4:  32px;  --s5:  48px;  --s6:  64px;  --s7:  96px;
+  --s8:  128px; --s9:  192px; --s10: 256px;
+
+  /* ── 動畫時間：timing staircase ── */
+  --t-fast: 120ms;
+  --t-med:  240ms;
+  --t-slow: 400ms;
+  --ease:   cubic-bezier(.16,1,.3,1);   /* 精準的 decelerate-out */
+  --ease-in: cubic-bezier(.4,0,.2,1);   /* ease-in */
+
+  /* ── 圓角 ── */
+  --r-sm: 4px;  --r-md: 8px;  --r-lg: 16px;  --r-xl: 24px;
+}
+
+/* ═══════════════════════════════════════
+   RESET + BASE
+   ═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  background: var(--ink-800);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+}
+button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
+
+/* ═══════════════════════════════════════
+   SLIDE ENGINE — 單一焦點，動態進場
+   ═══════════════════════════════════════ */
+.deck {
+  position: relative;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+}
+.slide {
+  position: absolute; inset: 0;
+  display: flex;
+  align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-slow) var(--ease);
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.slide.prev { opacity: 0; }
+
+/* stagger entrance — timing staircase */
+.slide.active .in { animation: slideIn var(--t-slow) var(--ease) forwards; }
+.slide.active .in:nth-child(1) { animation-delay: 0ms; }
+.slide.active .in:nth-child(2) { animation-delay: 80ms; }
+.slide.active .in:nth-child(3) { animation-delay: 160ms; }
+.slide.active .in:nth-child(4) { animation-delay: 240ms; }
+.slide.active .in:nth-child(5) { animation-delay: 320ms; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════
+   BACKGROUND — 材質層次
+   ═══════════════════════════════════════ */
+.bg {
+  position: absolute; inset: 0; z-index: 0;
+}
+.bg--mesh {
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(99,91,255,.07), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 20% 80%, rgba(79,142,247,.05), transparent 70%),
+    var(--ink-800);
+}
+.bg--dark {
+  background: var(--ink-800);
+}
+.bg--deep {
+  background: var(--ink-900);
+}
+.bg--section {
+  background: var(--ink-900);
+}
+.bg--card {
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 40%, rgba(99,91,255,.04), transparent),
+    var(--ink-800);
+}
+
+/* ═══════════════════════════════════════
+   INNER LAYOUT
+   ═══════════════════════════════════════ */
+.inner {
+  position: relative; z-index: 1;
+  width: min(1200px, 90vw);
+  height: 100%;
+  display: flex; flex-direction: column;
+  padding: var(--s10) var(--s5);
+}
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY — 字體對比階梯
+   ═══════════════════════════════════════ */
+.font-display { font-family: 'Playfair Display', 'Noto Sans SC', Georgia, serif; }
+.font-body    { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+
+.txt-display-1 {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--display-1);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  color: var(--t1);
+}
+.txt-display-2 {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--display-2);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.015em;
+  color: var(--t1);
+}
+.txt-heading-1 {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--heading-1);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--t1);
+}
+.txt-heading-2 {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--heading-2);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--t1);
+}
+.txt-body-1 {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-1);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--t2);
+}
+.txt-body-2 {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-2);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--t3);
+}
+.txt-caption {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-3);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--t4);
+}
+
+/* accent text */
+.accent {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════
+   SLIDE COMPONENTS
+   ═══════════════════════════════════════ */
+
+/* ── TAG / LABEL ── */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: .7rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 4px 14px; border-radius: 100px;
+  border: 1px solid;
+}
+.tag--violet { color: var(--accent-2); border-color: rgba(167,139,250,.18); background: rgba(167,139,250,.06); }
+.tag--blue   { color: var(--accent-blue); border-color: rgba(79,142,247,.18); background: rgba(79,142,247,.06); }
+.tag--em     { color: var(--accent-em); border-color: rgba(52,211,153,.18); background: rgba(52,211,153,.06); }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 48px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+  border-radius: 2px;
+  margin: var(--s3) 0;
+}
+
+/* ── SECTION BREAK — 留白即語言 ── */
+.section-break {
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: var(--s2);
+}
+.section-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem; font-weight: 700;
+  line-height: 1;
+  color: rgba(99,91,255,.06);
+  letter-spacing: -.04em;
+}
+.section-label { color: var(--t4); }
+
+/* ── CARD GRID ── */
+.card-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: var(--s3); flex: 1; align-content: start;
+}
+.card {
+  background: var(--ink-600);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--s4);
+  transition: border-color var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--ease);
+}
+.card:hover {
+  border-color: rgba(99,91,255,.15);
+  transform: translateY(-2px);
+}
+.card__icon {
+  font-size: 1.75rem; margin-bottom: var(--s2);
+  display: block;
+}
+.card__title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--heading-3); font-weight: 600;
+  color: var(--t1); margin-bottom: var(--s1);
+}
+.card__body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-2); font-weight: 300;
+  line-height: 1.7; color: var(--t2);
+}
+
+/* ── SCENARIO GRID ── */
+.scenario-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--s3); flex: 1; align-content: start;
+}
+.scenario-card {
+  background: var(--ink-600);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--s4);
+  position: relative; overflow: hidden;
+}
+.scenario-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.scenario-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent), var(--accent-blue)); }
+.scenario-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-blue), var(--accent-em)); }
+.scenario-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-em), var(--accent-rose)); }
+.scenario-card__icon { font-size: 1.5rem; margin-bottom: var(--s2); display: block; }
+.scenario-card__title {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--heading-3); font-weight: 600;
+  color: var(--t1); margin-bottom: var(--s1);
+}
+.scenario-card__body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-2); font-weight: 300;
+  line-height: 1.7; color: var(--t2);
+}
+.scenario-tag {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: .65rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--t3);
+  padding: 3px 10px; border-radius: 100px;
+  border: 1px solid var(--border);
+  margin: 2px;
+}
+
+/* ── ARCHITECTURE DIAGRAM ── */
+.arch {
+  display: flex; align-items: flex-start; gap: var(--s3);
+  flex: 1; align-content: start;
+}
+.arch__label {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--body-3); font-weight: 600;
+  color: var(--t4); text-transform: uppercase;
+  letter-spacing: .1em; width: 100px; flex-shrink: 0;
+  text-align: right; padding-top: 2px;
+}
+.arch__row {
+  display: flex; flex-wrap: wrap; gap: var(--s1); flex: 1;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-2); font-weight: 500;
+  padding: 5px 14px; border-radius: var(--r-md);
+  border: 1px solid; white-space: nowrap;
+}
+.chip--blue   { color: var(--accent-blue); border-color: rgba(79,142,247,.15); background: rgba(79,142,247,.06); }
+.chip--violet { color: var(--accent-2);   border-color: rgba(167,139,250,.15); background: rgba(167,139,250,.06); }
+.chip--em     { color: var(--accent-em);   border-color: rgba(52,211,153,.15);  background: rgba(52,211,153,.06); }
+.chip--muted  { color: var(--t3);          border-color: var(--border);          background: rgba(255,255,255,.03); }
+
+/* ── DATA TABLE ── */
+.data-table {
+  width: 100%; border-collapse: collapse;
+  flex: 1;
+}
+.data-table th {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--body-3); font-weight: 600;
+  color: var(--t4); text-transform: uppercase;
+  letter-spacing: .06em; text-align: left;
+  padding: var(--s2) var(--s2);
+  border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-2); font-weight: 300;
+  color: var(--t2); padding: var(--s2);
+  border-bottom: 1px solid rgba(255,255,255,.03);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .val {
+  font-family: 'Inter', sans-serif; font-weight: 600;
+  color: var(--t1); text-align: right;
+}
+
+/* ── FLOW / STEPS ── */
+.flow-cols {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--s3); flex: 1; align-content: start;
+}
+.flow-col {
+  background: var(--ink-600);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: var(--s4);
+  position: relative; overflow: hidden;
+}
+.flow-col::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.flow-col:nth-child(1)::before { background: linear-gradient(90deg, var(--accent), var(--accent-blue)); }
+.flow-col:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-blue), var(--accent-em)); }
+.flow-col:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-em), var(--accent-rose)); }
+.flow-col__title {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--heading-3); font-weight: 600;
+  color: var(--t1); margin-bottom: var(--s2);
+}
+.flow-step {
+  display: flex; align-items: flex-start; gap: var(--s2);
+  margin-bottom: var(--s2);
+}
+.flow-step__n {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif; font-size: var(--body-3); font-weight: 600;
+  margin-top: 1px;
+}
+.flow-step__p {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-2); font-weight: 300;
+  line-height: 1.65; color: var(--t2);
+}
+
+/* ── USE CASE HERO ── */
+.uc-hero {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: var(--s3); flex: 1; justify-content: center;
+}
+.uc-icon {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 0 30px rgba(99,91,255,.2));
+}
+.uc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 700; line-height: 1.2;
+}
+.uc-body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-1); font-weight: 300;
+  line-height: 1.8; color: var(--t2);
+  max-width: 640px;
+}
+.uc-label {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--body-3); font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── THANK YOU ── */
+.s-thanks .inner {
+  align-items: center; justify-content: center; text-align: center;
+}
+.thanks-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--body-3); font-weight: 600;
+  letter-spacing: .3em; text-transform: uppercase;
+  color: var(--t4); margin-bottom: var(--s5);
+}
+.thanks-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800; line-height: 1.05;
+  background: linear-gradient(135deg, var(--t1) 30%, var(--accent) 70%, var(--t1) 90%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 8s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.thanks-sub {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: var(--body-1); font-weight: 300;
+  color: var(--t3); margin-top: var(--s3);
+  letter-spacing: .06em;
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════ */
+.progress-bar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px; z-index: 300;
+  background: linear-gradient(90deg, var(--accent), var(--accent-blue), var(--accent-em));
+  transition: width var(--t-slow) var(--ease);
+  box-shadow: 0 0 16px rgba(99,91,255,.3);
+}
+.fs-btn {
+  position: fixed; top: 16px; right: 16px;
+  width: 34px; height: 34px; border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: rgba(5,6,10,.6);
+  color: var(--t3); cursor: pointer; z-index: 300;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(12px);
+  font-size: 14px;
+  transition: all var(--t-fast) var(--ease);
+}
+.fs-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.nav {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 4px; align-items: center;
+  z-index: 300; padding: 5px 14px;
+  border-radius: 100px;
+  background: rgba(5,6,10,.75);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+.nav button {
+  background: none; border: none;
+  color: var(--t3); padding: 5px 14px;
+  border-radius: 100px; cursor: pointer;
+  font-size: .8rem; font-weight: 500;
+  transition: color var(--t-fast) var(--ease);
+}
+.nav button:hover { color: var(--t1); }
+.nav button:disabled { opacity: .2; cursor: default; }
+.nav .sep { color: rgba(255,255,255,.12); font-size: 9px; margin: 0 2px; }
+.nav .cnt {
+  font-family: 'Inter', sans-serif; font-size: .7rem;
+  color: var(--t3); min-width: 36px; text-align: center;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE — 5 breakpoints
+   ═══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .card-grid { grid-template-columns: 1fr 1fr; }
+  .scenario-grid { grid-template-columns: 1fr; }
+  .flow-cols { grid-template-columns: 1fr; }
+  .section-num { font-size: 5rem; }
+}
+@media (max-width: 768px) {
+  .inner { padding: var(--s5) var(--s3); }
+  :root { --s5: 2.5rem; --s6: 3rem; --s7: 4rem; --s8: 5rem; --s9: 6rem; --s10: 8rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .scenario-grid { grid-template-columns: 1fr 1fr; }
+  .nav { bottom: 12px; }
+}
+@media (max-width: 480px) {
+  .scenario-grid { grid-template-columns: 1fr; }
+  .txt-display-1 { font-size: 2.2rem; }
+  .txt-display-2 { font-size: 1.6rem; }
+  .nav button { padding: 4px 8px; font-size: .7rem; }
+  .fs-btn { top: 8px; right: 8px; width: 28px; height: 28px; }
+}
+
+/* ═══════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════ */
+.col-center { align-items: center; text-align: center; }
+.col-center .inner { align-items: center; }
+</style>
+</head>
+
+<body>
+
+<div class="progress-bar" id="progBar"></div>
+<button class="fs-btn" id="fsBtn" onclick="toggleFs()" title="全螢幕">⛶</button>
+
+<div class="deck" id="deck">
+
+<!-- ═══════════════════════════════════════════
+     01 — TITLE
+     一畫面一訊息：公司 + 產品名 + 一句定位
+     ═══════════════════════════════════════════ -->
+<section class="slide active" data-i="0">
+  <div class="bg bg--mesh"></div>
+  <div class="inner col-center">
+    <div class="in" style="margin-bottom: var(--s3)">
+      <span class="tag tag--violet">2026 · APS</span>
+    </div>
+    <div class="in">
+      <h1 class="txt-display-1" style="margin-bottom: var(--s3)">
+        APS AI Agent
+      </h1>
+    </div>
+    <div class="in" style="margin-bottom: var(--s5)">
+      <p class="txt-heading-2" style="color: var(--t2); font-weight: 400">
+        智能体解决方案
+      </p>
+    </div>
+    <div class="in">
+      <p class="txt-body-2" style="max-width: 520px; color: var(--t3)">
+        AI 驅動的有限產能優化演算法，<br>無縫適配用友生態，精準驅動生產排程
+      </p>
+    </div>
+    <div class="in" style="margin-top: auto; padding-top: var(--s4)">
+      <p class="txt-caption">大連潤思科技 · 製造行業及智能制造解決方案商</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     02 — 產品定位
+     一畫面一訊息：一句定位 + 一句價值
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="1">
+  <div class="bg bg--section"></div>
+  <div class="inner">
+    <div class="in" style="margin-bottom: var(--s8)">
+      <span class="section-num">02</span>
+    </div>
+    <div class="in">
+      <p class="txt-caption" style="margin-bottom: var(--s2)">產品介紹</p>
+      <h2 class="txt-display-2" style="margin-bottom: var(--s3)">
+        專注生產排程的<br><span class="accent">APS 智能體</span>
+      </h2>
+    </div>
+    <div class="in">
+      <p class="txt-body-1" style="max-width: 640px">
+        無縫適配用友 ERP、MES 等生態系統，<br>
+        以 AI 驅動有限產能優化演算法，<br>
+        整合訂單、物料、產能，生成<span class="accent">精準可執行</span>的排程方案。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     03 — 四大核心功能
+     一畫面一訊息：四張卡 = 四個功能，每張一句
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="2">
+  <div class="bg bg--dark"></div>
+  <div class="inner">
+    <div class="in" style="margin-bottom: var(--s4)">
+      <p class="txt-caption" style="margin-bottom: var(--s2)">核心功能</p>
+      <h2 class="txt-heading-1">四大 APS 能力</h2>
+    </div>
+    <div class="in">
+      <div class="card-grid">
+        <div class="card">
+          <span class="card__icon">⚡</span>
+          <p class="card__title">智能插單</p>
+          <p class="card__body">接收新訂單，自動觸發排程計算，分鐘級融入現有計劃</p>
+        </div>
+        <div class="card">
+          <span class="card__icon">📊</span>
+          <p class="card__title">多版本對比</p>
+          <p class="card__body">自動比對前後排程，精準識別產能利用率、交期達成率差異</p>
+        </div>
+        <div class="card">
+          <span class="card__icon">💡</span>
+          <p class="card__title">智能建議</p>
+          <p class="card__body">識別產能瓶頸與潛在風險，提供數據驅動的優化建議</p>
+        </div>
+        <div class="card">
+          <span class="card__icon">🚀</span>
+          <p class="card__title">一鍵排程</p>
+          <p class="card__body">自然語言串聯「建立→審核→排程」，多步操作一步完成</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     04 — 三大應用場景
+     一畫面一訊息：三張卡 = 三大場景
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="3">
+  <div class="bg bg--card"></div>
+  <div class="inner">
+    <div class="in" style="margin-bottom: var(--s4)">
+      <p class="txt-caption" style="margin-bottom: var(--s2)">應用場景</p>
+      <h2 class="txt-heading-1">三大核心場景</h2>
+    </div>
+    <div class="in">
+      <div class="scenario-grid">
+        <div class="scenario-card">
+          <span class="scenario-card__icon">🏭</span>
+          <p class="scenario-card__title">離散製造柔性排程</p>
+          <p class="scenario-card__body">
+            多品種小批量，智能匹配訂單與產能，聯動 ERP/MES/SCM
+          </p>
+        </div>
+        <div class="scenario-card">
+          <span class="scenario-card__icon">🔧</span>
+          <p class="scenario-card__title">裝備製造 / 非標訂單</p>
+          <p class="scenario-card__body">
+            整合複雜 BOM 與工藝數據，分鐘級完成重排，最小化插單影響
+          </p>
+        </div>
+        <div class="scenario-card">
+          <span class="scenario-card__icon">⚙️</span>
+          <p class="scenario-card__title">批次生產優化</p>
+          <p class="scenario-card__body">
+            優化批次順序，降低切換成本，提前識別產能缺口
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     05 — 智慧數位員工架構
+     一畫面一訊息：圖 = 一句核心
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="4">
+  <div class="bg bg--deep"></div>
+  <div class="inner">
+    <div class="in" style="margin-bottom: var(--s4)">
+      <p class="txt-caption" style="margin-bottom: var(--s2)">智慧員工架構</p>
+      <h2 class="txt-heading-1">廠區層級 AI + APS 智慧數位員工</h2>
+    </div>
+    <div class="in">
+      <div class="arch">
+        <p class="arch__label">系統層</p>
+        <div class="arch__row">
+          <span class="chip chip--blue">ERP</span>
+          <span class="chip chip--blue">MES</span>
+          <span class="chip chip--blue">APS</span>
+          <span class="chip chip--blue">YMS</span>
+          <span class="chip chip--blue">EAP</span>
+          <span class="chip chip--blue">RMS</span>
+        </div>
+      </div>
+      <div class="arch" style="margin-top: var(--s3)">
+        <p class="arch__label">廠區</p>
+        <div class="arch__row">
+          <span class="chip chip--violet">FAB 1</span>
+          <span class="chip chip--violet">FAB 2</span>
+        </div>
+      </div>
+      <div class="arch" style="margin-top: var(--s3)">
+        <p class="arch__label">角色</p>
+        <div class="arch__row">
+          <span class="chip chip--em">生管 / 銷售</span>
+          <span class="chip chip--em">廠務 / 製造</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     06 — 數據價值
+     一畫面一訊息：表格 = 核心 KPI 矩陣
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="5">
+  <div class="bg bg--dark"></div>
+  <div class="inner">
+    <div class="in" style="margin-bottom: var(--s4)">
+      <p class="txt-caption" style="margin-bottom: var(--s2)">數據價值</p>
+      <h2 class="txt-heading-1">全鏈數據資產價值體現</h2>
+    </div>
+    <div class="in">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>單位</th>
+            <th>核心數據</th>
+            <th style="text-align: right">管理指標</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="chip chip--violet" style="font-size: .7rem">生管</span></td>
+            <td>訂單 / 工單數據</td>
+            <td class="val">提升訂單准交能力</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip--blue" style="font-size: .7rem">品管</span></td>
+            <td>工單良率 / 不良率</td>
+            <td class="val">縮短交付週期</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip--em" style="font-size: .7rem">經營</span></td>
+            <td>接單量 / 毛利率</td>
+            <td class="val">提升產能利用率</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip--muted" style="font-size: .7rem">任務</span></td>
+            <td>計劃 OTD / 延遲天數</td>
+            <td class="val">降低平均延遲天數</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     07 — 案例分隔頁
+     留白即語言：大片深色留白 + 一句話
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="6">
+  <div class="bg bg--section"></div>
+  <div class="inner col-center">
+    <div class="in" style="margin-bottom: var(--s5)">
+      <p class="txt-caption">情境案例</p>
+    </div>
+    <div class="in">
+      <h2 class="txt-display-2" style="font-style: italic">
+        真實場景，<span class="accent">實際演示</span>
+      </h2>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     08 — 業務流程
+     一畫面一訊息：三步流程
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="7">
+  <div class="bg bg--dark"></div>
+  <div class="inner">
+    <div class="in" style="margin-bottom: var(--s4)">
+      <p class="txt-caption" style="margin-bottom: var(--s2)">業務流程</p>
+      <h2 class="txt-heading-1">從訂單到排程，三步完成</h2>
+    </div>
+    <div class="in">
+      <div class="flow-cols">
+        <div class="flow-col">
+          <p class="flow-col__title">① 建立訂單</p>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(99,91,255,.12); color: var(--accent-2)">1</span>
+            <p class="flow-step__p">輸入客戶編號、產品編號、數量、交期</p>
+          </div>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(99,91,255,.12); color: var(--accent-2)">2</span>
+            <p class="flow-step__p">AI Agent 自動呼叫驗證 API</p>
+          </div>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(99,91,255,.12); color: var(--accent-2)">3</span>
+            <p class="flow-step__p">訂單建立完成，觸發排程計算</p>
+          </div>
+        </div>
+        <div class="flow-col">
+          <p class="flow-col__title">② 查看排程</p>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(79,142,247,.12); color: var(--accent-blue)">1</span>
+            <p class="flow-step__p">AI Agent 調用排程結果 API</p>
+          </div>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(79,142,247,.12); color: var(--accent-blue)">2</span>
+            <p class="flow-step__p">呈現狀態：成功 / 排程中 / 待確認</p>
+          </div>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(79,142,247,.12); color: var(--accent-blue)">3</span>
+            <p class="flow-step__p">使用者可選擇分析版本或手動發起</p>
+          </div>
+        </div>
+        <div class="flow-col">
+          <p class="flow-col__title">③ 分析結果</p>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(52,211,153,.12); color: var(--accent-em)">1</span>
+            <p class="flow-step__p">拉取排程版本 + 結果指標 API</p>
+          </div>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(52,211,153,.12); color: var(--accent-em)">2</span>
+            <p class="flow-step__p">以表格或圖表呈現關鍵數據</p>
+          </div>
+          <div class="flow-step">
+            <span class="flow-step__n" style="background: rgba(52,211,153,.12); color: var(--accent-em)">3</span>
+            <p class="flow-step__p">版本對比一目瞭然，快速決策</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     09 — 使用情境 01：零門檻入口
+     一畫面一訊息：icon + 一句標題 + 一句說明
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="8">
+  <div class="bg bg--mesh"></div>
+  <div class="inner col-center">
+    <div class="in uc-hero">
+      <span class="uc-icon">💬</span>
+      <p class="uc-label">使用情境 01</p>
+      <h2 class="uc-title">零門檻交互入口</h2>
+      <p class="uc-body">
+        無需複雜操作，輸入任意文字即可與智能體互動。<br>
+        新人輕鬆上手，徹底打通排程操作溝通壁壘。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     10 — 使用情境 02：數據查詢
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="9">
+  <div class="bg bg--mesh"></div>
+  <div class="inner col-center">
+    <div class="in uc-hero">
+      <span class="uc-icon">📊</span>
+      <p class="uc-label">使用情境 02</p>
+      <h2 class="uc-title">數據查詢，秒出結論</h2>
+      <p class="uc-body">
+        告別數小時手動整理！<br>
+        自然語言清晰下達查詢需求，秒級完成數據抓取與指標提煉。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     11 — 使用情境 03：全流程自動化
+     ═══════════════════════════════════════════ -->
+<section class="slide" data-i="10">
+  <div class="bg bg--mesh"></div>
+  <div class="inner col-center">
+    <div class="in uc-hero">
+      <span class="uc-icon">🤖</span>
+      <p class="uc-label">使用情境 03</p>
+      <h2 class="uc-title">自然語言驅動<br>全流程自動化</h2>
+      <p class="uc-body">
+        告別跨系統切換、手動填單！<br>
+        從訂單生成到智慧排程，一條指令走完全鏈。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     12 — THANK YOU
+     ═══════════════════════════════════════════ -->
+<section class="slide s-thanks" data-i="11">
+  <div class="inner col-center">
+    <div class="in">
+      <p class="thanks-eyebrow">Thank You</p>
+    </div>
+    <div class="in">
+      <h1 class="thanks-title">APS AI Agent</h1>
+    </div>
+    <div class="in">
+      <p class="thanks-sub">大連潤思科技 · 製造行業及智能制造解決方案商</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- .deck -->
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION — 鍵盤 / 觸控 / 滾輪 / 全螢幕
+     ═══════════════════════════════════════════ -->
+<div class="progress-bar" id="progBar"></div>
+<button class="fs-btn" id="fsBtn" onclick="toggleFs()" title="全螢幕">⛶</button>
+<div class="nav" id="nav">
+  <button id="prevBtn" onclick="prev()">◀ 上一張</button>
+  <span class="sep">|</span>
+  <span class="cnt" id="cnt">1 / 12</span>
+  <span class="sep">|</span>
+  <button id="nextBtn" onclick="next()">下一張 ▶</button>
+</div>
+
+<script>
+(function () {
+  const slides = [...document.querySelectorAll('.slide')];
+  let cur = 0;
+
+  function go(n) {
+    if (n < 0 || n >= slides.length) return;
+    slides[cur].classList.remove('active');
+    slides[cur].classList.add('prev');
+    cur = n;
+    slides[cur].classList.remove('prev');
+    slides[cur].classList.add('active');
+    refresh();
+  }
+  window.next = () => go(cur + 1);
+  window.prev = () => go(cur - 1);
+
+  function refresh() {
+    document.getElementById('progBar').style.width =
+      ((cur + 1) / slides.length * 100) + '%';
+    document.getElementById('cnt').textContent =
+      (cur + 1) + ' / ' + slides.length;
+    document.getElementById('prevBtn').disabled = cur === 0;
+    document.getElementById('nextBtn').disabled = cur === slides.length - 1;
+  }
+
+  // ── Keyboard ──
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End')  { e.preventDefault(); go(slides.length - 1); }
+    if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFs(); }
+  });
+
+  // ── Touch swipe ──
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+  }, { passive: true });
+
+  // ── Wheel scroll ──
+  let wTimer;
+  document.addEventListener('wheel', e => {
+    clearTimeout(wTimer);
+    wTimer = setTimeout(() => {
+      if (Math.abs(e.deltaY) > 30) e.deltaY > 0 ? next() : prev();
+    }, 50);
+  }, { passive: true });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
