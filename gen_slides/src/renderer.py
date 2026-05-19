@@ -97,6 +97,8 @@ body{{font-family:{families.get('body','sans-serif')};background:var(--c-bg);col
 
 /*=============================== [02] SLIDE ENGINE ===============================*/
 .slides-container{{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--c-bg)}}
+.skeleton{{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--c-bg);z-index:5}}
+.skeleton-bar{{width:60%;height:12px;background:linear-gradient(90deg,var(--surface) 25%,var(--surface-h) 50%,var(--surface) 75%);border-radius:6px;animation:shimmer 1.5s ease-in-out infinite;margin:8px 0}}
 .slide{{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;animation:springIn var(--t-slow) var(--ease) forwards;transform:translateY(12px);padding:{l.get('slidePadding','2rem')};will-change:opacity,transform}}
 .slide.active{{opacity:1;visibility:visible;transform:translateY(0);z-index:10}}
 .slide.prev{{opacity:0;transform:translateY(-12px)}}
@@ -264,7 +266,7 @@ def render_slides(spec, tokens, img_dir='html/images'):
   <div class="section-title">{_section}</div>
 </div>""")
         stagger_val = s.get('stagger', 0)
-        body_parts.append(f'<div class="slide" data-stagger="{stagger_val}"><div class="slide-inner">{inner}</div></div>')
+        body_parts.append(f'<div class="slide" role="group" aria-label="slide {idx+1}" data-stagger="{stagger_val}"><div class="slide-inner">{inner}</div></div>')
 
     css = build_css(tokens)
     font_link = tokens.get('fonts', {}).get('google', '')
@@ -289,6 +291,7 @@ def render_slides(spec, tokens, img_dir='html/images'):
 </style>
 </head>
 <body>
+<div class="skeleton" id="skeleton"><div class="skeleton-bar" style="width:40%"></div><div class="skeleton-bar" style="width:60%"></div><div class="skeleton-bar" style="width:50%"></div></div>
 <div class="slides-container" id="slides">
 {"".join(body_parts)}
 </div>
@@ -300,6 +303,10 @@ def render_slides(spec, tokens, img_dir='html/images'):
 </nav>
 <script>
 (function(){{
+  // Skeleton: hide on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded',()=>{{
+    const sk=document.querySelector('.skeleton');if(sk)sk.style.display='none';
+  }});
   const slides=document.querySelectorAll('.slide,.section-break');
   const bar=document.getElementById('progressBar');
   const cur=document.getElementById('curNum');
