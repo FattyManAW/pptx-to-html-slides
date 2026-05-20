@@ -1,0 +1,35 @@
+{
+  "润思IMPACTS": {
+    "slide_count": 62,
+    "filesize_kb": 88.4,
+    "p0_score": "6/6",
+    "quality_score": "4/5",
+    "pass_count": 17,
+    "fail_count": 0,
+    "warn_count": 0,
+    "total_checks": 20,
+    "pct": 85
+  },
+  "APS AI Agent": {
+    "slide_count": 12,
+    "filesize_kb": 39.3,
+    "p0_score": "6/6",
+    "quality_score": "4/5",
+    "pass_count": 17,
+    "fail_count": 0,
+    "warn_count": 0,
+    "total_checks": 20,
+    "pct": 85
+  },
+  "CRIS IMPACTs": {
+    "slide_count": 36,
+    "filesize_kb": 28.0,
+    "p0_score": "6/6",
+    "quality_score": "4/5",
+    "pass_count": 17,
+    "fail_count": 0,
+    "warn_count": 0,
+    "total_checks": 20,
+    "pct": 85
+  }
+}

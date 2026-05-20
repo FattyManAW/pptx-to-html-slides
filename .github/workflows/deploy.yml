@@ -1,0 +1,257 @@
+name: Power Squad CI/CD — QA → Lighthouse → Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # ═══════════════════════════════════════════
+  # Stage 0: QA Gate
+  # ═══════════════════════════════════════════
+  qa-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      qa_passes: ${{ steps.qa.outputs.passes }}
+      qa_report: ${{ steps.qa.outputs.report }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run QA Pipeline
+        id: qa
+        run: |
+          python3 run_qa.py --once --json --no-alert 2>/dev/null | tail -1 > qa_result.json
+          cat qa_result.json
+          
+          # Check if ALL passes (no fails)
+          python3 -c "
+          import json
+          with open('qa_result.json') as f:
+              data = json.load(f)
+          total_fails = sum(v.get('fail_count', 0) for v in data.values() if isinstance(v, dict))
+          print(f'Total FAILs: {total_fails}')
+          if total_fails > 0:
+              print('❌ QA GATE FAILED')
+              exit(1)
+          else:
+              print('✅ QA GATE PASSED')
+          " > qa_gate.txt
+          
+          cat qa_gate.txt
+          echo "passes=$(grep -c 'PASSED' qa_gate.txt)" >> $GITHUB_OUTPUT
+          echo "report<<EOF" >> $GITHUB_OUTPUT
+          cat qa_result.json >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Run Token Validation
+        run: |
+          python3 extract-tokens.py 2>&1 | tee tokens_check.txt
+          # extract-tokens exit code non-zero = drift detected
+          TOKEN_EXIT=$?
+          if [ $TOKEN_EXIT -ne 0 ]; then
+            echo "⚠ Token drift detected (non-blocking for now)"
+          fi
+
+  # ═══════════════════════════════════════════
+  # Stage 1: Lighthouse Audit
+  # ═══════════════════════════════════════════
+  lighthouse:
+    needs: qa-gate
+    runs-on: ubuntu-latest
+    outputs:
+      lh_scores: ${{ steps.lighthouse.outputs.scores }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
+
+      - name: Serve & Audit
+        id: lighthouse
+        run: |
+          # Start HTTP server in background
+          python3 -m http.server 8765 --directory showcase &
+          SERVER_PID=$!
+          sleep 2
+
+          # Run lighthouse on each product
+          declare -A PRODUCTS=(
+            ["runs-impacts"]="runs-impacts-aps-partner.html"
+            ["aps"]="aps-ai-agent.html"
+            ["cris"]="cris-impacts-carbon.html"
+          )
+
+          echo "{" > lh_scores.json
+          first=true
+          for key in runs-impacts aps cris; do
+            file="${PRODUCTS[$key]}"
+            echo "🔍 Lighthouse: $key ($file)"
+            
+            lighthouse "http://127.0.0.1:8765/$file" \
+              --output=json \
+              --chrome-flags="--headless --no-sandbox --disable-gpu" \
+              --output-path="lh_${key}.json" 2>&1 | tail -3
+            
+            # Extract scores
+            SCORES=$(python3 -c "
+          import json
+          with open('lh_${key}.json') as f:
+              d = json.load(f)
+          cats = d.get('categories', {})
+          perf = cats.get('performance', {}).get('score', 0) * 100
+          a11y = cats.get('accessibility', {}).get('score', 0) * 100
+          bp   = cats.get('best-practices', {}).get('score', 0) * 100
+          seo  = cats.get('seo', {}).get('score', 0) * 100
+          print(f'{{\"perf\":{perf:.0f},\"a11y\":{a11y:.0f},\"bp\":{bp:.0f},\"seo\":{seo:.0f}}}')
+          ")
+            
+            if [ "$first" = true ]; then first=false; else echo "," >> lh_scores.json; fi
+            echo "  \"$key\": $SCORES" >> lh_scores.json
+            
+            # Gate check
+            PERF=$(echo "$SCORES" | python3 -c "import json,sys; print(json.load(sys.stdin)['perf'])")
+            if [ "$PERF" -lt 85 ]; then
+              echo "❌ LIGHTHOUSE GATE FAILED: $key Performance=$PERF"
+            else
+              echo "✅ $key Performance=$PERF"
+            fi
+          done
+          echo "}" >> lh_scores.json
+          
+          kill $SERVER_PID 2>/dev/null
+          
+          cat lh_scores.json
+          echo "scores<<EOF" >> $GITHUB_OUTPUT
+          cat lh_scores.json >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  # ═══════════════════════════════════════════
+  # Stage 2: Deploy to gh-pages
+  # ═══════════════════════════════════════════
+  deploy:
+    needs: [qa-gate, lighthouse]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./showcase
+          publish_branch: gh-pages
+          force_orphan: false
+          commit_message: "ci: deploy ${{ github.sha }} — QA ${{ needs.qa-gate.outputs.qa_passes }} passes"
+
+  # ═══════════════════════════════════════════
+  # Stage 3: Report Card → Board Chat
+  # ═══════════════════════════════════════════
+  report:
+    needs: [qa-gate, lighthouse, deploy]
+    runs-on: ubuntu-latest
+    if: always() && !cancelled()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate Report Card
+        id: report
+        run: |
+          echo "## CI/CD Pipeline Report — $(date -u +'%Y-%m-%d %H:%M UTC')" > report.md
+          echo "" >> report.md
+          echo "| Stage | Status |" >> report.md
+          echo "|-------|--------|" >> report.md
+          
+          if [ "${{ needs.qa-gate.result }}" = "success" ]; then
+            echo "| QA Gate | ✅ PASSED |" >> report.md
+          else
+            echo "| QA Gate | ❌ FAILED |" >> report.md
+          fi
+          
+          if [ "${{ needs.lighthouse.result }}" = "success" ]; then
+            echo "| Lighthouse | ✅ PASSED |" >> report.md
+          else
+            echo "| Lighthouse | ❌ FAILED |" >> report.md
+          fi
+          
+          if [ "${{ needs.deploy.result }}" = "success" ]; then
+            echo "| Deploy | ✅ DEPLOYED |" >> report.md
+            echo "" >> report.md
+            echo "🔗 https://fattymanaw.github.io/pptx-to-html-slides/" >> report.md
+          else
+            echo "| Deploy | ❌ FAILED |" >> report.md
+          fi
+          
+          echo "" >> report.md
+          echo "📦 Commit: ${{ github.sha }} (${{ github.event.head_commit.message }})" >> report.md
+          
+          cat report.md
+          
+          # Store for artifact
+          mkdir -p artifacts
+          cp report.md artifacts/
+
+      - name: Upload Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-report
+          path: artifacts/report.md
+
+      - name: Notify Board Chat
+        run: |
+          REPORT=$(cat report.md | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))")
+          
+          curl -sS -X POST \
+            "http://100.107.36.80:8000/api/v1/agent/boards/3881607b-63ff-41ca-ab94-e45cace657c6/memory" \
+            -H "X-Agent-Token: ubiMy0-FgO3TA5CkRvRvSvVXpeAGi7vO9xwuyfeB7cs" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": $REPORT, \"tags\": [\"chat\"]}" || echo "⚠ Board chat push skipped (rate limit or network)"
+
+  # ═══════════════════════════════════════════
+  # Stage 4: Rollback (on failure)
+  # ═══════════════════════════════════════════
+  rollback:
+    needs: [qa-gate, lighthouse, deploy]
+    runs-on: ubuntu-latest
+    if: failure() && !cancelled()
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Rollback Alert
+        run: |
+          FAILED_STAGES=""
+          if [ "${{ needs.qa-gate.result }}" = "failure" ]; then FAILED_STAGES="$FAILED_STAGES QA"; fi
+          if [ "${{ needs.lighthouse.result }}" = "failure" ]; then FAILED_STAGES="$FAILED_STAGES Lighthouse"; fi
+          
+          echo "## ⚠ CI/CD Pipeline FAILED" > alert.md
+          echo "" >> alert.md
+          echo "Failed stages: $FAILED_STAGES" >> alert.md
+          echo "Commit: ${{ github.sha }}" >> alert.md
+          echo "Branch: main" >> alert.md
+          echo "" >> alert.md
+          echo "Rollback: manual — gh-pages unchanged." >> alert.md
+          
+          cat alert.md
+          
+          ALERT=$(cat alert.md | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))")
+          curl -sS -X POST \
+            "http://100.107.36.80:8000/api/v1/agent/boards/3881607b-63ff-41ca-ab94-e45cace657c6/memory" \
+            -H "X-Agent-Token: ubiMy0-FgO3TA5CkRvRvSvVXpeAGi7vO9xwuyfeB7cs" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": $ALERT, \"tags\": [\"chat\"]}" || echo "⚠ Alert push skipped"

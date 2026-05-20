@@ -1,0 +1,154 @@
+{
+  "report_title": "投影片 HTML QA 檢查報告",
+  "generated_at": "2026-05-20T07:25:05.210211",
+  "files_analyzed": 1,
+  "results": [
+    {
+      "filename": "cris-impacts-carbon.html",
+      "filepath": "showcase/cris-impacts-carbon.html",
+      "filesize_kb": 28.0,
+      "slide_count": 36,
+      "results": [
+        {
+          "category": "結構",
+          "check": "HTML5 Doctype",
+          "status": "PASS",
+          "message": "HTML5 doctype 存在"
+        },
+        {
+          "category": "結構",
+          "check": "Charset UTF-8",
+          "status": "PASS",
+          "message": "charset=UTF-8 已宣告"
+        },
+        {
+          "category": "結構",
+          "check": "Viewport Meta",
+          "status": "PASS",
+          "message": "viewport meta 標籤存在"
+        },
+        {
+          "category": "結構",
+          "check": "投影片數量",
+          "status": "PASS",
+          "message": "偵測到 36 張投影片"
+        },
+        {
+          "category": "結構",
+          "check": "<style> 區塊",
+          "status": "INFO",
+          "message": "1 個 <style> 區塊"
+        },
+        {
+          "category": "結構",
+          "check": "<script> 區塊",
+          "status": "INFO",
+          "message": "1 個 <script> 區塊"
+        },
+        {
+          "category": "內容",
+          "check": "Base64 檢查",
+          "status": "PASS",
+          "message": "無 base64 內嵌圖片"
+        },
+        {
+          "category": "內容",
+          "check": "Google Fonts",
+          "status": "PASS",
+          "message": "已載入 Google Fonts CDN"
+        },
+        {
+          "category": "內容",
+          "check": "連結有效性",
+          "status": "INFO",
+          "message": "無 <a> 連結（可能僅使用按鈕導航）"
+        },
+        {
+          "category": "內容",
+          "check": "空白標籤",
+          "status": "PASS",
+          "message": "無空白 <p> 或 <h1>-<h4> 標籤"
+        },
+        {
+          "category": "內容",
+          "check": "佔位文字",
+          "status": "PASS",
+          "message": "無佔位文字（如「添加文本」）"
+        },
+        {
+          "category": "P0-1",
+          "check": "語義層次 (Heading)",
+          "status": "PASS",
+          "message": "標題層級正確（無跳級）"
+        },
+        {
+          "category": "P0-2",
+          "check": "Blur 變數",
+          "status": "PASS",
+          "message": "所有 blur 變數已定義: --blur-12, --blur-24, --blur-32, --blur-8, --blur-card, --blur-modal, --blur-nav, --blur-sheet"
+        },
+        {
+          "category": "P0-3",
+          "check": "Timing/Stagger",
+          "status": "PASS",
+          "message": "data-stagger 屬性存在"
+        },
+        {
+          "category": "P0-4",
+          "check": "Focus 可見",
+          "status": "PASS",
+          "message": ":focus-visible 樣式規則存在"
+        },
+        {
+          "category": "P0-5",
+          "check": "Active 樣式",
+          "status": "PASS",
+          "message": ":active / nav-active 樣式規則存在"
+        },
+        {
+          "category": "P0-6",
+          "check": "A11y 無障礙",
+          "status": "PASS",
+          "message": "aria-label 屬性存在"
+        },
+        {
+          "category": "響應式",
+          "check": "@media 斷點",
+          "status": "PASS",
+          "message": "至少 1 個 @media 響應式斷點"
+        },
+        {
+          "category": "響應式",
+          "check": "Viewport Meta",
+          "status": "PASS",
+          "message": "viewport meta 正確"
+        },
+        {
+          "category": "字體",
+          "check": "Font-weight 層級",
+          "status": "PASS",
+          "message": "字體粗細充足: [300, 500, 600, 700, 800, 900]（含 300/Regular + 600/Bold）"
+        }
+      ],
+      "summary": {
+        "p0": {
+          "pass": 6,
+          "total": 6,
+          "score": "6/6"
+        },
+        "quality": {
+          "pass": 4,
+          "total": 5,
+          "score": "4/5"
+        },
+        "overall": {
+          "pass": 17,
+          "fail": 0,
+          "warn": 0,
+          "info": 3,
+          "total": 20
+        }
+      }
+    }
+  ]
+}

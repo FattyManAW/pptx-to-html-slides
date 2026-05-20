@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APS AI Agent 智能体解决方案_20260113.pptx</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700|Playfair+Display:wght@600;700;800;900|Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* v4 Design System — APS AI Agent — Multi-Accent */
+:root {
+  --accent: #635bff; --accent-mid: #2dd4bf;
+  --c-bg: #06080d; --c-t1: rgba(255,255,255,.95); --c-t2: rgba(255,255,255,.72); --c-t3: rgba(255,255,255,.46);
+  --surface: rgba(255,255,255,.04); --border: rgba(255,255,255,.08);
+  --t-fast: 150ms; --t-mid: 300ms; --t-slow: 400ms;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+  --s1: 0.5rem; --s2: 1rem; --s3: 1.5rem; --s4: 2rem;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:var(--c-t2);line-height:1.65}
+.slides-container{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--c-bg)}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;padding:2rem;animation:springIn var(--t-slow) var(--ease) forwards}
+.slide.active{opacity:1;visibility:visible;z-index:10}
+@keyframes springIn{0%{opacity:0;transform:translateY(12px)scale(.97)}60%{opacity:1;transform:translateY(-2px)scale(1.01)}100%{opacity:1;transform:translateY(0)scale(1)}}
+.slide-inner{width:100%;max-width:1100px}
+.slide-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:700;color:var(--c-t1);margin-bottom:1rem}
+.slide-body{font-size:clamp(.8rem,1.2vw,.92rem);color:var(--c-t2);margin-bottom:.8rem}
+.progress-bar{position:fixed;top:0;left:0;height:1.5px;background:linear-gradient(90deg,var(--accent),var(--accent-mid));z-index:301;transition:width var(--t-mid)}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:center;gap:1rem;padding:1rem 2rem;background:linear-gradient(transparent,rgba(6,8,13,.65));backdrop-filter:blur(20px);border-top:1px solid var(--border)}
+.nav-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--c-t2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--t-fast)}
+.nav-btn:hover{background:rgba(255,255,255,.07);border-color:rgba(20,184,166,.12)}
+.nav-btn:disabled{opacity:.28;cursor:not-allowed}
+.nav-counter{font-size:.75rem;color:var(--c-t3);font-weight:500;min-width:3rem;text-align:center}
+.nav-counter .current{color:var(--c-t1);font-weight:600}
+.cover{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden}
+.cover-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(20,184,166,.12),transparent 70%)}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5.5vw,4rem);font-weight:900;color:var(--c-t1);text-align:center;line-height:1.1;z-index:1;background:linear-gradient(135deg,var(--c-t1) 0%,var(--accent) 50%,var(--c-t1) 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cover-sub{font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--c-t3);margin-top:1.2rem;text-align:center;max-width:600px;z-index:1}
+.section-break{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:var(--c-bg)}
+.section-num{font-family:'Playfair Display',serif;font-size:6rem;font-weight:900;color:var(--accent);opacity:.12;line-height:1}
+.section-title{font-family:'Playfair Display','Noto Serif SC',serif;font-size:clamp(1.6rem,4vw,2.5rem);font-weight:700;color:var(--c-t1)}
+.thankyou{text-align:center}
+.thankyou h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:var(--c-t1);margin-bottom:.5rem}
+.thankyou p{color:var(--c-t3);font-weight:300;font-size:1.1rem}
+.thankyou .logo{font-size:.85rem;color:var(--c-t4);margin-top:2rem;letter-spacing:.15em}
+.item-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;transition:all var(--t-fast)}
+.item-card:hover{background:rgba(255,255,255,.07);border-color:rgba(20,184,166,.12)}
+.item-card h4{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:600;color:var(--c-t1);margin-bottom:.4rem}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.slide-img{width:100%;height:auto;max-height:55vh;object-fit:contain;border-radius:8px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(max-width:768px){.slide{padding:1rem}.two-col{grid-template-columns:1fr}.nav-bar{padding:.5rem 1rem;gap:.5rem}}
+@media(max-width:480px){.cover-title{font-size:1.8rem}.section-num{font-size:4rem}}
+
+</style>
+</head>
+<body>
+<div class="slides-container">
+<div class="slide" data-stagger="0"><div class="slide-inner"><div class="cover">
+<div class="cover-bg"></div>
+<h1 class="cover-title">2026.01</h1>
+<p class="cover-sub">APS AI Agent 智能体应用场景介绍与建设目标</p>
+</div></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">AI Agent 产品介绍</h2><p class="slide-body">专注于制造业生产计划与排程的APS（高级计划与排程）智能体，可无缝适配用友ERP、MES等生态现有系统，通过AI驱动的有限产能优化算法，整合订单、物料、产能等核心数据，生成精准、可执行的生产排程方案，解决企业排程低效、交期延误、资源冲突等痛点，成为用友生态制造业客户生产智能化升级的核心支撑工具。</p><p class="slide-body">专注于制造业生产计划与排程的APS（高级计划与排程）智能体，可无缝适配用友ERP、MES等生态现有系统，通过AI驱动的有限产能优化算法，整合订单、物料、产能等核心数据，生成精准、可执行的生产排程方案，解决企业排程低效、交期延误、资源冲突等痛点，成为用友生态制造业客户生产智能化升级的核心支撑工具。</p><p class="slide-body">产品定位</p><img class="slide-img" src="images/slide2_图片_4_75bbf825.png" alt=""></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">AI Agent 核心功能</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"><div class="item-card"><h4>AI Agent  聚焦制造业生产排程核心痛点，提炼4大核心APS能力，兼顾精准性、敏捷性与可执行性。</h4><p class="slide-body"></p></div><div class="item-card"><h4>智能插单与自动排程</h4><p class="slide-body"></p></div><div class="item-card"><h4>“一键式”订单创建与排程</h4><p class="slide-body"></p></div><div class="item-card"><h4>排程优化与智能建议</h4><p class="slide-body"></p></div><div class="item-card"><h4>排程结果多版本对比</h4><p class="slide-body"></p></div></div></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">AI Agent 应用场景</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"><div class="item-card"><h4>离散制造柔性排程场景</h4><p class="slide-body"></p></div><div class="item-card"><h4>装备制造</h4><p class="slide-body"></p></div><div class="item-card"><h4>非标订单排程场景</h4><p class="slide-body"></p></div><div class="item-card"><h4>制造批次优化场景</h4><p class="slide-body"></p></div><div class="item-card"><h4>紧急插单</h4><p class="slide-body"></p></div><div class="item-card"><h4>快速响应场景</h4><p class="slide-body"></p></div><div class="item-card"><h4>用友生态多系统协同场景</h4><p class="slide-body"></p></div><div class="item-card"><h4>多工厂产能协同场景</h4><p class="slide-body"></p></div><div class="item-card"><h4>产能瓶颈预警场景</h4><p class="slide-body"></p></div><div class="item-card"><h4>预测性排程决策场景</h4><p class="slide-body"></p></div></div></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">廠區層級AI＋APS智慧職能數字員工</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"><div class="item-card"><h4>能【理解 → 推理 → 執行 → 回報】的企業AI智慧助手</h4><p class="slide-body"></p></div><div class="item-card"><h4>5</h4><p class="slide-body"></p></div><div class="item-card"><h4>FAB 1</h4><p class="slide-body"></p></div><div class="item-card"><h4>FAB 2</h4><p class="slide-body"></p></div><div class="item-card"><h4>生管/銷售</h4><p class="slide-body"></p></div><div class="item-card"><h4>【訂單排程規劃】日常問題：</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單期望交期在本月份的訂單張數有幾張?</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單期望交期在上個月且訂單開單數量最多的客戶是誰</h4><p class="slide-body"></p></div><div class="item-card"><h4>有哪些訂單未達交？</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程有哪些訂單延遲超過3天(包含3天)?</h4><p class="slide-body"></p></div><div class="item-card"><h4>排程開工日晚於2025年7月1日的訂單有哪些?</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程所有訂單平均延遲幾天？</h4><p class="slide-body"></p></div><div class="item-card"><h4>有哪些訂單的排程開工日晚於客戶期望的預計開工日?</h4><p class="slide-body"></p></div><div class="item-card"><h4>目前訂單完工率低於80%的有哪些?</h4><p class="slide-body"></p></div><div class="item-card"><h4>哪些訂單排程排定的生產週期超過15天?</h4><p class="slide-body"></p></div><div class="item-card"><h4>這次排程有哪些客戶訂單屬於特別急件?</h4><p class="slide-body"></p></div><div class="item-card"><h4>未達交訂單中是否有屬於急件的訂單?</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃OTDO_Percent(計劃達交率%) ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃OTD_QtyPercent(計劃按數量達交率%) ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃LateOrderCount(計劃未達交訂單數) ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃AvgDelayDays(計劃平均延遲天數) ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃MaxDelayDays(計劃最大延遲天數) ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃AvgCompleteRate(計劃平均完成率%) ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃AvgCycleTime_Day(平均生產週期,天) ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>...</h4><p class="slide-body"></p></div><div class="item-card"><h4>廠務/製造</h4><p class="slide-body"></p></div><div class="item-card"><h4>【設備資源排程規劃】日常問題：</h4><p class="slide-body"></p></div><div class="item-card"><h4>目前有哪些設備的排程開始時間尚未開始?</h4><p class="slide-body"></p></div><div class="item-card"><h4>今日哪些設備的排程使用率最低?</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程結果中在2025年7月22日各排程設備的稼動率?</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程結果各設備的平均稼動率各是多少?</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程結果中哪些設備的平均稼動率低於10% ?</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程結果中設備平均稼動率最高的是哪台設備?</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程結果中設備平均稼動率最低的是哪台設備?</h4><p class="slide-body"></p></div><div class="item-card"><h4>有哪些品項的生產工序耗費時間超過20小時?</h4><p class="slide-body"></p></div><div class="item-card"><h4>本次排程有哪些機台完全沒有參與到?</h4><p class="slide-body"></p></div><div class="item-card"><h4>有哪些設備的運作時間跨天了?</h4><p class="slide-body">各設備計劃平均每日稼動率(AVG_UtilityRatio) ?<br>各設備計劃平均每日啟動時間比例(AVG_RunRatio) ?<br>各設備計劃平均每日閒置時間比例(AVG_IdleRatio) ?<br>各設備計劃平均每日換線時間比例(AVG_ChangeRatio) ?</p></div><div class="item-card"><h4>各設備計劃平均每日產出量(AVG_OutputQty) ?</h4><p class="slide-body">各設備計劃平均加工時間/小時(AVG_RunTimeHours) ?<br>各設備計劃平均等候時間/小時(AVG_QueueHours) ?<br>各設備計劃平均換線時間/分(AVG_ChangeMins) ?</p></div><div class="item-card"><h4>...</h4><p class="slide-body"></p></div></div></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">廠區層級企業自有數據資產價值體現(AI + MES x APS)</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"><div class="item-card"><h4>生管單位</h4><p class="slide-body"></p></div><div class="item-card"><h4>品管單位</h4><p class="slide-body"></p></div><div class="item-card"><h4>任務資料</h4><p class="slide-body"></p></div><div class="item-card"><h4>核心數據</h4><p class="slide-body"></p></div><div class="item-card"><h4>管理指標</h4><p class="slide-body"></p></div><div class="item-card"><h4>經營目標</h4><p class="slide-body"></p></div><div class="item-card"><h4>FAB 1</h4><p class="slide-body"></p></div><div class="item-card"><h4>FAB 2</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單開立</h4><p class="slide-body"></p></div><div class="item-card"><h4>近3個月開立訂單數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>期望本月交期最多客戶</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃未達交訂單張數</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單開立</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單-客戶投產數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單-產品投產數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單-計劃完工數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>提升訂單准交能力</h4><p class="slide-body"></p></div><div class="item-card"><h4>縮短訂單交付週期</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單生產週期</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃生產週期 最長/最短</h4><p class="slide-body"></p></div><div class="item-card"><h4>實際生產週期 最長/最短</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單准交 提前/延後/達成率</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單生產週期</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃開工日晚於客戶期望</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃生產週期超過15天</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均完成率%</h4><p class="slide-body"></p></div><div class="item-card"><h4>短期</h4><p class="slide-body"></p></div><div class="item-card"><h4>短期、中期</h4><p class="slide-body"></p></div><div class="item-card"><h4>短期、中期</h4><p class="slide-body"></p></div><div class="item-card"><h4>中期、長期</h4><p class="slide-body"></p></div><div class="item-card"><h4>提升產能(產能利用率/提升接單能力)</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單開立</h4><p class="slide-body"></p></div><div class="item-card"><h4>今天訂單開立數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>本月A客戶訂單開立數</h4><p class="slide-body"></p></div><div class="item-card"><h4>客戶交期在本月的訂單</h4><p class="slide-body"></p></div><div class="item-card"><h4>提升營業毛利(毛利率)</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單接單量</h4><p class="slide-body"></p></div><div class="item-card"><h4>客戶/產品訂單 數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃達交率(OTDO)</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃按數量達交率(OTDQty)</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單生產週期</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均延遲天數</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃最大延遲天數</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均生產週期(天)</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單追蹤</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單實際完工 數量/生產週期</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單計劃完工 數量/提前/延遲</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單品質/供應商品質</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單良率、不良率</h4><p class="slide-body"></p></div><div class="item-card"><h4>進料檢驗合格率</h4><p class="slide-body"></p></div><div class="item-card"><h4>製程中檢驗合格率</h4><p class="slide-body"></p></div><div class="item-card"><h4>訂單追蹤</h4><p class="slide-body"></p></div><div class="item-card"><h4>排程開工日在今天的訂單</h4><p class="slide-body"></p></div><div class="item-card"><h4>完工率低於80%的訂單</h4><p class="slide-body"></p></div><div class="item-card"><h4>哪些客戶訂單為特急件</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單開立</h4><p class="slide-body"></p></div><div class="item-card"><h4>今日工單開立總數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>本週產品P01的開立數量</h4><p class="slide-body"></p></div><div class="item-card"><h4>近3個月開立哪些產品工單</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單追蹤</h4><p class="slide-body"></p></div><div class="item-card"><h4>本月完工工單中延遲完工的客戶編號、產品編號</h4><p class="slide-body"></p></div><div class="item-card"><h4>本月完工工單的准交差異天數</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單品質/供應商品質</h4><p class="slide-body"></p></div><div class="item-card"><h4>工單報廢數</h4><p class="slide-body"></p></div><div class="item-card"><h4>物料供應商檢驗狀況</h4><p class="slide-body"></p></div><div class="item-card"><h4>設備單位</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃資源安排</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均每日稼動率</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均每日啟動時間比例</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均每日閒置時間比例</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均每日換線時間比例</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均每日產出量</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均加工時間/小時</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均等候時間/小時</h4><p class="slide-body"></p></div><div class="item-card"><h4>計劃平均換線時間/分</h4><p class="slide-body"></p></div></div></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><div class="section-break">
+<div class="section-num">07</div>
+<div class="section-title">情境案例与系统演示</div>
+</div></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">AI Agent 智能体业务流程</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"><div class="item-card"><h4>Start</h4><p class="slide-body"></p></div><div class="item-card"><h4>新增订单(SO)</h4><p class="slide-body"></p></div><div class="item-card"><h4>用户于窗口输入</h4><p class="slide-body"></p></div><div class="item-card"><h4>客户编号</h4><p class="slide-body"></p></div><div class="item-card"><h4>产品编号/名称</h4><p class="slide-body"></p></div><div class="item-card"><h4>数量</h4><p class="slide-body"></p></div><div class="item-card"><h4>交期</h4><p class="slide-body"></p></div><div class="item-card"><h4>优先序</h4><p class="slide-body"></p></div><div class="item-card"><h4>AI Agent</h4><p class="slide-body"></p></div><div class="item-card"><h4>呼叫验证API</h4><p class="slide-body"></p></div><div class="item-card"><h4>AI Agent呼叫新增订单API</h4><p class="slide-body"></p></div><div class="item-card"><h4>AI Agent呼叫发起排程API</h4><p class="slide-body"></p></div><div class="item-card"><h4>End</h4><p class="slide-body"></p></div><div class="item-card"><h4>End</h4><p class="slide-body"></p></div><div class="item-card"><h4>Start</h4><p class="slide-body"></p></div><div class="item-card"><h4>AI Agent呼叫</h4><p class="slide-body"></p></div><div class="item-card"><h4>查看排程API</h4><p class="slide-body"></p></div><div class="item-card"><h4>返回结果</h4><p class="slide-body"></p></div><div class="item-card"><h4>返回状态，建议使用者可以进行分析</h4><p class="slide-body"></p></div><div class="item-card"><h4>返回状态，继续等待排程</h4><p class="slide-body"></p></div><div class="item-card"><h4>成功</h4><p class="slide-body"></p></div><div class="item-card"><h4>尚未完成</h4><p class="slide-body"></p></div><div class="item-card"><h4>看是请使用者自行发起，还是多久后自动发起</h4><p class="slide-body"></p></div><div class="item-card"><h4>Start</h4><p class="slide-body"></p></div><div class="item-card"><h4>排程结果分析</h4><p class="slide-body"></p></div><div class="item-card"><h4>AI Agent</h4><p class="slide-body"></p></div><div class="item-card"><h4>拉取排程版本API</h4><p class="slide-body"></p></div><div class="item-card"><h4>选择版本(可多选)</h4><p class="slide-body"></p></div><div class="item-card"><h4>AI Agent</h4><p class="slide-body"></p></div><div class="item-card"><h4>拉取排程结果指标API</h4><p class="slide-body"></p></div><div class="item-card"><h4>呈现结果表格或图表</h4><p class="slide-body"></p></div><div class="item-card"><h4>End</h4><p class="slide-body"></p></div><div class="item-card"><h4>可以的话提供List供使用者选取。或请使用者手动输入版本号</h4><p class="slide-body"></p></div><div class="item-card"><h4>请使用者等待排程完成</h4><p class="slide-body"></p></div><div class="item-card"><h4>AIP Login</h4><p class="slide-body"></p></div><div class="item-card"><h4>AIP AddSO</h4><p class="slide-body"></p></div><div class="item-card"><h4>AIP APSVer/Create</h4><p class="slide-body"></p></div><div class="item-card"><h4>AIP APSResult/GetAPSRadar</h4><p class="slide-body"></p></div></div></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">AI Agent 使用情境介绍-零门槛交互入口，智能问答精准导航</h2><p class="slide-body">零门槛交互入口</p><p class="slide-body">零门槛交互入口</p><p class="slide-body">智能问答精准导航</p><p class="slide-body">无需复杂操作，可输入任意文字内容与智能体互动咨询。新人轻松上手，团队协作效率翻倍，彻底打通排程操作沟通壁垒。</p><img class="slide-img" src="images/slide9_图片_2_78866df6.png" alt=""></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">AI Agent 使用情境介绍-数据查询零等待，多版本对比秒出结论</h2><p class="slide-body">数据查询零等待，多版本对比秒出结论</p><p class="slide-body">数据查询零等待，多版本对比秒出结论</p><p class="slide-body">告别数小时手动数据整理！</p><p class="slide-body">自然语言清晰下达查询需求，智能体精准识别筛选条件，秒级完成数据抓取、汇总与核心指标提炼。</p><img class="slide-img" src="images/slide10_图片_5_745bfdd0.png" alt=""></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><h2 class="slide-title">AI Agent 使用情境介绍-自然语言指令驱动，订单到排程全流程自动化</h2><p class="slide-body">自然语言指令驱动，订单到排程全流程自动化</p><p class="slide-body">自然语言指令驱动，订单到排程全流程自动化</p><p class="slide-body">告别跨系统切换、手动填单的繁琐！</p><p class="slide-body">APS智能体以自然语言为交互核心，只需进入智能体入口，用户下达指令，即可自动根据用户指令完成如订单生成、审核流转与智慧排程全链路操作。</p><img class="slide-img" src="images/slide11_图片_7_745bfdd0.png" alt=""></div></div><div class="slide" data-stagger="0"><div class="slide-inner"><div class="thankyou">
+<h1>Thank you！</h1>
+<p></p>
+<div class="logo">Power Squad</div>
+</div></div></div>
+</div>
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+<nav class="nav-bar">
+  <button class="nav-btn" id="prevBtn" disabled>‹</button>
+  <span class="nav-counter"><span class="current" id="curNum">1</span> / 12</span>
+  <button class="nav-btn" id="nextBtn">›</button>
+</nav>
+<script>
+(function(){
+  const slides=document.querySelectorAll('.slide,.section-break');
+  const bar=document.getElementById('progressBar');
+  const cur=document.getElementById('curNum');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  let current=0,total=slides.length;
+  const debounce={};
+  function go(n){
+    if(n<0||n>=total)return;
+    slides[current]?.classList.remove('active');
+    current=n;
+    slides[current].classList.add('active');
+    bar.style.width=((current+1)/total*100)+'%';
+    cur.textContent=current+1;
+    prevBtn.disabled=current===0;
+    nextBtn.disabled=current===total-1;
+  }
+  prevBtn.onclick=()=>go(current-1);
+  nextBtn.onclick=()=>go(current+1);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' ')go(current+1);
+    if(e.key==='ArrowLeft')go(current-1);
+    if(e.key==='Home')go(0);
+    if(e.key==='End')go(total-1);
+  });
+  document.addEventListener('wheel',e=>{
+    const now=Date.now();
+    if(now-debounce.last<120)return;
+    debounce.last=now;
+    go(current+(e.deltaY>0?1:-1));
+  },{passive:true});
+  let ty=0;
+  document.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dy=ty-e.changedTouches[0].clientY;
+    if(Math.abs(dy)>30)go(current+(dy>0?1:-1));
+  },{passive:true});
+  go(0);
+})();
+</script>
+</body>
+</html>

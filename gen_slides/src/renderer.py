@@ -62,6 +62,10 @@ def build_css(tokens):
   --blur-sheet: blur(20px);
   --blur-modal: blur(30px);
   --blur-nav:   blur(20px);
+  --blur-8:  blur(8px);
+  --blur-12: blur(12px);
+  --blur-24: blur(24px);
+  --blur-32: blur(32px);
   --shadow:  {l.get('shadow','0 8px 40px rgba(0,0,0,.35)')};
   --ease:    {ti.get('ease','cubic-bezier(0.4,0,0.2,1)')};
   --t-fast:  {ti.get('fast','150ms')};
