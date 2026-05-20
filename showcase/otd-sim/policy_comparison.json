@@ -1,0 +1,78 @@
+{
+  "run_at": "2026-05-20T11:33:08.726192",
+  "seed": 42,
+  "sim_days": 90,
+  "results": [
+    {
+      "policy": "EDD",
+      "total_orders": 900,
+      "shipped": 411,
+      "on_time": 411,
+      "overdue": 0,
+      "avg_lead_days": 32.9,
+      "on_time_rate": 0.4567,
+      "avg_queue_wait_hrs": 8.3,
+      "bottleneck_station": "L1-S1",
+      "bottleneck_score": 27.58,
+      "station_throughput": {
+        "L1-S1": 126638,
+        "L1-S2": 86397,
+        "L1-S3": 98450
+      },
+      "wip_alerts": [
+        "[L1-S2] WIP 376/400 (94%) >= threshold 80%"
+      ],
+      "total_defects": 5563,
+      "avg_yield_rate": 0.9534,
+      "records": 1259
+    },
+    {
+      "policy": "FIFO",
+      "total_orders": 900,
+      "shipped": 409,
+      "on_time": 409,
+      "overdue": 0,
+      "avg_lead_days": 26.5,
+      "on_time_rate": 0.4544,
+      "avg_queue_wait_hrs": 8.9,
+      "bottleneck_station": "L1-S1",
+      "bottleneck_score": 51.758,
+      "station_throughput": {
+        "L1-S1": 127224,
+        "L1-S2": 85974,
+        "L1-S3": 98062
+      },
+      "wip_alerts": [
+        "[L1-S1] WIP 714/500 (143%) >= threshold 80%",
+        "[L1-S2] WIP 485/400 (121%) >= threshold 80%"
+      ],
+      "total_defects": 5546,
+      "avg_yield_rate": 0.9535,
+      "records": 1255
+    },
+    {
+      "policy": "SPT",
+      "total_orders": 900,
+      "shipped": 409,
+      "on_time": 409,
+      "overdue": 0,
+      "avg_lead_days": 53.2,
+      "on_time_rate": 0.4544,
+      "avg_queue_wait_hrs": 7.0,
+      "bottleneck_station": "L1-S1",
+      "bottleneck_score": 34.048,
+      "station_throughput": {
+        "L1-S1": 126376,
+        "L1-S2": 86260,
+        "L1-S3": 98411
+      },
+      "wip_alerts": [
+        "[L1-S1] WIP 542/500 (108%) >= threshold 80%",
+        "[L1-S2] WIP 342/400 (86%) >= threshold 80%"
+      ],
+      "total_defects": 5390,
+      "avg_yield_rate": 0.9539,
+      "records": 1252
+    }
+  ]
+}

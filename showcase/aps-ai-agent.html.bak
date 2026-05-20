@@ -29,13 +29,6 @@
   --ds-text-body: var(--body-1);
   --ds-text-display: var(--text-display-1);
   --ds-text-heading: var(--heading-1);
-  /* --ds-* Canonical Design Intent */
-  --ds-aps-violet: var(--accent-2);
-  --ds-cris-carbon: var(--c-teal);
-  --ds-impacts-brand: var(--accent);
-  --ds-text-body: var(--body-1);
-  --ds-text-display: var(--text-display-1);
-  --ds-text-heading: var(--heading-1);
   /* ── P0-2: Blur 梯度四級 (§16.2) ── */
   --blur-card:  12px;
   --blur-sheet: 24px;
@@ -163,13 +156,13 @@
 
   /* Legacy theme aliases → canonical */
   --accent-blue: var(--accent-blue);
-  --ink-950: var(--ink-950);
+  --c-950: var(--ink-950);
   --accent: var(--accent);
   --accent-em: var(--accent-em);
   --accent-2: var(--accent-2);
-  --ink-800: var(--ink-800);
-  --ink-900: var(--ink-900);
-  --ink-900: var(--ink-900);
+  --c-800: var(--ink-800);
+  --c-900: var(--ink-900);
+  --c-900: var(--ink-900);
 
 
 /* ═══════════════════════════════════════

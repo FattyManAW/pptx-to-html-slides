@@ -169,12 +169,8 @@ class Scheduler:
         elif self.rule == "EDD":
             return sorted(orders, key=lambda o: (o.due_date, o.priority))
         elif self.rule == "SPT":
-            # product_type → cycle_time_hrs lookup (from factory.json)
-            _cycle_map = {"A": 4.0, "B": 2.5, "C": 6.0}
-            return sorted(orders, key=lambda o: (
-                _cycle_map.get(getattr(o, "product_type", "A"), 4.0),
-                o.arrival_day
-            ))
+            # TODO: 需要 product_type → cycle_time_hrs 查表
+            return sorted(orders, key=lambda o: o.arrival_day)
         elif self.rule == "CR":
             return sorted(orders, key=self._cr_key)
         elif self.rule == "Hybrid":
@@ -293,7 +289,7 @@ class VariantParams:
 
 @dataclass
 class SimulationResult:
-    """模擬結果容器"""
+    """模擬結果容器（骨架）"""
 
     config_version: str
     seed: int
@@ -307,9 +303,6 @@ class SimulationResult:
     total_orders: int = 0
     timeline: list[dict[str, Any]] = field(default_factory=list)
     daily_snapshot: list[dict[str, Any]] = field(default_factory=list)
-    otd_count: int = 0
-    warehouse_shipments: int = 0
-    avg_yield_rate: float = 0.0
 
     # TODO: 補 station_log, yield_curve 等
 
@@ -433,40 +426,24 @@ class SimulationEngine:
         return []  # stub — VariantParams.transit_delay() 就緒
 
     def _compute_metrics(self, orders: list[Order],
-                         shipments: list[Shipment],
-                         dispatch_loop=None) -> dict[str, float]:
-        """v0.3: OTD rate + avg_lead_time_days + avg_wip + bottleneck + defects."""
+                         shipments: list[Shipment]) -> dict[str, float]:
+        """計算 OTD rate, avg lead time, bottleneck 等"""
         shipped = [o for o in orders if o.status == OrderStatus.SHIPPED]
-        on_time = [o for o in shipped if o.on_time] if shipped else []
-        otd = len(on_time) / len(shipped) if shipped else 0.0
-
-        # avg_lead_time_days: from dispatch loop warehouse shipments
-        avg_lead = 0.0
-        if dispatch_loop and hasattr(dispatch_loop, '_warehouse_shipments'):
-            lead_times = [r.get("completed_day", 0) for r in dispatch_loop._warehouse_shipments]
-            avg_lead = sum(lead_times) / len(lead_times) if lead_times else 0.0
-
-        # avg_wip + bottleneck + defects from dispatch loop
-        avg_wip = 0.0
-        bottleneck = ""
-        total_def = 0
-        if dispatch_loop:
-            avg_wip = dispatch_loop.avg_wip
-            bottleneck = dispatch_loop.bottleneck_station
-            total_def = dispatch_loop.total_defects
-
+        if not shipped:
+            return {"otd_rate": 0.0, "avg_lead_time_days": 0.0,
+                    "avg_wip": 0.0, "total_defects": 0, "bottleneck_station": ""}
+        on_time = [o for o in shipped if o.on_time]
         return {
-            "otd_rate": round(otd, 4),
-            "avg_lead_time_days": round(avg_lead, 1),
-            "avg_wip": round(avg_wip, 1),
-            "total_defects": total_def,
-            "bottleneck_station": bottleneck,
-            "warehouse_shipments": len(getattr(dispatch_loop, '_warehouse_shipments', [])),
+            "otd_rate": len(on_time) / len(shipped),
+            "avg_lead_time_days": 0.0,  # TODO: 從 daily_snapshot 計算
+            "avg_wip": 0.0,             # TODO: 從 StationDispatchLoop 取
+            "total_defects": 0,         # TODO: 從 StationDispatchLoop 取
+            "bottleneck_station": "",   # TODO: 從 StationDispatchLoop 取
         }
 
 
 # ═══════════════════════════════════════════════════════════════
-# EXPANSION v0.3 說明
+# EXPANSION v0.2 說明
 # ═══════════════════════════════════════════════════════════════
 #
 # 本次擴充（不依賴 due_date 格式）：
@@ -475,15 +452,12 @@ class SimulationEngine:
 #   [x] YieldDecayModel — Bernoulli 隨機良率（隨處理量遞減）
 #   [x] WIPTrackingMixin — WIP 快照 + 警報 + 瓶頸報告
 #   [x] SimulationEngineV02 — 四階段骨架（含 station dispatch）
-#   [x] models.py _compute_metrics 接入 dispatch_loop（avg_wip/bottleneck/defects/lead_time）
-#   [x] _schedule_orders: 根據 factory.json product route 分配 station_ids
-#   [x] _forward_to_next_station: per-product route callback → StationDispatchLoop
-#   [x] Warehouse FIFO queue: 每日出貨 + transit_delay 計算
-#   [x] _compute_metrics: avg_lead_time_days + avg_wip + bottleneck + warehouse_shipments
+#   [x] models.py _run_production/_compute_metrics 骨架更新
 #
 # 待 Allen 確認 due_date 格式後注入：
-#   [ ] _schedule_orders: 注入排程演算法（EDD / SPT / priority boost）
-#   [ ] avg_lead_time_days: 從 order arrival → shipment delivery 精確計算
-#   [ ] _ship_orders: VariantParams.transit_delay() 更細粒度
+#   [ ] _schedule_orders: 根據 factory.json route 分配工單到各站
+#   [ ] _ship_orders: transit_delay + warehouse queue
+#   [ ] _forward_to_next_station: 跨站路由邏輯
+#   [ ] avg_lead_time_days 計算
 #
-# 檔案：showcase/otd-sim/models.py (463 行) + station_dispatch.py (480 行)
+# 檔案：showcase/otd-sim/models.py (440 行) + station_dispatch.py (588 行)

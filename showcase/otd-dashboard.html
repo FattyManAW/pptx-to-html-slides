@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OTD 模擬視覺化 Dashboard</title>
+<style>
+/* ═══════════ Design System Tokens (--ds-* namespace) ═══════════ */
+:root{
+  --ds-impacts-brand: var(--accent,#14b8a6);
+  --ds-cris-carbon: var(--c-teal,#14b8a6);
+  --ds-aps-violet: var(--accent-2,#a78bfa);
+  --ds-text-display: var(--text-display-1,#f8fafc);
+  --ds-text-heading: var(--heading-1,#e2e8f0);
+  --ds-text-body: var(--body-1,#94a3b8);
+  --accent:#14b8a6;--accent-2:#a78bfa;--accent-amber:#f59e0b;--accent-rose:#f43f5e;
+  --c-bg:#06080d;--c-surface:#0c1018;--c-surface2:#131a27;
+  --c-t1:#f8fafc;--c-t2:#94a3b8;--c-t3:#4b5563;--c-t4:#2d3748;
+  --c-success:#22c55e;--c-warning:#f59e0b;--c-error:#ef4444;
+  --c-border:#1e293b;--border:1px solid var(--c-border);
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+  --t-fast:150ms;--t-mid:300ms;--t-slow:600ms;--ease:cubic-bezier(.22,1,.36,1);
+  --blur-card:blur(12px);--blur-modal:blur(24px);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow-x:hidden;font-family:system-ui,-apple-system,sans-serif;background:var(--c-bg);color:var(--c-t2)}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+/* ═══════════ Header ═══════════ */
+.header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.5rem;
+  background:linear-gradient(180deg,rgba(6,8,13,.95),rgba(6,8,13,.7));backdrop-filter:var(--blur-card);
+  border-bottom:var(--border)}
+.header h1{font-size:clamp(.85rem,1.5vw,1.05rem);font-weight:700;color:var(--c-t1);letter-spacing:.02em}
+.header h1 span{color:var(--accent);margin-left:.4rem;font-weight:400;font-size:.8rem}
+.meta-bar{display:flex;gap:1.2rem;align-items:center}
+.meta{font-size:.72rem;color:var(--c-t3);font-variant-numeric:tabular-nums}
+.meta b{color:var(--c-t1);font-weight:600}
+
+/* ═══════════ Layout ═══════════ */
+.dashboard{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr;gap:1rem;padding:1rem;flex:1;max-width:1400px;margin:0 auto;width:100%}
+.panel{background:var(--c-surface);border:var(--border);border-radius:12px;padding:1.1rem;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.panel-title{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--c-t3);margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
+.panel-title .val{color:var(--accent);font-variant-numeric:tabular-nums;font-size:.85rem}
+
+/* ═══════════ Topology (spans full width) ═══════════ */
+.topology{grid-column:1/-1;min-height:160px}
+.topology-inner{display:flex;align-items:center;justify-content:space-around;gap:.5rem;padding:.5rem 0}
+.stn-node{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex:1}
+.stn-circle{width:72px;height:72px;border-radius:50%;border:2px solid var(--c-border);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--c-surface2);transition:border-color var(--t-mid),background var(--t-mid);position:relative}
+.stn-circle .sid{font-size:.6rem;color:var(--c-t3);font-weight:500}
+.stn-circle .sname{font-size:.72rem;color:var(--c-t2);font-weight:600;text-align:center}
+.stn-circle.bn{border-color:var(--accent-rose);background:rgba(244,63,94,.08);box-shadow:0 0 18px rgba(244,63,94,.2)}
+.stn-circle.bn::after{content:'BOTTLENECK';position:absolute;bottom:-18px;font-size:.55rem;color:var(--accent-rose);font-weight:700;white-space:nowrap}
+.arrow{flex:0 0 auto;font-size:1.4rem;color:var(--c-t3);transition:color var(--t-mid)}
+.arrow.active{color:var(--accent)}
+.stn-wip-bar{width:100%;height:6px;border-radius:3px;background:var(--c-surface2);overflow:hidden}
+.stn-wip-fill{height:100%;border-radius:3px;transition:width var(--t-mid),background var(--t-mid);background:var(--accent)}
+
+/* ═══════════ Lead Time Histogram ═══════════ */
+.histogram{display:flex;flex-direction:column;gap:.4rem}
+.bar-row{display:flex;align-items:center;gap:.6rem}
+.bar-label{width:48px;font-size:.65rem;color:var(--c-t3);text-align:right}
+.bar-track{flex:1;height:22px;background:var(--c-surface2);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;transition:width var(--t-slow);display:flex;align-items:center;justify-content:flex-end;padding-right:.5rem}
+.bar-fill span{font-size:.65rem;color:rgba(0,0,0,.6);font-weight:700}
+.bar-count{font-size:.7rem;color:var(--c-t3);min-width:28px}
+
+/* ═══════════ Stats Row ═══════════ */
+.stats-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem}
+.stat{background:var(--c-surface);border:var(--border);border-radius:10px;padding:.8rem 1rem;display:flex;flex-direction:column;gap:.2rem}
+.stat .label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--c-t3)}
+.stat .value{font-size:1.6rem;font-weight:800;color:var(--c-t1);line-height:1;font-variant-numeric:tabular-nums}
+.stat .value.accent{color:var(--accent)}
+.stat .value.amber{color:var(--accent-amber)}
+.stat .value.rose{color:var(--accent-rose)}
+.stat .sub{font-size:.68rem;color:var(--c-t3)}
+
+/* ═══════════ WIP Chart ═══════════ */
+.wip-chart{display:flex;flex-direction:column;gap:.5rem;flex:1}
+.wip-row{display:flex;align-items:center;gap:.6rem}
+.wip-label{width:72px;font-size:.7rem;color:var(--c-t2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wip-track{flex:1;height:28px;background:var(--c-surface2);border-radius:6px;overflow:hidden;position:relative}
+.wip-fill{height:100%;border-radius:6px;transition:width var(--t-mid);display:flex;align-items:center;justify-content:flex-end;padding-right:.5rem}
+.wip-fill span{font-size:.68rem;font-weight:700}
+.wip-val{width:44px;font-size:.72rem;color:var(--c-t3);text-align:right;font-variant-numeric:tabular-nums}
+
+/* ═══════════ Controls ═══════════ */
+.controls{display:flex;gap:.6rem;align-items:center}
+.btn{background:var(--c-surface2);border:1px solid var(--c-border);color:var(--c-t2);padding:.4rem .8rem;border-radius:6px;
+  cursor:pointer;font-size:.75rem;transition:background var(--t-fast),border-color var(--t-fast);font-family:inherit}
+.btn:hover{border-color:var(--accent);color:var(--c-t1)}
+.btn.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn-play{background:var(--accent);border-color:var(--accent);color:#06080d;font-weight:700}
+.btn-play:hover{filter:brightness(1.15)}
+
+/* ═══════════ Playhead + Timeline ═══════════ */
+.timeline-segment{padding:.6rem 0;border-top:var(--border)}
+.time-display{font-size:.85rem;color:var(--c-t1);font-variant-numeric:tabular-nums;margin-bottom:.3rem}
+.progress-track{width:100%;height:4px;background:var(--c-surface2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 50ms linear}
+.speed-controls{display:flex;gap:.4rem;margin-top:.5rem;align-items:center}
+.speed-label{font-size:.65rem;color:var(--c-t3)}
+
+/* ═══════════ Bottleneck Panel ═══════════ */
+.bn-list{display:flex;flex-direction:column;gap:.4rem}
+.bn-item{display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;border-radius:6px;background:var(--c-surface2)}
+.bn-rank{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0}
+.bn-rank.r1{background:var(--accent-rose);color:#fff}
+.bn-rank.r2{background:var(--accent-amber);color:#000}
+.bn-rank.r3{background:var(--accent);color:#000}
+.bn-name{flex:1;font-size:.75rem;color:var(--c-t2)}
+.bn-score{font-size:.75rem;font-weight:700;color:var(--c-t3);font-variant-numeric:tabular-nums}
+.bn-status{margin-top:.3rem;font-size:.65rem;color:var(--c-t3)}
+.bn-status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:.3rem}
+.bn-status .dot.up{background:var(--c-error)}.bn-status .dot.ok{background:var(--c-success)}
+
+@media(max-width:900px){
+  .dashboard{grid-template-columns:1fr}
+  .topology{grid-column:1}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>OTD 模擬 Dashboard <span id="day-label">Day 1 — Hour 08</span></h1>
+  <div class="meta-bar">
+    <span class="meta">Avg Lead Time: <b id="stat-lt">13.2d</b></span>
+    <span class="meta">Total Orders: <b id="stat-orders">—</b></span>
+    <span class="meta">On-Time Rate: <b id="stat-otd" style="color:var(--accent)">—</b></span>
+    <div class="controls">
+      <button class="btn btn-play" id="playBtn" onclick="togglePlay()">▶ Play</button>
+      <button class="btn" onclick="step(-1)">⏮</button>
+      <button class="btn" onclick="step(1)">⏭</button>
+      <select class="btn" id="speedSel" onchange="setSpeed(this.value)">
+        <option value="200">0.5×</option>
+        <option value="100" selected>1×</option>
+        <option value="50">2×</option>
+        <option value="20">5×</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<div class="dashboard">
+
+  <!-- Stats Row -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat"><span class="label">Avg WIP</span><span class="value accent" id="s-wip">—</span><span class="sub">in-process units</span></div>
+    <div class="stat"><span class="label">Throughput</span><span class="value" id="s-thru">—</span><span class="sub">units/hr</span></div>
+    <div class="stat"><span class="label">Yield Rate</span><span class="value" id="s-yield">—</span><span class="sub">avg across all</span></div>
+    <div class="stat"><span class="label">Active Orders</span><span class="value amber" id="s-orders">—</span><span class="sub">in pipeline</span></div>
+    <div class="stat"><span class="label">Bottleneck</span><span class="value rose" id="s-bn">—</span><span class="sub">highest wait score</span></div>
+    <div class="stat"><span class="label">Frame</span><span class="value" id="s-frame">—</span><span class="sub">/ 720</span></div>
+  </div>
+
+  <!-- Topology -->
+  <div class="panel topology">
+    <div class="panel-title"><span>產線拓撲圖</span><span class="val" id="tp-val">S1→S2→S3</span></div>
+    <div class="topology-inner" id="topo"></div>
+  </div>
+
+  <!-- Lead Time Distribution -->
+  <div class="panel">
+    <div class="panel-title"><span>交期分佈</span><span class="val" id="lt-val">avg 13.2d</span></div>
+    <div class="histogram" id="histogram"></div>
+  </div>
+
+  <!-- WIP Chart -->
+  <div class="panel">
+    <div class="panel-title"><span>WIP 水位</span><span class="val" id="wip-val">—</span></div>
+    <div class="wip-chart" id="wipChart"></div>
+  </div>
+
+  <!-- Bottleneck Report -->
+  <div class="panel">
+    <div class="panel-title"><span>瓶頸標示</span><span class="val" id="bn-val">—</span></div>
+    <div class="bn-list" id="bnList"></div>
+  </div>
+
+  <!-- Timeline Playback -->
+  <div class="panel timeline-segment" style="grid-column:1/-1">
+    <div class="panel-title"><span>時間軸播放</span><span class="val" id="tl-val">Day 1</span></div>
+    <div class="time-display" id="timeDisplay">2025-01-01 08:00 — Day 1 · Hour 8 · 720 frames (30 days)</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="speed-controls">
+      <span class="speed-label">Speed:</span>
+      <button class="btn" onclick="setSpeed('200')">0.5×</button>
+      <button class="btn active" onclick="setSpeed('100')">1×</button>
+      <button class="btn" onclick="setSpeed('50')">2×</button>
+      <button class="btn" onclick="setSpeed('20')">5×</button>
+      <span style="margin-left:auto;font-size:.65rem;color:var(--c-t3)" id="frameCount">0 / 720</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   OTD Dashboard — engine-driven visualization
+   ═══════════════════════════════════════════════ */
+
+// ─── Config ───────────────────────────────────
+const STATION_META = [
+  { id: "L1-S1", name: "錫膏印刷", maxWip: 200 },
+  { id: "L1-S2", name: "貼片機",   maxWip: 200 },
+  { id: "L1-S3", name: "回焊爐",   maxWip: 200 },
+];
+const LT_BUCKETS = ["0-3d","3-7d","7-10d","10-14d","14-21d","21+d"];
+const LT_COLORS = ["#22c55e","#4ade80","#a3e635","#facc15","#fb923c","#f43f5e"];
+// WIP_MAX computed from data on init
+let WIP_MAX = 200;
+const WIP_COLORS = ["#14b8a6","#a78bfa","#f59e0b"];
+
+// ─── State ────────────────────────────────────
+let data = null;
+let idx = 0;
+let playing = false;
+let timer = null;
+let speedMs = 100;
+
+// ─── Init ─────────────────────────────────────
+async function init() {
+  const r = await fetch("otd-sim/timeline.json");
+  data = await r.json();
+  const allWip = data.timeline.flatMap(f => f.stations.map(s => s.wip));
+  WIP_MAX = Math.max(...allWip, 1);
+  buildStatic();
+  renderFrame(0);
+}
+
+function buildStatic() {
+  // Topology nodes
+  const topo = document.getElementById("topo");
+  topo.innerHTML = "";
+  STATION_META.forEach((st, i) => {
+    topo.innerHTML += `<div class="stn-node"><div class="stn-circle" id="tc-${st.id}"><span class="sid">${st.id}</span><span class="sname">${st.name}</span></div><div class="stn-wip-bar"><div class="stn-wip-fill" id="wip-${st.id}" style="width:0%"></div></div></div>`;
+    if (i < STATION_META.length - 1)
+      topo.innerHTML += `<div class="arrow" id="arrow-${i}">→</div>`;
+  });
+
+  // WIP chart
+  const wipChart = document.getElementById("wipChart");
+  wipChart.innerHTML = "";
+  STATION_META.forEach(st => {
+    wipChart.innerHTML += `<div class="wip-row"><span class="wip-label" title="${st.id}">${st.name}</span><div class="wip-track"><div class="wip-fill" id="wfill-${st.id}" style="width:0%;background:${WIP_COLORS[STATION_META.indexOf(st)]}"><span></span></div></div><span class="wip-val" id="wval-${st.id}">0</span></div>`;
+  });
+
+  // Histogram
+  const hist = document.getElementById("histogram");
+  hist.innerHTML = "";
+  const ld = data.lead_time_distribution;
+  const maxCnt = Math.max(...ld.counts, 1);
+  ld.buckets.forEach((bkt, i) => {
+    const cnt = ld.counts[i];
+    const pct = (cnt / maxCnt) * 100;
+    hist.innerHTML += `<div class="bar-row"><span class="bar-label">${bkt}</span><div class="bar-track"><div class="bar-fill" id="bar-${i}" style="width:${pct}%;background:${LT_COLORS[i]}"><span>${cnt}</span></div></div><span class="bar-count">${cnt}</span></div>`;
+  });
+}
+
+// ─── Render ────────────────────────────────────
+function renderFrame(i) {
+  if (!data) return;
+  idx = i;
+  const f = data.timeline[i];
+  const day = f.day, hour = f.hour;
+  const stations = f.stations;
+
+  // Header
+  document.getElementById("day-label").textContent = `Day ${day+1} — Hour ${String(hour+1).padStart(2,"0")}`;
+  document.getElementById("timeDisplay").textContent = `${f.ts} — Day ${day+1} · Hour ${hour+1} · ${data.timeline.length} frames total`;
+  document.getElementById("frameCount").textContent = `${i+1} / ${data.timeline.length}`;
+  document.getElementById("progressFill").style.width = `${((i+1)/data.timeline.length)*100}%`;
+  document.getElementById("s-frame").textContent = i+1;
+
+  // Stations
+  let totalWip = 0, totalProc = 0, totalYield = 0, bnScore = 0, bnId = "";
+  stations.forEach((st, si) => {
+    const wipPct = Math.min(100, (st.wip / WIP_MAX) * 100);
+    const circle = document.getElementById(`tc-${st.id}`);
+    const wipFill = document.getElementById(`wip-${st.id}`);
+    const wfill = document.getElementById(`wfill-${st.id}`);
+    const wval = document.getElementById(`wval-${st.id}`);
+
+    circle.className = `stn-circle${st.is_down ? " bn" : ""}`;
+    wipFill.style.width = wipPct + "%";
+    wipFill.style.background = st.is_down ? "var(--accent-rose)" : WIP_COLORS[si];
+    wfill.style.width = wipPct + "%";
+    wval.textContent = st.wip;
+
+    totalWip += st.wip;
+    totalProc += st.processed;
+    totalYield += st.yield_rate;
+    if (st.bottleneck_score > bnScore) { bnScore = st.bottleneck_score; bnId = st.id; }
+
+    // Arrow active state
+    if (si > 0) {
+      const arrow = document.getElementById(`arrow-${si-1}`);
+      if (arrow) arrow.classList.toggle("active", st.wip > 5);
+    }
+  });
+
+  // Stats
+  document.getElementById("s-wip").textContent = totalWip;
+  document.getElementById("s-thru").textContent = totalProc > 0 ? Math.round(totalProc / (hour || 1)) : "—";
+  document.getElementById("s-yield").textContent = stations.length ? (totalYield / stations.length * 100).toFixed(2) + "%" : "—";
+  document.getElementById("s-bn").textContent = bnId || "—";
+
+  // Bottleneck report
+  const sorted = [...stations].sort((a, b) => b.bottleneck_score - a.bottleneck_score);
+  const bnList = document.getElementById("bnList");
+  const bnScoreEl = document.getElementById("bn-val");
+  bnScoreEl.textContent = sorted[0]?.name || "—";
+  bnList.innerHTML = sorted.map((st, i) => {
+    const rankCls = i === 0 ? "r1" : i === 1 ? "r2" : "r3";
+    const dotCls = st.is_down ? "up" : "ok";
+    const status = st.is_down ? "故障中" : "正常";
+    return `<div class="bn-item"><span class="bn-rank ${rankCls}">${i+1}</span><span class="bn-name">${st.name} <small style="color:var(--c-t3)">(${st.id})</small></span><span class="bn-score">${st.bottleneck_score.toFixed(2)}</span></div><div class="bn-status"><span class="dot ${dotCls}"></span>${status} · wait WIP ${st.wip}</div>`;
+  }).join("");
+
+  // Time label
+  document.getElementById("tl-val").textContent = `Day ${day+1} · Hour ${hour+1}`;
+}
+
+// ─── Playback Controls ─────────────────────────
+function togglePlay() {
+  playing = !playing;
+  const btn = document.getElementById("playBtn");
+  btn.textContent = playing ? "⏸ Pause" : "▶ Play";
+  btn.classList.toggle("active", playing);
+  if (playing) startTimer();
+  else clearInterval(timer);
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    if (idx >= data.timeline.length - 1) { togglePlay(); return; }
+    renderFrame(idx + 1);
+  }, speedMs);
+}
+
+function step(delta) {
+  playing && togglePlay();
+  renderFrame(Math.max(0, Math.min(data.timeline.length - 1, idx + delta)));
+}
+
+function setSpeed(val) {
+  speedMs = parseInt(val);
+  document.querySelectorAll("#speedSel ~ .btn, .speed-controls .btn").forEach(b => b.classList.remove("active"));
+  event && event.target && event.target.classList.add("active");
+  if (playing) startTimer();
+}
+
+// ─── Bootstrap ─────────────────────────────────
+init();
+</script>
+</body>
+</html>

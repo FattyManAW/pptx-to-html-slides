@@ -223,28 +223,17 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 .mt1{margin-top:var(--s1)}.mt2{margin-top:var(--s2)}.mt3{margin-top:var(--s3)}
 .mb1{margin-bottom:var(--s1)}.mb2{margin-bottom:var(--s2)}.mb3{margin-bottom:var(--s3)}
 
-
-/* a11y v5: prefers-reduced-motion */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-}
-
-/* a11y v5: focus trap */
-.slides-container *:focus-visible{outline:2px solid var(--accent,#14b8a6);outline-offset:3px;border-radius:3px}
-.slides-container *:focus:not(:focus-visible){outline:none}
-.skip-link:focus{position:static;clip:auto;width:auto;height:auto;overflow:visible;white-space:normal}
 </style>
 </head>
 <body>
-  <a href="#slides" class="skip-nav" tabindex="0"><span style="position:absolute;width:1px;height:1px;overflow:hidden">跳至主要內容</span>跳至主要內容</a>
 <div class="skeleton" id="skeleton"><div class="skeleton-bar" style="width:40%"></div><div class="skeleton-bar" style="width:60%"></div><div class="skeleton-bar" style="width:50%"></div></div>
-<div class="slide"s-container" id="slides" role="group">
-<div class="slide" role="group" aria-label="slide 1" data-stagger="0"><div class="slide"-inner" role="group">
+<div class="slides-container" id="slides">
+<div class="slide" role="group" aria-label="slide 1" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <p class="txt-body-2">IPMACTs APS智能先进排程系统</p>
 <p class="txt-body-2">大连润思科技制造行业及智能制造解决方案商</p>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 2" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 2" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>目标客户</h4>
@@ -262,7 +251,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>成功案例</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 3" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>目标客户</h2></div></div></div><div class="slide" role="group" aria-label="slide 4" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 3" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>目标客户</h2></div></div></div><div class="slide" role="group" aria-label="slide 4" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>目标客户及需求关键字</h4>
@@ -384,7 +373,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 </div>
 </div>
 <img class="slide-img" src="images/slide4_图片_6_cb184213.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 5" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>主要适用于离散型制造行业</h2></div></div></div><div class="slide" role="group" aria-label="slide 6" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>应用场景</h2></div></div></div><div class="slide" role="group" aria-label="slide 7" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 5" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>主要适用于离散型制造行业</h2></div></div></div><div class="slide" role="group" aria-label="slide 6" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>应用场景</h2></div></div></div><div class="slide" role="group" aria-label="slide 7" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>产品设计与制造的复杂性</h4>
@@ -447,7 +436,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>促进 ESG 与绿色制造</h4>
 <p class="txt-body-2">能源优化： 优化排程计划，减少设备运行能源浪费与碳排放。</p>
 <p class="txt-body">资源节约： APS 系统能准确预测物料需求，减少材料浪费，提升资源使用率。</p>
-</div></div><div class="slide" role="group" aria-label="slide 8" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 8" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>生产效率低下</h4>
@@ -483,7 +472,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body">支持数字化转型和智能制造    APS系统是实现数字化工厂和智能制造的关键技术之一，它能够整合企业信息系统（如ERP、MES等），提供数据驱动的决策支持，促进生产自动化和信息流的透明化。</p>
 <p class="txt-body">提高应对紧急事件的能力    在面对突发事件（如供应链中断、机器故障等）时，APS系统能够迅速重新规划生产排程，最小化对生产的影响。</p>
 <p class="txt-body">促进持续改进和创新      APS系统提供的详细数据分析和报告功能，能够帮助企业识别生产过程中的效率瓶颈和改进机会，推动持续改进和创新。</p>
-</div></div><div class="slide" role="group" aria-label="slide 9" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 9" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>生产方面的痛点</h4>
@@ -537,7 +526,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body-2">供应链优化：根据原材料供应与产能状态，调整生产排程。</p>
 <p class="txt-body">设备与人力资源利用：通过排程优化，平衡设备运行负荷与人力资源分配，提升整体生产效率。</p>
 <p class="txt-body">支持永续与韧性发展           ESG、碳足迹管理、绿色制造与供应链透明化。</p>
-</div></div><div class="slide" role="group" aria-label="slide 10" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>APS智慧排程解决方案</h2></div></div></div><div class="slide" role="group" aria-label="slide 11" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 10" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>APS智慧排程解决方案</h2></div></div></div><div class="slide" role="group" aria-label="slide 11" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>iuap云平台</h4>
@@ -653,7 +642,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>智造算法中心</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 12" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 12" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>IT</h4>
@@ -683,7 +672,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>OT</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 13" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 13" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>用友APS：决策支持「工具」</h4>
@@ -701,7 +690,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>IoT/机联网</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 14" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 14" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>「工具」搭配「流程」始能发挥效果</h4>
@@ -768,7 +757,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>MES 报工</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 15" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 15" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>建立新厂</h4>
@@ -798,7 +787,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>即时规划</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 16" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 16" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>智能化生产现场</h4>
@@ -861,7 +850,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>人工记件与报工</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 17" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 17" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>合理化</h4>
@@ -893,7 +882,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body-2">「正确的管理策略」搭配「对的工具」  始能发挥「真正的」管理能力</p>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 18" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 18" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>制造业痛点</h4>
@@ -923,7 +912,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body-2">部分制造业有特殊工艺，对设备容积或载量有需求。导致设备在特定工序下无法充分利用。</p>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 19" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 19" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>生产管理</h4>
@@ -1008,7 +997,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <img class="slide-img" src="images/slide19_圖片_8_a80d10fd.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide19_圖片_15_0c47823b.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide19_圖片_16_6a3af761.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 20" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>MRP与APS的区别</h2></div></div></div><div class="slide" role="group" aria-label="slide 21" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>用友 APS 产品架构图</h2></div></div></div><div class="slide" role="group" aria-label="slide 22" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 20" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>MRP与APS的区别</h2></div></div></div><div class="slide" role="group" aria-label="slide 21" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>用友 APS 产品架构图</h2></div></div></div><div class="slide" role="group" aria-label="slide 22" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>APS 排程派工仿真引擎与输入/输出</h4>
@@ -1080,7 +1069,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>资源群组稼动率</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 23" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>资源产能约束条件</h2></div></div></div><div class="slide" role="group" aria-label="slide 24" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>应用场景</h2></div></div></div><div class="slide" role="group" aria-label="slide 25" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 23" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>资源产能约束条件</h2></div></div></div><div class="slide" role="group" aria-label="slide 24" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>应用场景</h2></div></div></div><div class="slide" role="group" aria-label="slide 25" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>APS解决方案-选配模块</h4>
@@ -1140,7 +1129,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>人员指派模块</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 26" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 26" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>APS解决方案-产业包(1/2)</h4>
@@ -1338,7 +1327,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>物料与产能同步规划模块</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 27" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 27" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>APS解决方案-产业包(2/2)</h4>
@@ -1416,7 +1405,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>（定制化）</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 28" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 28" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>严守交期逆向排产</h4>
@@ -1466,13 +1455,13 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>建议导入功能模块</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 29" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 29" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <span class="tag tag--violet">29</span>
 <span class="tag tag--violet">29</span>
 <h4>APS预期效益</h4>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 30" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 30" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4><span class="stat-highlight">50%</span></h4>
@@ -1498,7 +1487,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body-2">建立所有可能发生状态及事件库后，根据生产现场发生的任何情境如：缺料、当机、不良率过高、设计变更等等，皆可自动触发重新排程并实时规划应变策略，在不需要人为过度干预情况下，最短时间内复产，将不确定性对产线的冲击降至最低。</p>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 31" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 31" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>排程结果（销售订单总表）</h4>
 <p class="txt-body">业务或生管人员，通过【销售订单总表】，可查看每笔订单完工日期，生产周期等信息，以快速响应顾客交期答复，并对可能延后的订单提出警讯。</p>
@@ -1506,7 +1495,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 </div>
 <img class="slide-img" src="images/slide31_图片_5_207caf22.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide31_图片_8_edb0a121.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 32" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 32" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>排程结果(订单BOM展开)</h4>
@@ -1526,14 +1515,14 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 </div>
 </div>
 <img class="slide-img" src="images/slide32_图片_4_8697c1f4.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 33" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 33" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>排程结果(插单场景）</h4>
 <p class="txt-body">通过销售订单优先级的设定，急插单的订单优先排产，但在VVIP订单后</p>
 </div>
 <img class="slide-img" src="images/slide33_图片_3_61d8ffc9.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide33_图片_7_e0f45d41.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 34" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 34" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>排程结果(物料规划总表)</h4>
 <p class="txt-body-2">原材料采购周期内的物料需求，合并到一次采购建议中。</p>
@@ -1541,13 +1530,13 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 </div>
 <img class="slide-img" src="images/slide34_图片_5_11c0c4f1.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide34_图片_6_2a8bef91.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 35" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 35" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>排程结果(采购建议单)</h4>
 <p class="txt-body">根据生产进度和物料规划，自动生成采购建议单，合并采购周期内物料需求量。有利于帮助企业快速制定采购计划。</p>
 </div>
 <img class="slide-img" src="images/slide35_图片_4_954a94c6.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 36" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 36" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>机台模治具限制</h4>
 <h4>在资源群组设定模具</h4>
@@ -1555,20 +1544,20 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 </div>
 <img class="slide-img" src="images/slide36_图片_7_aee6c107.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide36_图片_10_672fe51c.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 37" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>排程结果(机台模治具限制)</h2></div></div></div><div class="slide" role="group" aria-label="slide 38" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 37" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>排程结果(机台模治具限制)</h2></div></div></div><div class="slide" role="group" aria-label="slide 38" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>多排程版本对比分析</h4>
 <p class="txt-body-2">多版本排程结果比较，清晰呈现版本差异，方便生管人员择优选择。</p>
 </div>
 <img class="slide-img" src="images/slide38_图片_5_a7989371.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 39" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 39" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>排程结果下发</h4>
 <p class="txt-body-2">多版本结果比较后，选择最优排程版本做结果下发。</p>
 <p class="txt-body-2">结果下发，会把工序的开/完工时间，带到生产订单上</p>
 </div>
 <img class="slide-img" src="images/slide39_图片_5_6e90e72a.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 40" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 40" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>排程结果（生产订单）</h4>
 <p class="txt-body">在生产订单上可以查整个订单的开/完工日，以及各工序的计划开/完工时间。</p>
@@ -1576,19 +1565,19 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>工序派工到设备也会显示</h4>
 </div>
 <img class="slide-img" src="images/slide40_图片_4_f062600e.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 41" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 41" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>工单/资源锁定</h4>
 <p class="txt-body">【资源锁定甘特图】提供对已审核&已开工的工单做资源锁定，避免误操作干扰，保证任务的稳定性，提高排产的可靠性。</p>
 </div>
 <img class="slide-img" src="images/slide41_图片_4_2c3df759.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 42" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 42" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>订单执行度跟踪</h4>
 <p class="txt-body">【执行度分析甘特图】提供对生产订单开工状态的跟踪。方便生管人员随时跟踪进度，快速定位延迟订单，及时调整生产计划，降低交期延误风险。</p>
 </div>
 <img class="slide-img" src="images/slide42_图片_4_e16fe2be.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 43" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 43" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>排程结果(设备故障)</h4>
 <p class="txt-body-2">正常排程工序010，数控车床1</p>
@@ -1598,14 +1587,14 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <img class="slide-img" src="images/slide43_图片_16_c71919cd.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide43_图片_11_c72c296b.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide43_图片_6_0e564f24.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 44" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>APS  AI Agent解决方案</h2></div></div></div><div class="slide" role="group" aria-label="slide 45" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 44" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>APS  AI Agent解决方案</h2></div></div></div><div class="slide" role="group" aria-label="slide 45" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <h4>AI Agent 产品介绍</h4>
 <p class="txt-body">专注于制造业生产计划与排程的APS（高级计划与排程）智能体，可无缝适配用友ERP、MES等生态现有系统，通过AI驱动的有限产能优化算法，整合订单、物料、产能等核心数据，生成精准、可执行的生产排程方案，解决企业排程低效、交期延误、资源冲突等痛点，成为用友生态制造业客户生产智能化升级的核心支撑工具。</p>
 <h4>产品定位</h4>
 </div>
 <img class="slide-img" src="images/slide45_图片_4_75bbf825.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 46" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 46" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>AI Agent 核心功能</h4>
@@ -1624,7 +1613,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>排程结果多版本对比</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 47" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 47" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>AI Agent 应用场景</h4>
@@ -1660,7 +1649,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>预测性排程决策场景</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 48" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 48" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>AI Agent 智能体业务流程</h4>
@@ -1769,7 +1758,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body-2">AIP APSResult/GetAPSRadar</p>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 49" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 49" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <p class="txt-body">AI Agent 使用情境介绍-零门槛交互入口，智能问答精准导航</p>
 <h4>零门槛交互入口</h4>
@@ -1777,7 +1766,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body">无需复杂操作，可输入任意文字内容与智能体互动咨询。新人轻松上手，团队协作效率翻倍，彻底打通排程操作沟通壁垒。</p>
 </div>
 <img class="slide-img" src="images/slide49_图片_2_78866df6.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 50" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 50" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <p class="txt-body">AI Agent 使用情境介绍-数据查询零等待，多版本对比秒出结论</p>
 <p class="txt-body-2">数据查询零等待，多版本对比秒出结论</p>
@@ -1785,7 +1774,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body">自然语言清晰下达查询需求，智能体精准识别筛选条件，秒级完成数据抓取、汇总与核心指标提炼。</p>
 </div>
 <img class="slide-img" src="images/slide50_图片_5_745bfdd0.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 51" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 51" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <p class="txt-body">AI Agent 使用情境介绍-自然语言指令驱动，订单到排程全流程自动化</p>
 <p class="txt-body-2">自然语言指令驱动，订单到排程全流程自动化</p>
@@ -1793,7 +1782,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body">APS智能体以自然语言为交互核心，只需进入智能体入口，用户下达指令，即可自动根据用户指令完成如订单生成、审核流转与智慧排程全链路操作。</p>
 </div>
 <img class="slide-img" src="images/slide51_图片_7_745bfdd0.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 52" data-stagger="0"><div class="slide"-inner" role="group"><div class="divider"><h2>成功案例</h2></div></div></div><div class="slide" role="group" aria-label="slide 53" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 52" data-stagger="0"><div class="slide-inner"><div class="divider"><h2>成功案例</h2></div></div></div><div class="slide" role="group" aria-label="slide 53" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>成功客户案例-广东某模具有限公司</h4>
@@ -1832,7 +1821,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 </div>
 </div>
 <img class="slide-img" src="images/slide53_图片_22_0cd2be90.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 54" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 54" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>产   品</h4>
@@ -1859,7 +1848,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <img class="slide-img" src="images/slide54_图片_51_f4180b5b.jpeg" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide54_图片_52_bf717136.jpeg" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide54_图片_53_01335e6e.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 55" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 55" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>成功客户案例-吉某电子股份有限公司</h4>
@@ -1888,7 +1877,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>客户资料</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 56" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 56" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>应用功能</h4>
@@ -1922,7 +1911,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body-2">OTD时间由<span class="stat-num">30</span>天减至<span class="stat-num">24</span>天，其中厂内加工及组装时间由<span class="stat-num">10</span>天减至<span class="stat-num">8</span>天，时间缩短<span class="stat-highlight">20%</span>。</p>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 57" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 57" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>应用功能</h4>
@@ -1947,7 +1936,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <h4>客户资料</h4>
 </div>
 </div>
-</div></div><div class="slide" role="group" aria-label="slide 58" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 58" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>此次智能排程与调度系统（后面简称AIPS系统）的应用范围是组装-测试-包装工段，其中测试主要包括了初测、逆变、老化、终测等细化工艺网站。现阶段存在以下问题点：</h4>
@@ -1970,7 +1959,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <p class="txt-body">产能揭露：结合订单+预测，开展长周期的产能评估，科学分析出资源利用率，揭露真实产能。</p>
 <h4>客户痛点</h4>
 <img class="slide-img" src="images/slide58_图片_6_63b4f05e.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 59" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 59" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>成功客户案例-郑州某医学技术有限公司</h4>
@@ -2009,7 +1998,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 </div>
 </div>
 <img class="slide-img" src="images/slide59_图片_7_0687e330.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 60" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 60" data-stagger="0"><div class="slide-inner">
 <div class="feat-grid">
 <div class="feat-item data-stagger" style="animation-delay:var(--d-stagger)">
 <h4>痛点与需求</h4>
@@ -2053,7 +2042,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <img class="slide-img" src="images/slide60_图片_70_3df2e39d.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide60_图片_71_2ca70af4.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide60_图片_72_a42da7e9.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 61" data-stagger="0"><div class="slide"-inner" role="group">
+</div></div><div class="slide" role="group" aria-label="slide 61" data-stagger="0"><div class="slide-inner">
 <div class="content-block">
 <p class="txt-body-2">成功客户案例-深圳某新能源零部件上市公司</p>
 <h4>解决方案</h4>
@@ -2063,15 +2052,15 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
 <img class="slide-img" src="images/slide61_图片_15_9d48a48b.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide61_图片_16_9ed326bb.png" alt="" loading="lazy" decoding="async">
 <img class="slide-img" src="images/slide61_图片_17_f9d5c845.png" alt="" loading="lazy" decoding="async">
-</div></div><div class="slide" role="group" aria-label="slide 62" data-stagger="0"><div class="slide"-inner" role="group"><h1 class="thanks-text">Thank you！</h1></div></div>
+</div></div><div class="slide" role="group" aria-label="slide 62" data-stagger="0"><div class="slide-inner"><h1 class="thanks-text">Thank you！</h1></div></div>
 </div>
 <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
 <nav class="nav-bar">
-  <button id="prevBtn" aria-label="上一張投影片"‹</button>
-  <span class="nav-counter" aria-live="polite" aria-atomic="true" aria-live="polite" aria-atomic="true"><span class="current" id="curNum">1</span> / 62</span>
-  <button id="nextBtn" aria-label="下一張投影片"›</button>
+  <button class="nav-btn" id="prevBtn" disabled>‹</button>
+  <span class="nav-counter"><span class="current" id="curNum">1</span> / 62</span>
+  <button class="nav-btn" id="nextBtn">›</button>
   <span id="cnt" style="position:fixed;top:.8rem;right:1rem;font-size:.65rem;color:var(--c-t4);font-weight:500;z-index:301"></span>
-  <button id="fsBtn" aria-label="全螢幕切換"⛶</button>
+  <button class="fs-btn" id="fsBtn" title="Fullscreen">⛶</button>
 </nav>
 <script>
 (function(){
@@ -2092,7 +2081,7 @@ body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--c-bg);color:
     if(n<0||n>=total)return;
     const prev=slides[current];prev.classList.remove('active');prev.classList.add('prev');
     current=n;
-    slides[current].classList.add('active');slides[current].setAttribute('aria-current','page');slides[current].classList.remove('prev');
+    slides[current].classList.add('active');slides[current].classList.remove('prev');
     bar.style.width=((current+1)/total*100)+'%';
     cur.textContent=current+1;document.getElementById('cnt').textContent=current+1+'/'+total;
     prevBtn.disabled=current===0;
