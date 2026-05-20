@@ -6,6 +6,7 @@ extract-tokens.py — Design Token 自動提取與比對工具
 輸出 diff 報告。exit code 非零 = token 缺漏（可做 CI gate）。
 """
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -20,7 +21,6 @@ FILES = [
 
 # 語意化分類規則
 CATEGORY_RULES = [
-    # (regex pattern, label, category)
     (r"^--(c|ink)-\d+$",                    "Color Palette", "🎨"),
     (r"^--(c|ink)-(t[1-4]|[a-z]+(-[a-z]+)*)$", "Semantic Colors", "🎨"),
     (r"^--s\d+$",                           "Spacing (8px grid)", "📏"),
@@ -49,28 +49,51 @@ LABELS = {
     "runs-impacts-aps-partner.html":      "潤思",
 }
 
+
+# ── APS-only allowlist ────────────────────────────────────────────────
+# Tokens that are intentionally single-product (APS extensions, spacing variants).
+# These are NOT cross-product gaps — filtering them prevents false-positive CI failures.
+def load_aps_allowlist() -> set:
+    try:
+        tokens_path = SHOWCASE / "tokens.json"
+        with open(tokens_path) as f:
+            data = json.load(f)
+        aps_only = set()
+        aps_map = data.get("mapping_table", {}).get("aps_to_canonical", {})
+        for cat in data.get("categories", {}).values():
+            for name, info in cat.get("tokens", {}).items():
+                # APS flag set, but no canonical mapping = APS-only extension
+                if info.get("aps") and name not in aps_map:
+                    aps_only.add(name)
+        return aps_only
+    except Exception:
+        return set()
+
+APS_ONLY_ALLOWLIST = load_aps_allowlist()
+
+
+# ── Token extraction ──────────────────────────────────────────────────
 def extract_tokens(html_path):
-    """提取 HTML 中所有 CSS custom properties"""
     text = html_path.read_text(encoding="utf-8")
     tokens = set()
     for m in re.finditer(r'--([a-zA-Z][a-zA-Z0-9-]*)', text):
         tokens.add(f"--{m.group(1)}")
     return tokens
 
+
 def categorize(token):
-    """將 token 歸入語意分類"""
     for pattern, label, emoji in CATEGORY_RULES:
         if re.match(pattern, token):
             return label, emoji
     return "Other", "📦"
 
+
+# ── Report: diff with allowlist ───────────────────────────────────────
 def diff_report(file_tokens):
-    """產出 diff 報告"""
     all_tokens = set()
     for tokens in file_tokens.values():
         all_tokens |= tokens
 
-    # Group by category
     categorized = defaultdict(lambda: {"tokens": set(), "files": defaultdict(bool)})
     for token in sorted(all_tokens):
         cat, emoji = categorize(token)
@@ -80,85 +103,72 @@ def diff_report(file_tokens):
             categorized[(emoji, cat)]["files"][fname][token] = token in tokens
 
     issues = 0
-    lines = []
-    lines.append("=" * 72)
-    lines.append("  Design Token Diff Report")
-    lines.append("=" * 72)
-    lines.append("")
+    lines = ["=" * 72, "  Design Token Diff Report", "=" * 72, ""]
 
     for (emoji, cat), data in sorted(categorized.items()):
         lines.append(f"  {emoji} {cat}")
         lines.append(f"  {'─' * 40}")
-        tokens_sorted = sorted(data["tokens"])
-
-        # Table header
-        header = f"  {'Token':<28} {'APS':<6} {'CRIS':<6} {'潤思':<6}"
-        lines.append(header)
-        lines.append(f"  {'─' * 46}")
-
-        cat_issues = 0
-        for token in tokens_sorted:
+        for token in sorted(data["tokens"]):
             aps_ok = "✅" if token in file_tokens["aps-ai-agent.html"] else "❌"
             cris_ok = "✅" if token in file_tokens["cris-impacts-carbon.html"] else "❌"
             runs_ok = "✅" if token in file_tokens["runs-impacts-aps-partner.html"] else "❌"
-            missing = sum(1 for x in [aps_ok, cris_ok, runs_ok] if x == "❌")
-            if missing > 0:
-                cat_issues += missing
-                issues += missing
-
+            # Allowlist: APS-only tokens intentionally absent from other products
+            if APS_ONLY_ALLOWLIST and token in APS_ONLY_ALLOWLIST:
+                _aps = 0 if aps_ok == "✅" else 1  # APS missing = real gap
+                _cris = 0  # APS-only, not a cross-product gap
+                _runs = 0  # APS-only, not a cross-product gap
+            else:
+                _aps = 0 if aps_ok == "✅" else 1
+                _cris = 0 if cris_ok == "✅" else 1
+                _runs = 0 if runs_ok == "✅" else 1
+            m = _aps + _cris + _runs
+            if m > 0:
+                issues += m
             lines.append(f"  {token:<28} {aps_ok:<6} {cris_ok:<6} {runs_ok:<6}")
-
         lines.append("")
 
-    # Summary
-    lines.append("=" * 72)
-    lines.append("  Summary")
-    lines.append("=" * 72)
-    aps_tokens = len(file_tokens["aps-ai-agent.html"])
-    cris_tokens = len(file_tokens["cris-impacts-carbon.html"])
-    runs_tokens = len(file_tokens["runs-impacts-aps-partner.html"])
+    aps_t = len(file_tokens["aps-ai-agent.html"])
+    cris_t = len(file_tokens["cris-impacts-carbon.html"])
+    runs_t = len(file_tokens["runs-impacts-aps-partner.html"])
     common = len(file_tokens["aps-ai-agent.html"] & file_tokens["cris-impacts-carbon.html"] & file_tokens["runs-impacts-aps-partner.html"])
     union = len(all_tokens)
 
-    lines.append(f"  APS  tokens: {aps_tokens}")
-    lines.append(f"  CRIS tokens: {cris_tokens}")
-    lines.append(f"  潤思 tokens: {runs_tokens}")
+    lines += ["=" * 72, "  Summary", "=" * 72, ""]
+    lines.append(f"  APS  tokens: {aps_t}")
+    lines.append(f"  CRIS tokens: {cris_t}")
+    lines.append(f"  潤思 tokens: {runs_t}")
     lines.append(f"  Common (all 3): {common}")
     lines.append(f"  Union:          {union}")
     lines.append(f"  Missing slots:  {issues}")
+    if APS_ONLY_ALLOWLIST:
+        lines.append(f"  (filtered {len(APS_ONLY_ALLOWLIST)} APS-only tokens)")
     lines.append("")
 
-    # Per-file unique tokens
     lines.append("  Unique tokens per file:")
     for fname in FILES:
         label = LABELS[fname]
-        other_files = [FILES[i] for i in range(len(FILES)) if FILES[i] != fname]
-        others_union = set()
-        for of in other_files:
-            others_union |= file_tokens[of]
-        unique = file_tokens[fname] - others_union
+        others = set()
+        for of in FILES:
+            if of != fname:
+                others |= file_tokens[of]
+        unique = file_tokens[fname] - others
         if unique:
             lines.append(f"  {label}: {', '.join(sorted(unique))}")
 
     lines.append("")
-    if issues > 0:
-        lines.append(f"  ❌ {issues} missing token slots detected.")
-    else:
-        lines.append(f"  ✅ All tokens consistent across 3 files.")
-
+    lines.append(f"  ❌ {issues} missing token slots detected." if issues > 0 else "  ✅ All tokens consistent across 3 files.")
     return "\n".join(lines), issues
 
 
+# ── Report: JSON (CI-friendly) ────────────────────────────────────────
 def json_report(file_tokens):
-    """JSON 格式輸出，適合 CI 解析"""
-    import json
     all_tokens = set()
     for tokens in file_tokens.values():
         all_tokens |= tokens
 
     token_matrix = {}
     for token in sorted(all_tokens):
-        cat_label, cat_emoji = categorize(token)
+        cat_label, _ = categorize(token)
         token_matrix[token] = {
             "category": cat_label,
             "APS": token in file_tokens["aps-ai-agent.html"],
@@ -172,7 +182,9 @@ def json_report(file_tokens):
     common = aps_set & cris_set & runs_set
 
     missing = sum(
-        3 - token_matrix[t]["APS"] - token_matrix[t]["CRIS"] - token_matrix[t]["潤思"]
+        (0 if token_matrix[t]["APS"] else 1) +
+        (0 if (APS_ONLY_ALLOWLIST and t in APS_ONLY_ALLOWLIST) else (0 if token_matrix[t]["CRIS"] else 1)) +
+        (0 if (APS_ONLY_ALLOWLIST and t in APS_ONLY_ALLOWLIST) else (0 if token_matrix[t]["潤思"] else 1))
         for t in token_matrix
     )
 
@@ -184,6 +196,7 @@ def json_report(file_tokens):
             "common": len(common),
             "union": len(all_tokens),
             "missing_slots": missing,
+            "aps_only_filtered": len(APS_ONLY_ALLOWLIST) if APS_ONLY_ALLOWLIST else 0,
         },
         "unique_per_file": {
             "APS": sorted(aps_set - cris_set - runs_set),
@@ -197,20 +210,34 @@ def json_report(file_tokens):
     return missing
 
 
+# ── Check mode (CI gate) ──────────────────────────────────────────────
 def check_mode(file_tokens):
-    """Check-only mode: 有缺漏時 exit code = 缺漏數"""
+    """Check-only mode: exit code = missing slot count.
+    APS-only allowlist auto-applied if loaded."""
     all_tokens = set()
     for tokens in file_tokens.values():
         all_tokens |= tokens
 
     missing = 0
+    dbg = 0
     for token in sorted(all_tokens):
         aps = token in file_tokens["aps-ai-agent.html"]
         cris = token in file_tokens["cris-impacts-carbon.html"]
         runs = token in file_tokens["runs-impacts-aps-partner.html"]
-        count = aps + cris + runs
-        if count < 3:
-            missing += 3 - count
+        if APS_ONLY_ALLOWLIST and token in APS_ONLY_ALLOWLIST:
+            _aps = 0 if aps else 1
+            _cris = 0
+            _runs = 0
+        else:
+            _aps = 0 if aps else 1
+            _cris = 0 if cris else 1
+            _runs = 0 if runs else 1
+        slot = _aps + _cris + _runs
+        if dbg < 5 and slot > 0:
+            import sys as _s
+            print(f"  [CM] {token}: aps={aps} cris={cris} runs={runs} -> {slot}", file=_s.stderr)
+            dbg += 1
+        missing += slot
 
     if missing > 0:
         print(f"❌ {missing} missing token slots")
@@ -219,6 +246,7 @@ def check_mode(file_tokens):
     return missing
 
 
+# ── Main ──────────────────────────────────────────────────────────────
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Design Token 自動提取與比對工具")

@@ -22,19 +22,25 @@
    來源：Stripe CSS variables 系統 + 8px spacing grid
    ═══════════════════════════════════════════════════════════ */
 :root {
+  /* ── P0-2: Blur 梯度四級 (§16.2) ── */
+  --blur-card:  12px;
+  --blur-sheet: 24px;
+  --blur-modal: 32px;
+  --blur-nav:   8px;
+
   /* ── 色彩：深色材質層次 ── */
-  --ink-900: #05060a;       /* 最深：隱藏在底色 */
-  --ink-800: #0a0c14;       /* 主要背景 */
-  --ink-700: #0f131d;       /* 次要背景 */
-  --ink-600: #151b28;       /* 卡片背景 */
-  --ink-500: #1c2336;       /* hover 狀態 */
+  --c-950: #05060a;       /* 最深：隱藏在底色 */
+  --c-900: #0a0c14;       /* 主要背景 */
+  --c-800: #0f131d;       /* 次要背景 */
+  --c-700: #151b28;       /* 卡片背景 */
+  --c-600: #1c2336;       /* hover 狀態 */
   --border:   rgba(255,255,255,.06);   /* 最細分割線 */
   --border-md: rgba(255,255,255,.10);  /* 區塊邊界 */
 
   /* ── 文字：嚴格字體對比階梯 ── */
   /* Display — 封面/章節大標，Playfair Display，最大衝擊 */
-  --display-1:    clamp(3.2rem, 7vw, 5.6rem);  /* ~51-90px */
-  --display-2:    clamp(2.4rem, 5vw, 3.6rem);  /* ~38-58px */
+  --text-display-1:    clamp(3.2rem, 7vw, 5.6rem);  /* ~51-90px */
+  --text-display-2:    clamp(2.4rem, 5vw, 3.6rem);  /* ~38-58px */
   /* Heading — Inter 層次，中等關注度 */
   --heading-1:    2.25rem;   /* 36px */
   --heading-2:    1.625rem;  /* 26px */
@@ -53,10 +59,10 @@
   --accent-amber: #fbbf24;   /* amber */
 
   /* ── 文字顏色階梯 ── */
-  --t1:   rgba(255,255,255,.95);   /* 主要文字 */
-  --t2:   rgba(255,255,255,.72);   /* 次要文字 */
-  --t3:   rgba(255,255,255,.46);   /* 輔助文字 */
-  --t4:   rgba(255,255,255,.28);   /* 最低層級 */
+  --c-t1:   rgba(255,255,255,.95);   /* 主要文字 */
+  --c-t2:   rgba(255,255,255,.72);   /* 次要文字 */
+  --c-t3:   rgba(255,255,255,.46);   /* 輔助文字 */
+  --c-t4:   rgba(255,255,255,.28);   /* 最低層級 */
 
   /* ── 間距：8px base grid ── */
   --s1:  8px;   --s2:  16px;  --s3:  24px;
@@ -65,13 +71,21 @@
 
   /* ── 動畫時間：timing staircase ── */
   --t-fast: 120ms;
-  --t-med:  240ms;
+  --t-mid:  240ms;
   --t-slow: 400ms;
   --ease:   cubic-bezier(.16,1,.3,1);   /* 精準的 decelerate-out */
   --ease-in: cubic-bezier(.4,0,.2,1);   /* ease-in */
 
   /* ── 圓角 ── */
   --r-sm: 4px;  --r-md: 8px;  --r-lg: 16px;  --r-xl: 24px;
+
+  /* §15 gap1 — Semantic color */
+  --c-error:   #fb7185; --c-error-dim:   rgba(251,113,133,.12);
+  --c-success: #34d399; --c-success-dim: rgba(52,211,153,.12);
+  --c-warning: #fbbf24; --c-warning-dim: rgba(251,191,36,.12);
+  --c-info:    #4f8ef7; --c-info-dim:    rgba(79,142,247,.12);
+  /* §15 gap4 — Blur gradient */
+  --blur-sm:  8px;  --blur-md:  16px;  --blur-lg:  24px;  --blur-xl:  32px;
 }
 
 /* ═══════════════════════════════════════
@@ -83,8 +97,8 @@ html, body {
   overflow: hidden;
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-weight: 400;
-  background: var(--ink-800);
-  color: var(--t1);
+  background: var(--c-900);
+  color: var(--c-t1);
   -webkit-font-smoothing: antialiased;
 }
 button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
@@ -112,13 +126,48 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .slide.prev { opacity: 0; }
 
 /* stagger entrance — timing staircase */
-.slide.active .in { animation: slideIn var(--t-slow) var(--ease) forwards; }
+/* stagger entrance — timing staircase */
 .slide.active .in:nth-child(1) { animation-delay: 0ms; }
 .slide.active .in:nth-child(2) { animation-delay: 80ms; }
 .slide.active .in:nth-child(3) { animation-delay: 160ms; }
 .slide.active .in:nth-child(4) { animation-delay: 240ms; }
 .slide.active .in:nth-child(5) { animation-delay: 320ms; }
 
+
+.slide.active .in { animation: slideIn var(--t-slow) var(--ease) forwards; }
+
+
+/* §15 gap2 — Spring animation (Apple physics model) */
+@keyframes springIn {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+
+/* §14.2 — Slide direction (Apple spatial model) */
+/* Content enters: upward (toward user) */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Chapter enters: from right */
+@keyframes slideFromRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+/* Chapter exits: away to bottom-left */
+@keyframes slideExitLeft {
+  from { opacity: 1; transform: translateX(0); }
+
+/* §14.2 — Slide direction utility classes */
+.slideUp     { animation: slideUp     var(--t-mid) var(--ease-out) both; }
+.slideFromRight { animation: slideFromRight var(--t-mid) var(--ease-out) both; }
+.slideExitLeft  { animation: slideExitLeft  var(--t-mid) var(--ease-in)  both; }
+
+  to   { opacity: 0; transform: translateX(-60px) translateY(20px); }
+}
+
+
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+/* spring ease: cubic-bezier(0.34, 1.56, 0.64, 1) = 2% overshoot */
 @keyframes slideIn {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -134,21 +183,21 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   background:
     radial-gradient(ellipse 70% 60% at 80% 20%, rgba(99,91,255,.07), transparent 70%),
     radial-gradient(ellipse 50% 60% at 20% 80%, rgba(79,142,247,.05), transparent 70%),
-    var(--ink-800);
+    var(--c-900);
 }
 .bg--dark {
-  background: var(--ink-800);
+  background: var(--c-900);
 }
 .bg--deep {
-  background: var(--ink-900);
+  background: var(--c-950);
 }
 .bg--section {
-  background: var(--ink-900);
+  background: var(--c-950);
 }
 .bg--card {
   background:
     radial-gradient(ellipse 60% 50% at 70% 40%, rgba(99,91,255,.04), transparent),
-    var(--ink-800);
+    var(--c-900);
 }
 
 /* ═══════════════════════════════════════
@@ -170,47 +219,47 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 
 .txt-display-1 {
   font-family: 'Playfair Display', serif;
-  font-size: var(--display-1);
+  font-size: var(--text-display-1);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -.02em;
-  color: var(--t1);
+  color: var(--c-t1);
 }
 .txt-display-2 {
   font-family: 'Playfair Display', serif;
-  font-size: var(--display-2);
+  font-size: var(--text-display-2);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -.015em;
-  color: var(--t1);
+  color: var(--c-t1);
 }
 .txt-heading-1 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-1);
   font-weight: 600;
   line-height: 1.25;
-  color: var(--t1);
+  color: var(--c-t1);
 }
 .txt-heading-2 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-2);
   font-weight: 500;
   line-height: 1.35;
-  color: var(--t1);
+  color: var(--c-t1);
 }
 .txt-body-1 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-1);
   font-weight: 400;
   line-height: 1.7;
-  color: var(--t2);
+  color: var(--c-t2);
 }
 .txt-body-2 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2);
   font-weight: 300;
   line-height: 1.7;
-  color: var(--t3);
+  color: var(--c-t3);
 }
 .txt-caption {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
@@ -219,7 +268,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   line-height: 1.6;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--t4);
+  color: var(--c-t4);
 }
 
 /* accent text */
@@ -266,7 +315,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   color: rgba(99,91,255,.06);
   letter-spacing: -.04em;
 }
-.section-label { color: var(--t4); }
+.section-label { color: var(--c-t4); }
 
 /* ── CARD GRID ── */
 .card-grid {
@@ -274,7 +323,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   gap: var(--s3); flex: 1; align-content: start;
 }
 .card {
-  background: var(--ink-600);
+  background: var(--c-700);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: var(--s4);
@@ -285,6 +334,14 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   border-color: rgba(99,91,255,.15);
   transform: translateY(-2px);
 }
+
+/* §15 gap3 — Card :active instant feedback */
+.card:active {
+  transform: scale(0.98);
+  background: var(--c-600);
+  transition-duration: 0ms;
+}
+
 .card__icon {
   font-size: 1.75rem; margin-bottom: var(--s2);
   display: block;
@@ -292,12 +349,12 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .card__title {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-3); font-weight: 600;
-  color: var(--t1); margin-bottom: var(--s1);
+  color: var(--c-t1); margin-bottom: var(--s1);
 }
 .card__body {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  line-height: 1.7; color: var(--t2);
+  line-height: 1.7; color: var(--c-t2);
 }
 
 /* ── SCENARIO GRID ── */
@@ -306,7 +363,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   gap: var(--s3); flex: 1; align-content: start;
 }
 .scenario-card {
-  background: var(--ink-600);
+  background: var(--c-700);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: var(--s4);
@@ -322,19 +379,19 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .scenario-card__title {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-3); font-weight: 600;
-  color: var(--t1); margin-bottom: var(--s1);
+  color: var(--c-t1); margin-bottom: var(--s1);
 }
 .scenario-card__body {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  line-height: 1.7; color: var(--t2);
+  line-height: 1.7; color: var(--c-t2);
 }
 .scenario-tag {
   display: inline-block;
   font-family: 'Inter', sans-serif;
   font-size: .65rem; font-weight: 500;
   letter-spacing: .08em; text-transform: uppercase;
-  color: var(--t3);
+  color: var(--c-t3);
   padding: 3px 10px; border-radius: 100px;
   border: 1px solid var(--border);
   margin: 2px;
@@ -348,7 +405,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .arch__label {
   font-family: 'Inter', sans-serif;
   font-size: var(--body-3); font-weight: 600;
-  color: var(--t4); text-transform: uppercase;
+  color: var(--c-t4); text-transform: uppercase;
   letter-spacing: .1em; width: 100px; flex-shrink: 0;
   text-align: right; padding-top: 2px;
 }
@@ -365,7 +422,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .chip--blue   { color: var(--accent-blue); border-color: rgba(79,142,247,.15); background: rgba(79,142,247,.06); }
 .chip--violet { color: var(--accent-2);   border-color: rgba(167,139,250,.15); background: rgba(167,139,250,.06); }
 .chip--em     { color: var(--accent-em);   border-color: rgba(52,211,153,.15);  background: rgba(52,211,153,.06); }
-.chip--muted  { color: var(--t3);          border-color: var(--border);          background: rgba(255,255,255,.03); }
+.chip--muted  { color: var(--c-t3);          border-color: var(--border);          background: rgba(255,255,255,.03); }
 
 /* ── DATA TABLE ── */
 .data-table {
@@ -375,7 +432,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .data-table th {
   font-family: 'Inter', sans-serif;
   font-size: var(--body-3); font-weight: 600;
-  color: var(--t4); text-transform: uppercase;
+  color: var(--c-t4); text-transform: uppercase;
   letter-spacing: .06em; text-align: left;
   padding: var(--s2) var(--s2);
   border-bottom: 1px solid var(--border);
@@ -383,13 +440,13 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .data-table td {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  color: var(--t2); padding: var(--s2);
+  color: var(--c-t2); padding: var(--s2);
   border-bottom: 1px solid rgba(255,255,255,.03);
 }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table .val {
   font-family: 'Inter', sans-serif; font-weight: 600;
-  color: var(--t1); text-align: right;
+  color: var(--c-t1); text-align: right;
 }
 
 /* ── FLOW / STEPS ── */
@@ -398,7 +455,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   gap: var(--s3); flex: 1; align-content: start;
 }
 .flow-col {
-  background: var(--ink-600);
+  background: var(--c-700);
   border: 1px solid var(--border);
   border-radius: var(--r-lg); padding: var(--s4);
   position: relative; overflow: hidden;
@@ -412,7 +469,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .flow-col__title {
   font-family: 'Inter', sans-serif;
   font-size: var(--heading-3); font-weight: 600;
-  color: var(--t1); margin-bottom: var(--s2);
+  color: var(--c-t1); margin-bottom: var(--s2);
 }
 .flow-step {
   display: flex; align-items: flex-start; gap: var(--s2);
@@ -427,7 +484,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .flow-step__p {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  line-height: 1.65; color: var(--t2);
+  line-height: 1.65; color: var(--c-t2);
 }
 
 /* ── USE CASE HERO ── */
@@ -447,7 +504,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .uc-body {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-1); font-weight: 300;
-  line-height: 1.8; color: var(--t2);
+  line-height: 1.8; color: var(--c-t2);
   max-width: 640px;
 }
 .uc-label {
@@ -465,13 +522,13 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   font-family: 'Inter', sans-serif;
   font-size: var(--body-3); font-weight: 600;
   letter-spacing: .3em; text-transform: uppercase;
-  color: var(--t4); margin-bottom: var(--s5);
+  color: var(--c-t4); margin-bottom: var(--s5);
 }
 .thanks-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 800; line-height: 1.05;
-  background: linear-gradient(135deg, var(--t1) 30%, var(--accent) 70%, var(--t1) 90%);
+  background: linear-gradient(135deg, var(--c-t1) 30%, var(--accent) 70%, var(--c-t1) 90%);
   background-size: 200% 200%;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -484,7 +541,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .thanks-sub {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-1); font-weight: 300;
-  color: var(--t3); margin-top: var(--s3);
+  color: var(--c-t3); margin-top: var(--s3);
   letter-spacing: .06em;
 }
 
@@ -503,7 +560,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   width: 34px; height: 34px; border-radius: var(--r-md);
   border: 1px solid var(--border);
   background: rgba(5,6,10,.6);
-  color: var(--t3); cursor: pointer; z-index: 300;
+  color: var(--c-t3); cursor: pointer; z-index: 300;
   display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(12px);
   font-size: 14px;
@@ -521,17 +578,17 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 }
 .nav button {
   background: none; border: none;
-  color: var(--t3); padding: 5px 14px;
+  color: var(--c-t3); padding: 5px 14px;
   border-radius: 100px; cursor: pointer;
   font-size: .8rem; font-weight: 500;
   transition: color var(--t-fast) var(--ease);
 }
-.nav button:hover { color: var(--t1); }
+.nav button:hover { color: var(--c-t1); }
 .nav button:disabled { opacity: .2; cursor: default; }
 .nav .sep { color: rgba(255,255,255,.12); font-size: 9px; margin: 0 2px; }
 .nav .cnt {
   font-family: 'Inter', sans-serif; font-size: .7rem;
-  color: var(--t3); min-width: 36px; text-align: center;
+  color: var(--c-t3); min-width: 36px; text-align: center;
 }
 
 /* ═══════════════════════════════════════
@@ -563,13 +620,82 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
    ═══════════════════════════════════════ */
 .col-center { align-items: center; text-align: center; }
 .col-center .inner { align-items: center; }
+
+/* §14.3 — Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--c-800) 25%, var(--c-700) 50%, var(--c-800) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--r-md);
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+
+/* §16 gradient shimmer — reusable utility class */
+.gradient-shimmer {
+  background: linear-gradient(135deg, var(--c-t1) 30%, var(--accent) 70%, var(--c-t1) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 100%;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+<!-- Accessibility: screen reader announcements -->
+<div id="sr-announce" aria-live="polite" aria-atomic="true" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"></div>
+
+/* ── P0-4: Focus Ring (§16.4) ── */
+*:focus-visible {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── P0-3: Active State (§16.3) ── */
+.card:active, .nav button:active {
+  transform: scale(0.98);
+  transition: none;
+}
+
+/* ── P0-6: Button Disabled State ── */
+button:disabled, .nav button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* ── P0-5: Feature Grid Component (§16.5) ── */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s3, 12px);
+  margin-top: var(--s4, 24px);
+}
+
+.feat-item {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px;
+  padding: var(--s4, 24px);
+  transition: border-color .3s var(--ease-out, ease-out);
+}
+
+.feat-item:hover {
+  border-color: rgba(20,184,166,.3);
+  background: rgba(20,184,166,.05);
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="progress-bar" id="progBar"></div>
-<button class="fs-btn" id="fsBtn" onclick="toggleFs()" title="全螢幕">⛶</button>
+<button class="fs-btn" id="fsBtn" onclick="toggleFs()" aria-label="切換全螢幕" title="全螢幕">⛶</button>
 
 <div class="deck" id="deck">
 
@@ -577,7 +703,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      01 — TITLE
      一畫面一訊息：公司 + 產品名 + 一句定位
      ═══════════════════════════════════════════ -->
-<section class="slide active" data-i="0">
+<section class="slide active" data-i="0" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
     <div class="in" style="margin-bottom: var(--s3)">
@@ -589,12 +715,12 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
       </h1>
     </div>
     <div class="in" style="margin-bottom: var(--s5)">
-      <p class="txt-heading-2" style="color: var(--t2); font-weight: 400">
+      <p class="txt-heading-2" style="color: var(--c-t2); font-weight: 400">
         智能体解决方案
       </p>
     </div>
     <div class="in">
-      <p class="txt-body-2" style="max-width: 520px; color: var(--t3)">
+      <p class="txt-body-2" style="max-width: 520px; color: var(--c-t3)">
         AI 驅動的有限產能優化演算法，<br>無縫適配用友生態，精準驅動生產排程
       </p>
     </div>
@@ -608,7 +734,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      02 — 產品定位
      一畫面一訊息：一句定位 + 一句價值
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="1">
+<section class="slide" data-i="1" tabindex="0">
   <div class="bg bg--section"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s8)">
@@ -634,7 +760,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      03 — 四大核心功能
      一畫面一訊息：四張卡 = 四個功能，每張一句
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="2">
+<section class="slide" data-i="2" tabindex="0">
   <div class="bg bg--dark"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s4)">
@@ -672,7 +798,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      04 — 三大應用場景
      一畫面一訊息：三張卡 = 三大場景
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="3">
+<section class="slide" data-i="3" tabindex="0">
   <div class="bg bg--card"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s4)">
@@ -711,7 +837,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      05 — 智慧數位員工架構
      一畫面一訊息：圖 = 一句核心
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="4">
+<section class="slide" data-i="4" tabindex="0">
   <div class="bg bg--deep"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s4)">
@@ -752,7 +878,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      06 — 數據價值
      一畫面一訊息：表格 = 核心 KPI 矩陣
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="5">
+<section class="slide" data-i="5" tabindex="0">
   <div class="bg bg--dark"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s4)">
@@ -799,7 +925,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      07 — 案例分隔頁
      留白即語言：大片深色留白 + 一句話
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="6">
+<section class="slide" data-i="6" tabindex="0">
   <div class="bg bg--section"></div>
   <div class="inner col-center">
     <div class="in" style="margin-bottom: var(--s5)">
@@ -817,7 +943,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      08 — 業務流程
      一畫面一訊息：三步流程
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="7">
+<section class="slide" data-i="7" tabindex="0">
   <div class="bg bg--dark"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s4)">
@@ -880,7 +1006,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      09 — 使用情境 01：零門檻入口
      一畫面一訊息：icon + 一句標題 + 一句說明
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="8">
+<section class="slide" data-i="8" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
     <div class="in uc-hero">
@@ -898,7 +1024,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 <!-- ═══════════════════════════════════════════
      10 — 使用情境 02：數據查詢
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="9">
+<section class="slide" data-i="9" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
     <div class="in uc-hero">
@@ -916,7 +1042,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 <!-- ═══════════════════════════════════════════
      11 — 使用情境 03：全流程自動化
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="10">
+<section class="slide" data-i="10" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
     <div class="in uc-hero">
@@ -934,7 +1060,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 <!-- ═══════════════════════════════════════════
      12 — THANK YOU
      ═══════════════════════════════════════════ -->
-<section class="slide s-thanks" data-i="11">
+<section class="slide s-thanks" data-i="11" tabindex="0">
   <div class="inner col-center">
     <div class="in">
       <p class="thanks-eyebrow">Thank You</p>
@@ -954,13 +1080,13 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
      NAVIGATION — 鍵盤 / 觸控 / 滾輪 / 全螢幕
      ═══════════════════════════════════════════ -->
 <div class="progress-bar" id="progBar"></div>
-<button class="fs-btn" id="fsBtn" onclick="toggleFs()" title="全螢幕">⛶</button>
+<button class="fs-btn" id="fsBtn" onclick="toggleFs()" aria-label="切換全螢幕" title="全螢幕">⛶</button>
 <div class="nav" id="nav">
-  <button id="prevBtn" onclick="prev()">◀ 上一張</button>
+  <button id="prevBtn" onclick="prev()" aria-label="上一頁">◀ 上一張</button>
   <span class="sep">|</span>
-  <span class="cnt" id="cnt">1 / 12</span>
+  <span class="cnt" id="slide-counter">1 / 12</span>
   <span class="sep">|</span>
-  <button id="nextBtn" onclick="next()">下一張 ▶</button>
+  <button id="nextBtn" onclick="next()" aria-label="下一頁">下一張 ▶</button>
 </div>
 
 <script>
@@ -983,7 +1109,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   function refresh() {
     document.getElementById('progBar').style.width =
       ((cur + 1) / slides.length * 100) + '%';
-    document.getElementById('cnt').textContent =
+    document.getElementById('slide-counter').textContent =
       (cur + 1) + ' / ' + slides.length;
     document.getElementById('prevBtn').disabled = cur === 0;
     document.getElementById('nextBtn').disabled = cur === slides.length - 1;

@@ -240,9 +240,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink-900);color
     適用於所有投影片任務交付前的驗收標準 — 每項附通過標準與檢查方法，一鍵驗證。
   </div>
   <div class="hero__meta">
-    <span>26 項檢查</span>
+    <span>48 項檢查</span>
     <span>6 大原則</span>
-    <span>10 大分類</span>
+    <span>11 大分類</span>
     <span>2026-05-19</span>
   </div>
 </div>
@@ -263,6 +263,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink-900);color
     <div class="cat__icon">📁</div>
     <div class="cat__name">檔案完整性</div>
     <div class="cat__count">4 項</div>
+  </div>
+  <div class="cat" data-sec="cn" onclick="scrollTo('sec-cn')">
+    <div class="cat__icon">🇨🇳</div>
+    <div class="cat__name">中文品質</div>
+    <div class="cat__count">2 項</div>
   </div>
   <div class="cat" data-sec="font" onclick="scrollTo('sec-font')">
     <div class="cat__icon">🔤</div>
@@ -288,6 +293,26 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink-900);color
     <div class="cat__icon">✨</div>
     <div class="cat__name">動畫系統</div>
     <div class="cat__count">4 項</div>
+  </div>
+  <div class="cat" data-sec="type" onclick="scrollTo('sec-type')">
+    <div class="cat__icon">📏</div>
+    <div class="cat__name">字體級距</div>
+    <div class="cat__count">3 項</div>
+  </div>
+  <div class="cat" data-sec="vis" onclick="scrollTo('sec-vis')">
+    <div class="cat__icon">💎</div>
+    <div class="cat__name">視覺效果</div>
+    <div class="cat__count">4 項</div>
+  </div>
+  <div class="cat" data-sec="code" onclick="scrollTo('sec-code')">
+    <div class="cat__icon">🔧</div>
+    <div class="cat__name">代碼品質</div>
+    <div class="cat__count">3 項</div>
+  </div>
+  <div class="cat" data-sec="inter" onclick="scrollTo('sec-inter')">
+    <div class="cat__icon">🖱️</div>
+    <div class="cat__name">互動模式</div>
+    <div class="cat__count">8 項</div>
   </div>
 </div>
 
@@ -480,6 +505,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink-900);color
   </div>
 </div>
 
+
+<!-- INTERACTION SECTION -->
+<div class="sec" id="sec-inter">
+  <div class="sec__title"><span class="sec__icon">&#x1f5b1;</span> 互動模式 <span class="sec__num">8 項</span></div>
+  <div class="checks">
+    <div class="check"><span class="check__n">41</span><div><div class="check__name">Card hover 狀態</div><div class="check__rule">border-color 變化 + translateY(-2px)，≤200ms</div></div><span class="check__cmd">grep -E hover.*border|transform</span></div>
+    <div class="check"><span class="check__n">42</span><div><div class="check__name">Card active 狀態</div><div class="check__rule">按下時縮放或加深背景</div></div><span class="check__cmd">grep -E active|scale</span></div>
+    <div class="check"><span class="check__n">43</span><div><div class="check__name">Tag hover 狀態</div><div class="check__rule">背景色加深或 glow 效果</div></div><span class="check__cmd">grep -E tag.*hover|hover.*tag</span></div>
+    <div class="check"><span class="check__n">44</span><div><div class="check__name">Accent link hover</div><div class="check__rule">underline 出現或 brightness 變化</div></div><span class="check__cmd">grep -E accent.*hover</span></div>
+    <div class="check"><span class="check__n">45</span><div><div class="check__name">Slide 過渡方向</div><div class="check__rule">內容 upward 進入，章節左右切換</div></div><span class="check__badge badge--ok">&#x1f441; 視覺檢查</span></div>
+    <div class="check"><span class="check__n">46</span><div><div class="check__name">Skeleton loading</div><div class="check__rule">有 shimmer 或 pulse skeleton 動畫</div></div><span class="check__cmd">grep -iE skeleton|shimmer|pulse</span></div>
+    <div class="check"><span class="check__n">47</span><div><div class="check__name">Empty state</div><div class="check__rule">空數據有插圖或提示文字</div></div><span class="check__badge badge--warn">&#x26a0; 視覺檢查</span></div>
+    <div class="check"><span class="check__n">48</span><div><div class="check__name">Focus ring</div><div class="check__rule">可聚焦元素有 outline/ring 效果</div></div><span class="check__cmd">grep -iE focus|outline|ring</span></div>
+  </div>
+</div>
+
 </div><!-- .content -->
 
 <!-- ═══ STICKY SUMMARY ═══ -->
@@ -488,7 +529,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink-900);color
     <strong>Power Squad</strong> · HTML 投影片驗收標準 · v1 · 2026-05-19
   </div>
   <div class="summary__right">
-    <div class="sbadge sbadge--pass"><span class="sdot sdot--ok"></span> 40 項檢查</div>
+    <div class="sbadge sbadge--pass"><span class="sdot sdot--ok"></span> 48 項檢查</div>
     <div class="sbadge sbadge--fail"><span class="sdot sdot--fail"></span> 含 grep 指令</div>
   </div>
 </div>
@@ -511,7 +552,7 @@ content.addEventListener('scroll', () => {
     const active = y >= top && y < top + el.offsetHeight + 100;
     document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
     if (active) {
-      const cat = document.querySelector(`.cat[data-sec="${id}"]`);
+      const cat = document.querySelector(`.cat[data-sec=""]`);
       if (cat) cat.classList.add('active');
     }
   });

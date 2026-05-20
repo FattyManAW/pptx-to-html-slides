@@ -29,7 +29,7 @@ def run_single_policy(cfg, policy, sim_days=90):
     orders = sim._generate_orders()
     wos = sim._schedule_orders(orders)   # uses sim.scheduler internally
 
-    loop = StationDispatchLoop(stations)
+    loop = StationDispatchLoop(stations, dispatch_policy=policy)
     loop.run(wos, sim_days)
 
     tracker = WIPTrackingMixin()

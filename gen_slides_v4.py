@@ -25,6 +25,7 @@ from gen_slides.src.extractor import extract, classify_slide, is_placeholder, ex
 from gen_slides.src.renderer_v4 import render, render_html
 from gen_slides.src.upgrader import upgrade, semantic_upgrade
 from gen_slides.src.themes import THEMES, get_theme, list_themes
+from gen_slides.src.canonical_map import remap_html_file
 
 # ───── 向後相容 export ─────
 # 所有核心函式已遷移至 gen_slides/src/ 模組
@@ -45,6 +46,7 @@ def main():
     ap.add_argument("--template", "-t", choices=["cris", "aps", "runs"], default="cris", help="設計模板")
     ap.add_argument("--img-dir", default="images", help="圖片輸出目錄")
     ap.add_argument("--section-names", help="逗號分隔章節名稱")
+    ap.add_argument("--canonical", action="store_true", help="注入 Christina Canonical token shim（50 APS→Canonical mappings + --ds-* tokens）")
     args = ap.parse_args()
 
     if not os.path.exists(args.pptx):
@@ -80,6 +82,16 @@ def main():
     html = render(spec, template=args.template, img_dir=args.img_dir)
 
     os.makedirs(os.path.dirname(os.path.abspath(output_path)) or ".", exist_ok=True)
+
+    # Canonical shim injection
+    if args.canonical:
+        from gen_slides.src.canonical_map import apply_shim, load_mappings
+        mappings = load_mappings()
+        html = apply_shim(html, mappings)
+        aps_count = len(mappings.get("aps_to_canonical", {}))
+        ds_count = len(mappings.get("ds_tokens", {}))
+        print(f"   canonical: {aps_count} token mappings + {ds_count} --ds-* tokens injected", file=sys.stderr)
+
     with open(output_path, "w") as f:
         f.write(html)
 
