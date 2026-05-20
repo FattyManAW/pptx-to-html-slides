@@ -219,8 +219,9 @@ class StationDispatchLoop:
     def _forward_to_next_station(self, record: dict) -> None:
         """
         把完成品傳到下一個工作站。
-        路由依據 station_ids = ["L1-S1", "L1-S2", "L1-S3"]。
-        station 完成 → 查 route index → 若還有下一站 → add_wo()。
+        路由依據 route = list(self.stations.keys())。
+        station 完成 → 查 route index → 若有下一站 → _forward_cb(next_sid, record)。
+        實際工單注入由 SimulationEngineV02 透過 set_forward_callback() 注入。
         """
         sid = record["station_id"]
         route = list(self.stations.keys())
@@ -260,6 +261,50 @@ class StationDispatchLoop:
 # ═══════════════════════════════════════════════════════════════
 # WIPTrackingMixin — WIP 追蹤擴充
 # ═══════════════════════════════════════════════════════════════
+
+
+# Shipment + Warehouse
+@dataclass
+class ShipmentRecord:
+    shipment_id: str
+    order_id: str
+    wo_id: str
+    ship_date: datetime
+    carrier: str
+    transit_days: float
+    delivery_date: datetime
+    on_time: bool
+    units_shipped: int = 0
+
+class Warehouse:
+    def __init__(self, config: dict):
+        self.capacity = config.get("capacity", 10000)
+        self.ship_modes = config.get("ship_modes", [])
+        self.queue: list = []
+        self.shipments: list = []
+    def receive(self, wo, completed_day, now):
+        self.queue.append({"wo_id": wo.wo_id, "order_id": wo.order_id,
+            "qty": wo.qty_good, "completed_day": completed_day,
+            "due_date": getattr(wo, "_due_date", now + timedelta(days=14)),
+            "carrier": self.ship_modes[0]["name"] if self.ship_modes else "standard"})
+    def ship(self, now):
+        records = []
+        while self.queue:
+            item = self.queue.pop(0)
+            mode = next((m for m in self.ship_modes if m["name"] == item["carrier"]),
+                        {"base_days": 2, "jitter_days": 1, "cost_per_unit": 5})
+            transit = max(0.1, mode["base_days"] + random.uniform(-mode["jitter_days"], mode["jitter_days"]))
+            rec = ShipmentRecord(
+                shipment_id=f"SH{len(self.shipments)+1:05d}",
+                order_id=item["order_id"], wo_id=item["wo_id"],
+                ship_date=now, carrier=item["carrier"],
+                transit_days=transit,
+                delivery_date=now + timedelta(days=transit),
+                on_time=(now + timedelta(days=transit)) <= item["due_date"],
+                units_shipped=item["qty"])
+            self.shipments.append(rec)
+            records.append(rec)
+        return records
 
 class WIPTrackingMixin:
     """WIP tracking mixin：提供 WIP 快照 + 警報 + 瓶頸報告"""
