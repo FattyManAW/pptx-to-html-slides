@@ -87,6 +87,7 @@ html,body{{height:100%;overflow:hidden;font-family:{body_font};background:var(--
 .nav-btn{{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--c-t2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--t-fast);user-select:none}}
 .nav-btn:hover{{background:rgba(255,255,255,.07);border-color:rgba(20,184,166,.12)}}
 .nav-btn:disabled{{opacity:.28;cursor:not-allowed}}
+.nav-btn:active{{background:rgba(20,184,166,.15);border-color:var(--accent)}}
 .nav-counter{{font-size:.75rem;color:var(--c-t3);font-weight:500;min-width:3rem;text-align:center}}
 .nav-counter .current{{color:var(--c-t1);font-weight:600}}
 .cover{{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden}}
@@ -145,7 +146,7 @@ def _render_slide_body(s, img_dir="images"):
         for card in cards:
             h = card.get("h", "")
             details = "<br>".join(card.get("ls", []))
-            items_html += f'<div class="item-card"><h4>{h}</h4><p class="slide-body">{details}</p></div>'
+            items_html += f'<div class="item-card"><h3>{h}</h3><p class="slide-body">{details}</p></div>'
         inner = f'<h2 class="slide-title">{title}</h2>\n<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem">{items_html}</div>'
     else:
         blocks = s.get("blocks", [])
@@ -156,7 +157,7 @@ def _render_slide_body(s, img_dir="images"):
         if body:
             inner += f'\n<p class="slide-body">{body}</p>'
         for block in blocks[1:]:
-            inner += f'\n<p class="slide-body">{block}</p>'
+            inner += f'\n<p class="slide-body">{block}</p>' if block.strip() else ''
         for img in imgs:
             inner += f'\n<img class="slide-img" src="{img_dir}/{img}" alt="" loading="lazy" decoding="async">'
 
