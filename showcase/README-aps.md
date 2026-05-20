@@ -5,6 +5,8 @@
 
 ---
 
+[![CI](https://github.com/FattyManAW/pptx-to-html-slides/actions/workflows/deploy.yml/badge.svg)](https://github.com/FattyManAW/pptx-to-html-slides/actions/workflows/deploy.yml)
+
 ## 📋 產品說明
 
 APS AI Agent 智能体解決方案投影片，展示大連潤思科技的 AI 驅動先進排程系統。聚焦 APS 核心能力、AI 智能體架構、與 ERP/MES 整合場景。

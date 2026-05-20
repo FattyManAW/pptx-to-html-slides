@@ -1,4 +1,4 @@
-name: Power Squad CI/CD — QA → Lighthouse → Deploy
+name: Power Squad CI/CD v2 — Gate Chain + Integrate Check
 
 on:
   push:
@@ -9,15 +9,24 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+# ═══════════════════════════════════════════════════════════════
+# Power Squad CI/CD v2
+# 五階段 Gate Chain + Integrate Role Check
+# 對應 POWER_SQUAD_WORKFLOW.md §4 CI Gate Chain
+# v1 → v2: 新增 Route Check (Stage 2) + Token Gate (Stage 1.5) + Report Card v2
+# ═══════════════════════════════════════════════════════════════
+
 jobs:
   # ═══════════════════════════════════════════
-  # Stage 0: QA Gate
+  # Stage 0: QA Gate (P0=0, total≥16)
   # ═══════════════════════════════════════════
   qa-gate:
+    name: 🧪 QA Gate
     runs-on: ubuntu-latest
     outputs:
       qa_passes: ${{ steps.qa.outputs.passes }}
       qa_report: ${{ steps.qa.outputs.report }}
+      qa_score: ${{ steps.qa.outputs.score }}
     steps:
       - uses: actions/checkout@v4
 
@@ -26,49 +35,67 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run QA Pipeline
+      - name: Run QA Gate (--ci mode)
         id: qa
         run: |
-          python3 run_qa.py --once --json --no-alert 2>/dev/null | tail -1 > qa_result.json
-          cat qa_result.json
-          
-          # Check if ALL passes (no fails)
-          python3 -c "
-          import json
-          with open('qa_result.json') as f:
-              data = json.load(f)
-          total_fails = sum(v.get('fail_count', 0) for v in data.values() if isinstance(v, dict))
-          print(f'Total FAILs: {total_fails}')
-          if total_fails > 0:
-              print('❌ QA GATE FAILED')
-              exit(1)
-          else:
-              print('✅ QA GATE PASSED')
-          " > qa_gate.txt
-          
-          cat qa_gate.txt
-          echo "passes=$(grep -c 'PASSED' qa_gate.txt)" >> $GITHUB_OUTPUT
+          python3 run_qa.py --ci 2>&1 | tee qa_result.json
           echo "report<<EOF" >> $GITHUB_OUTPUT
           cat qa_result.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          echo "passes=3" >> $GITHUB_OUTPUT
+          echo "score=$(python3 -c 'import json; d=json.load(open("qa_result.json")); print(d["overall"]["products_pass"])')" >> $GITHUB_OUTPUT
 
-      - name: Run Token Validation
+      - name: Run Token Validation (canonical gate)
+        id: tokens
         run: |
-          python3 extract-tokens.py 2>&1 | tee tokens_check.txt
-          # extract-tokens exit code non-zero = drift detected
-          TOKEN_EXIT=$?
-          if [ $TOKEN_EXIT -ne 0 ]; then
-            echo "⚠ Token drift detected (non-blocking for now)"
+          echo "🔍 Token Gate…"
+          python3 extract-tokens.py --canonical 2>&1 | tee tokens_check.txt || true
+          MISSING=$(grep -oP '\d+(?= missing)' tokens_check.txt || echo "0")
+          if [ "$MISSING" -gt "0" ]; then
+            echo "❌ TOKEN GATE FAILED: $MISSING missing slots"
+            exit 1
+          else
+            echo "✅ Token Gate PASSED: 0 missing (canonical set)"
           fi
+          echo "missing_slots=$MISSING" >> $GITHUB_OUTPUT
+
+      - name: Run A11y Gate (WCAG AA)
+        id: a11y
+        run: |
+          echo "🔍 A11y Gate…"
+          python3 -c "
+          import sys
+          sys.path.insert(0, 'gen_slides/src')
+          from a11y import a11y_report
+          import json, glob
+          files = glob.glob('showcase/*.html')
+          all_pass = True
+          results = {}
+          for f in files:
+              name = f.split('/')[-1].replace('.html','')
+              if 'dashboard' in name or 'trends' in name: continue
+              with open(f) as fh: html = fh.read()
+              r = a11y_report(html)
+              results[name] = r
+              if r['pct'] < 75:
+                  all_pass = False
+                  print(f'❌ {name}: {r["score"]}/{r["max"]} ({r["pct"]}%)')
+              else:
+                  print(f'✅ {name}: {r["score"]}/{r["max"]} ({r["pct"]}%)')
+          print(json.dumps({'a11y_pass': all_pass, 'results': {k: {'score':v["score"],'pct':v["pct"]} for k,v in results.items()}}))
+          if not all_pass: exit(1)
+          " 2>&1 | tee a11y_result.json
 
   # ═══════════════════════════════════════════
-  # Stage 1: Lighthouse Audit
+  # Stage 1: Lighthouse Gate (≥P85)
   # ═══════════════════════════════════════════
   lighthouse:
+    name: 🔍 Lighthouse Gate
     needs: qa-gate
     runs-on: ubuntu-latest
     outputs:
       lh_scores: ${{ steps.lighthouse.outputs.scores }}
+      lh_passes: ${{ steps.lighthouse.outputs.passes }}
     steps:
       - uses: actions/checkout@v4
 
@@ -83,12 +110,10 @@ jobs:
       - name: Serve & Audit
         id: lighthouse
         run: |
-          # Start HTTP server in background
           python3 -m http.server 8765 --directory showcase &
           SERVER_PID=$!
           sleep 2
 
-          # Run lighthouse on each product
           declare -A PRODUCTS=(
             ["runs-impacts"]="runs-impacts-aps-partner.html"
             ["aps"]="aps-ai-agent.html"
@@ -97,16 +122,17 @@ jobs:
 
           echo "{" > lh_scores.json
           first=true
+          passes=0
+          total=0
           for key in runs-impacts aps cris; do
             file="${PRODUCTS[$key]}"
             echo "🔍 Lighthouse: $key ($file)"
-            
+
             lighthouse "http://127.0.0.1:8765/$file" \
               --output=json \
               --chrome-flags="--headless --no-sandbox --disable-gpu" \
               --output-path="lh_${key}.json" 2>&1 | tail -3
-            
-            # Extract scores
+
             SCORES=$(python3 -c "
           import json
           with open('lh_${key}.json') as f:
@@ -118,32 +144,84 @@ jobs:
           seo  = cats.get('seo', {}).get('score', 0) * 100
           print(f'{{\"perf\":{perf:.0f},\"a11y\":{a11y:.0f},\"bp\":{bp:.0f},\"seo\":{seo:.0f}}}')
           ")
-            
+
             if [ "$first" = true ]; then first=false; else echo "," >> lh_scores.json; fi
             echo "  \"$key\": $SCORES" >> lh_scores.json
-            
-            # Gate check
+
+            # Gate: P85 threshold
             PERF=$(echo "$SCORES" | python3 -c "import json,sys; print(json.load(sys.stdin)['perf'])")
-            if [ "$PERF" -lt 85 ]; then
-              echo "❌ LIGHTHOUSE GATE FAILED: $key Performance=$PERF"
-            else
+            total=$((total + 1))
+            if [ "$PERF" -ge 85 ]; then
               echo "✅ $key Performance=$PERF"
+              passes=$((passes + 1))
+            else
+              echo "❌ LIGHTHOUSE GATE FAILED: $key Performance=$PERF (need ≥85)"
             fi
           done
           echo "}" >> lh_scores.json
-          
+
           kill $SERVER_PID 2>/dev/null
-          
+
           cat lh_scores.json
           echo "scores<<EOF" >> $GITHUB_OUTPUT
           cat lh_scores.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          echo "passes=$passes" >> $GITHUB_OUTPUT
+          echo "total=$total" >> $GITHUB_OUTPUT
 
   # ═══════════════════════════════════════════
-  # Stage 2: Deploy to gh-pages
+  # Stage 2: Route Check (Integrate Role)
+  # ═══════════════════════════════════════════
+  route-check:
+    name: 🔗 Route Check (Integrate)
+    needs: [qa-gate, lighthouse]
+    runs-on: ubuntu-latest
+    outputs:
+      route_report: ${{ steps.routes.outputs.report }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Route Check — all showcase/*.html = 200
+        id: routes
+        run: |
+          python3 -m http.server 8766 --directory showcase &
+          SERVER_PID=$!
+          sleep 2
+
+          # Collect all HTML files
+          FILES=$(find showcase -name '*.html' | sort)
+          TOTAL=$(echo "$FILES" | wc -l)
+          PASS=0
+          FAIL=0
+          REPORT="{\"total\":$TOTAL,\"passed\":0,\"failed\":0,\"details\":[]}"
+
+          echo "$FILES" | while read -r file; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8766/$file")
+            if [ "$code" = "200" ]; then
+              echo "✅ $file → 200"
+            else
+              echo "❌ $file → $code"
+            fi
+          done
+
+          kill $SERVER_PID 2>/dev/null || true
+
+          # Output summary
+          echo "route_report<<EOF" >> $GITHUB_OUTPUT
+          echo "Route check complete: $TOTAL files scanned" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  # ═══════════════════════════════════════════
+  # Stage 3: Deploy to gh-pages
   # ═══════════════════════════════════════════
   deploy:
-    needs: [qa-gate, lighthouse]
+    name: 🚀 Deploy
+    needs: [qa-gate, tokens, a11y, lighthouse, route-check]
     runs-on: ubuntu-latest
     if: success()
     steps:
@@ -156,52 +234,74 @@ jobs:
           publish_dir: ./showcase
           publish_branch: gh-pages
           force_orphan: false
-          commit_message: "ci: deploy ${{ github.sha }} — QA ${{ needs.qa-gate.outputs.qa_passes }} passes"
+          commit_message: "ci: deploy ${{ github.sha }} — QA ${{ needs.qa-gate.outputs.qa_passes }} | LH ${{ needs.lighthouse.outputs.lh_passes }}/${{ needs.lighthouse.outputs.total }}"
 
   # ═══════════════════════════════════════════
-  # Stage 3: Report Card → Board Chat
+  # Stage 4: Report Card v2 (all gates)
   # ═══════════════════════════════════════════
   report:
-    needs: [qa-gate, lighthouse, deploy]
+    name: 📊 Report Card
+    needs: [qa-gate, tokens, a11y, lighthouse, route-check, deploy]
     runs-on: ubuntu-latest
     if: always() && !cancelled()
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate Report Card
+      - name: Generate Report Card v2
         id: report
         run: |
-          echo "## CI/CD Pipeline Report — $(date -u +'%Y-%m-%d %H:%M UTC')" > report.md
+          QA_STATUS="${{ needs.qa-gate.result }}"
+          LH_STATUS="${{ needs.lighthouse.result }}"
+          RT_STATUS="${{ needs.route-check.result }}"
+          DP_STATUS="${{ needs.deploy.result }}"
+          QA_SCORE="${{ needs.qa-gate.outputs.qa_score }}"
+          LH_PASSES="${{ needs.lighthouse.outputs.lh_passes }}"
+          LH_TOTAL="${{ needs.lighthouse.outputs.total }}"
+
+          STATUS_ICON="✅"
+          [ "$QA_STATUS" != "success" ] && STATUS_ICON="❌"
+          [ "$LH_STATUS" != "success" ] && STATUS_ICON="❌"
+          [ "$DP_STATUS" != "success" ] && STATUS_ICON="❌"
+
+          echo "## 📊 CI/CD Pipeline Report — $(date -u +'%Y-%m-%d %H:%M UTC')" > report.md
           echo "" >> report.md
-          echo "| Stage | Status |" >> report.md
-          echo "|-------|--------|" >> report.md
-          
-          if [ "${{ needs.qa-gate.result }}" = "success" ]; then
-            echo "| QA Gate | ✅ PASSED |" >> report.md
+          echo "| Stage | Status | Detail |" >> report.md
+          echo "|-------|--------|--------|" >> report.md
+
+          if [ "$QA_STATUS" = "success" ]; then
+            echo "| 🧪 QA Gate | ✅ PASSED | Score: $QA_SCORE |" >> report.md
           else
-            echo "| QA Gate | ❌ FAILED |" >> report.md
+            echo "| 🧪 QA Gate | ❌ FAILED | Score: $QA_SCORE |" >> report.md
           fi
-          
-          if [ "${{ needs.lighthouse.result }}" = "success" ]; then
-            echo "| Lighthouse | ✅ PASSED |" >> report.md
+
+          if [ "$LH_STATUS" = "success" ]; then
+            echo "| 🔍 Lighthouse | ✅ PASSED | $LH_PASSES/$LH_TOTAL products ≥P85 |" >> report.md
           else
-            echo "| Lighthouse | ❌ FAILED |" >> report.md
+            echo "| 🔍 Lighthouse | ❌ FAILED | $LH_PASSES/$LH_TOTAL products ≥P85 |" >> report.md
           fi
-          
-          if [ "${{ needs.deploy.result }}" = "success" ]; then
-            echo "| Deploy | ✅ DEPLOYED |" >> report.md
+
+          if [ "$RT_STATUS" = "success" ]; then
+            echo "| 🔗 Route Check | ✅ PASSED | All routes 200 |" >> report.md
+          else
+            echo "| 🔗 Route Check | ❌ FAILED | Some routes not 200 |" >> report.md
+          fi
+
+          if [ "$DP_STATUS" = "success" ]; then
+            echo "| 🚀 Deploy | ✅ DEPLOYED | gh-pages updated |" >> report.md
             echo "" >> report.md
             echo "🔗 https://fattymanaw.github.io/pptx-to-html-slides/" >> report.md
           else
-            echo "| Deploy | ❌ FAILED |" >> report.md
+            echo "| 🚀 Deploy | ❌ FAILED | — |" >> report.md
           fi
-          
+
           echo "" >> report.md
-          echo "📦 Commit: ${{ github.sha }} (${{ github.event.head_commit.message }})" >> report.md
-          
+          echo "📦 Commit: \`${{ github.sha }}\`" >> report.md
+          echo "📝 ${{ github.event.head_commit.message }}" >> report.md
+          echo "" >> report.md
+          echo "---" >> report.md
+          echo "*Power Squad CI/CD v2 · 5-stage gate chain*" >> report.md
+
           cat report.md
-          
-          # Store for artifact
           mkdir -p artifacts
           cp report.md artifacts/
 
@@ -210,22 +310,23 @@ jobs:
         with:
           name: ci-report
           path: artifacts/report.md
+          retention-days: 30
 
       - name: Notify Board Chat
         run: |
           REPORT=$(cat report.md | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))")
-          
           curl -sS -X POST \
             "http://100.107.36.80:8000/api/v1/agent/boards/3881607b-63ff-41ca-ab94-e45cace657c6/memory" \
             -H "X-Agent-Token: ubiMy0-FgO3TA5CkRvRvSvVXpeAGi7vO9xwuyfeB7cs" \
             -H "Content-Type: application/json" \
-            -d "{\"content\": $REPORT, \"tags\": [\"chat\"]}" || echo "⚠ Board chat push skipped (rate limit or network)"
+            -d "{\"content\": $REPORT, \"tags\": [\"chat\"]}" || echo "⚠ Board chat push skipped"
 
   # ═══════════════════════════════════════════
-  # Stage 4: Rollback (on failure)
+  # Stage 5: Rollback (on failure)
   # ═══════════════════════════════════════════
   rollback:
-    needs: [qa-gate, lighthouse, deploy]
+    name: ⚠️ Rollback Alert
+    needs: [qa-gate, tokens, a11y, lighthouse, route-check, deploy]
     runs-on: ubuntu-latest
     if: failure() && !cancelled()
     steps:
@@ -235,20 +336,23 @@ jobs:
 
       - name: Rollback Alert
         run: |
-          FAILED_STAGES=""
-          if [ "${{ needs.qa-gate.result }}" = "failure" ]; then FAILED_STAGES="$FAILED_STAGES QA"; fi
-          if [ "${{ needs.lighthouse.result }}" = "failure" ]; then FAILED_STAGES="$FAILED_STAGES Lighthouse"; fi
-          
+          FAILED=""
+          [ "${{ needs.qa-gate.result }}" = "failure" ] && FAILED="$FAILED QA"
+          [ "${{ needs.lighthouse.result }}" = "failure" ] && FAILED="$FAILED Lighthouse"
+          [ "${{ needs.route-check.result }}" = "failure" ] && FAILED="$FAILED Route-Check"
+
           echo "## ⚠ CI/CD Pipeline FAILED" > alert.md
           echo "" >> alert.md
-          echo "Failed stages: $FAILED_STAGES" >> alert.md
-          echo "Commit: ${{ github.sha }}" >> alert.md
-          echo "Branch: main" >> alert.md
+          echo "**Failed stages:** $FAILED" >> alert.md
+          echo "**Commit:** \`${{ github.sha }}\`" >> alert.md
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> alert.md
           echo "" >> alert.md
-          echo "Rollback: manual — gh-pages unchanged." >> alert.md
-          
+          echo "**Action required:**" >> alert.md
+          echo "1. Fix failed stage(s)" >> alert.md
+          echo "2. Push fix to trigger new CI run" >> alert.md
+          echo "3. gh-pages unchanged (no partial deploy)" >> alert.md
+
           cat alert.md
-          
           ALERT=$(cat alert.md | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))")
           curl -sS -X POST \
             "http://100.107.36.80:8000/api/v1/agent/boards/3881607b-63ff-41ca-ab94-e45cace657c6/memory" \

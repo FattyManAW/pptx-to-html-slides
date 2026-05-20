@@ -5,6 +5,8 @@
 
 ---
 
+[![CI](https://github.com/FattyManAW/pptx-to-html-slides/actions/workflows/deploy.yml/badge.svg)](https://github.com/FattyManAW/pptx-to-html-slides/actions/workflows/deploy.yml)
+
 ## 📋 產品說明
 
 CRIS IMPACTs（双碳数字化管理系统）投影片，展示大連潤思科技基於用友 BIP 平台的碳管理一體化解決方案。涵蓋政策背景、行業趨勢、IMPACTs 核心功能、客戶案例等。

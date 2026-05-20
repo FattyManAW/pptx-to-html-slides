@@ -615,6 +615,7 @@ def main():
     parser.add_argument("--reset-baseline", action="store_true", help="清除 baseline")
     parser.add_argument("--json", action="store_true", help="輸出原始結果 JSON")
     parser.add_argument("--json-summary", action="store_true", help="輸出結構化摘要 JSON（CI 可解析）")
+    parser.add_argument("--ci", action="store_true", help="CI 模式：json-summary + no-alert + exit code（0=pass, 1=fail）")
     parser.add_argument("--no-alert", action="store_true", help="禁用 board chat 告警")
     parser.add_argument("--trends", action="store_true", help="僅生成 trends.html（不掃描）")
     parser.add_argument("--product", help="單產品掃描: aps | cris | runs（可逗號分隔）")
@@ -636,8 +637,17 @@ def main():
     # 預設：--once
     current = once(baseline_enabled=True, alert_enabled=not args.no_alert, product_filter=args.product)
 
-    if args.json_summary:
-        # JSON output only — suppress log noise
+    if args.ci:
+        # CI mode: json-summary + no-alert + exit code
+        current = once(baseline_enabled=False, alert_enabled=False, product_filter=args.product)
+        summary = json_summary(current)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        # Exit code: 0=all pass, 1=any fail
+        overall = summary.get("overall", {})
+        if overall.get("products_fail", 0) > 0 or overall.get("products_escalate", 0) > 0:
+            sys.exit(1)
+        return
+    elif args.json_summary:
         summary = json_summary(current)
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     elif args.json:
