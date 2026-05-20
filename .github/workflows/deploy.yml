@@ -177,11 +177,12 @@ jobs:
 
           FAIL=0
           for file in showcase/*.html; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8766/$file")
+            fname=$(basename "$file")
+            code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8766/$fname")
             if [ "$code" = "200" ]; then
-              echo "✅ $file → 200"
+              echo "✅ $fname → 200"
             else
-              echo "❌ $file → $code"
+              echo "❌ $fname → $code"
               FAIL=1
             fi
           done
