@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from gen_slides.src.extractor import extract, classify_slide, is_placeholder, extract_pptx
 from gen_slides.src.renderer_v4 import render, render_html
 from gen_slides.src.upgrader import upgrade, semantic_upgrade
-from gen_slides.src.themes import THEMES, get_theme, list_themes
+from gen_slides.src.themes import THEMES, get_theme, list_themes, PLACEHOLDER_PATTERNS, SECTION_KEYWORDS, COMPARISON_KEYWORDS
 from gen_slides.src.canonical_map import remap_html_file
 
 # ───── 向後相容 export ─────
