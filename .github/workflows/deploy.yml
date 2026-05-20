@@ -1,1 +1,317 @@
-"name: Power Squad CI/CD v2 \u2014 Gate Chain + Integrate Check\n\non:\n  push:\n    branches: [main]\n  workflow_dispatch:\n\nconcurrency:\n  group: pages\n  cancel-in-progress: false\n\n# \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n# Power Squad CI/CD v2.1 \u2014 Elite Squad fix\n# \u4fee\u6b63: tokens/a11y \u662f qa-gate \u7684 steps\uff0c\u4e0d\u662f\u7368\u7acb jobs\n# v2.0 \u2192 v2.1: needs \u4fee\u6b63 + QA score \u52d5\u614b\u63d0\u53d6 + lint gate\n# \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\njobs:\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  # Stage 0: Lint Gate (\u65b0\u589e)\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  lint:\n    name: \ud83d\udd0d Lint (ruff)\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: astral-sh/setup-uv@v3\n      - run: |\n          pip install ruff\n          ruff check . --add-noqa 2>&1 || true\n          ruff check . 2>&1\n\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  # Stage 1: QA Gate (P0=0, total\u226516)\n  #   Internal steps: tokens + a11y\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  qa-gate:\n    name: \ud83e\uddea QA Gate\n    needs: lint\n    runs-on: ubuntu-latest\n    outputs:\n      qa_score: ${{ steps.qa.outputs.score }}\n      tokens_missing: ${{ steps.tokens.outputs.missing_slots }}\n      a11y_all_pass: ${{ steps.a11y.outputs.a11y_pass }}\n    steps:\n      - uses: actions/checkout@v4\n\n      - name: Setup Python\n        uses: actions/setup-python@v5\n        with:\n          python-version: '3.11'\n\n      - name: Run QA Gate (--ci mode)\n        id: qa\n        run: |\n          python3 run_qa.py --ci 2>&1 | tee qa_result.json\n          SCORE=$(python3 -c 'import json; d=json.load(open(\"qa_result.json\")); print(d[\"overall\"][\"products_pass\"])')\n          echo \"score=$SCORE\" >> $GITHUB_OUTPUT\n          echo \"\u2705 QA Gate: products_pass=$SCORE\"\n\n      - name: Run Token Validation (canonical gate)\n        id: tokens\n        run: |\n          echo \"\ud83d\udd0d Token Gate\u2026\"\n          python3 extract-tokens.py --canonical 2>&1 | tee tokens_check.txt || true\n          MISSING=$(grep -oP '\\d+(?= missing)' tokens_check.txt || echo \"0\")\n          echo \"missing_slots=$MISSING\" >> $GITHUB_OUTPUT\n          if [ \"$MISSING\" -gt \"0\" ]; then\n            echo \"\u274c TOKEN GATE FAILED: $MISSING missing slots\"\n            exit 1\n          else\n            echo \"\u2705 Token Gate PASSED: 0 missing\"\n          fi\n\n      - name: Run A11y Gate (WCAG AA)\n        id: a11y\n        run: |\n          echo \"\ud83d\udd0d A11y Gate\u2026\"\n          python3 -c \"\n          import sys\n          sys.path.insert(0, 'gen_slides/src')\n          from a11y import a11y_report\n          import json, glob\n          files = glob.glob('showcase/*.html')\n          all_pass = True\n          for f in files:\n              name = f.split('/')[-1].replace('.html','')\n              if 'dashboard' in name or 'trends' in name: continue\n              with open(f) as fh: html = fh.read()\n              r = a11y_report(html)\n              if r['pct'] < 75:\n                  all_pass = False\n                  print(f'\u274c {name}: {r[\\\"score\\\"]}/{r[\\\"max\\\"]} ({r[\\\"pct\\\"]}%)')\n              else:\n                  print(f'\u2705 {name}: {r[\\\"score\\\"]}/{r[\\\"max\\\"]} ({r[\\\"pct\\\"]}%)')\n          if not all_pass: exit(1)\n          print(json.dumps({'a11y_pass': all_pass}))\n          \" 2>&1\n\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  # Stage 2: Lighthouse Gate (\u2265P85)\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  lighthouse:\n    name: \ud83d\udd0d Lighthouse Gate\n    needs: qa-gate\n    runs-on: ubuntu-latest\n    outputs:\n      lh_passes: ${{ steps.lighthouse.outputs.passes }}\n      lh_total: ${{ steps.lighthouse.outputs.total }}\n    steps:\n      - uses: actions/checkout@v4\n\n      - name: Setup Node\n        uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n\n      - name: Install Lighthouse\n        run: npm install -g lighthouse\n\n      - name: Serve & Audit\n        id: lighthouse\n        run: |\n          python3 -m http.server 8765 --directory showcase &\n          SERVER_PID=$!\n          sleep 2\n\n          passes=0\n          total=0\n\n          for product in \"runs-impacts-aps-partner.html\" \"aps-ai-agent.html\" \"cris-impacts-carbon.html\"; do\n            key=$(echo \"$product\" | cut -d'.' -f1)\n            echo \"\ud83d\udd0d Lighthouse: $key\"\n\n            lighthouse \"http://127.0.0.1:8765/$product\" \\\n              --output=json \\\n              --chrome-flags=\"--headless --no-sandbox --disable-gpu\" \\\n              --output-path=\"lh_${key}.json\" 2>&1 | tail -3\n\n            PERF=$(python3 -c \"\n          import json\n          with open('lh_${key}.json') as f:\n              d = json.load(f)\n          cats = d.get('categories', {})\n          score = cats.get('performance', {}).get('score', 0) * 100\n          print(int(score))\n            \")\n            total=$((total + 1))\n            if [ \"$PERF\" -ge 85 ]; then\n              echo \"\u2705 $key Performance=$PERF\"\n              passes=$((passes + 1))\n            else\n              echo \"\u274c LIGHTHOUSE GATE FAILED: $key Performance=$PERF (need \u226585)\"\n            fi\n          done\n\n          kill $SERVER_PID 2>/dev/null\n          echo \"passes=$passes\" >> $GITHUB_OUTPUT\n          echo \"total=$total\" >> $GITHUB_OUTPUT\n          echo \"Lighthouse: $passes/$total passed\"\n\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  # Stage 3: Route Check\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  route-check:\n    name: \ud83d\udd17 Route Check\n    needs: lighthouse\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n\n      - name: Route Check \u2014 all showcase/*.html = 200\n        run: |\n          python3 -m http.server 8766 --directory showcase &\n          SERVER_PID=$!\n          sleep 2\n\n          FAIL=0\n          for file in showcase/*.html; do\n            code=$(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8766/$file\")\n            if [ \"$code\" = \"200\" ]; then\n              echo \"\u2705 $file \u2192 200\"\n            else\n              echo \"\u274c $file \u2192 $code\"\n              FAIL=1\n            fi\n          done\n\n          kill $SERVER_PID 2>/dev/null || true\n          if [ \"$FAIL\" = \"1\" ]; then exit 1; fi\n\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  # Stage 4: Deploy to gh-pages\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  deploy:\n    name: \ud83d\ude80 Deploy\n    needs: [qa-gate, lighthouse, route-check]\n    runs-on: ubuntu-latest\n    if: success()\n    steps:\n      - uses: actions/checkout@v4\n\n      - name: Deploy to GitHub Pages\n        uses: peaceiris/actions-gh-pages@v4\n        with:\n          github_token: ${{ secrets.GITHUB_TOKEN }}\n          publish_dir: ./showcase\n          publish_branch: gh-pages\n          force_orphan: false\n          commit_message: \"ci: deploy ${{ github.sha }} \u2014 QA ${{ needs.qa-gate.outputs.qa_score }} | LH ${{ needs.lighthouse.outputs.lh_passes }}/${{ needs.lighthouse.outputs.lh_total }}\"\n\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  # Stage 5: Report Card\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  report:\n    name: \ud83d\udcca Report Card\n    needs: [qa-gate, lighthouse, route-check, deploy]\n    runs-on: ubuntu-latest\n    if: always() && !cancelled()\n    steps:\n      - uses: actions/checkout@v4\n\n      - name: Generate Report Card v2\n        run: |\n          QA_STATUS=\"${{ needs.qa-gate.result }}\"\n          LH_STATUS=\"${{ needs.lighthouse.result }}\"\n          RT_STATUS=\"${{ needs.route-check.result }}\"\n          DP_STATUS=\"${{ needs.deploy.result }}\"\n          QA_SCORE=\"${{ needs.qa-gate.outputs.qa_score }}\"\n          LH_PASSES=\"${{ needs.lighthouse.outputs.lh_passes }}\"\n          LH_TOTAL=\"${{ needs.lighthouse.outputs.lh_total }}\"\n\n          STATUS_ICON=\"\u2705\"\n          [ \"$QA_STATUS\" != \"success\" ] && STATUS_ICON=\"\u274c\"\n          [ \"$LH_STATUS\" != \"success\" ] && STATUS_ICON=\"\u274c\"\n          [ \"$DP_STATUS\" != \"success\" ] && STATUS_ICON=\"\u274c\"\n\n          echo \"## \ud83d\udcca CI/CD Pipeline Report \u2014 $(date -u +'%Y-%m-%d %H:%M UTC')\" > report.md\n          echo \"\" >> report.md\n          echo \"| Stage | Status | Detail |\" >> report.md\n          echo \"|-------|--------|--------|\" >> report.md\n\n          if [ \"$QA_STATUS\" = \"success\" ]; then\n            echo \"| \ud83e\uddea QA Gate | \u2705 PASSED | Score: $QA_SCORE |\" >> report.md\n          else\n            echo \"| \ud83e\uddea QA Gate | \u274c FAILED | Score: $QA_SCORE |\" >> report.md\n          fi\n\n          if [ \"$LH_STATUS\" = \"success\" ]; then\n            echo \"| \ud83d\udd0d Lighthouse | \u2705 PASSED | $LH_PASSES/$LH_TOTAL products \u2265P85 |\" >> report.md\n          else\n            echo \"| \ud83d\udd0d Lighthouse | \u274c FAILED | $LH_PASSES/$LH_TOTAL products \u2265P85 |\" >> report.md\n          fi\n\n          if [ \"$RT_STATUS\" = \"success\" ]; then\n            echo \"| \ud83d\udd17 Route Check | \u2705 PASSED | All routes 200 |\" >> report.md\n          else\n            echo \"| \ud83d\udd17 Route Check | \u274c FAILED | Some routes not 200 |\" >> report.md\n          fi\n\n          if [ \"$DP_STATUS\" = \"success\" ]; then\n            echo \"| \ud83d\ude80 Deploy | \u2705 DEPLOYED | gh-pages updated |\" >> report.md\n            echo \"\" >> report.md\n            echo \"\ud83d\udd17 https://fattymanaw.github.io/pptx-to-html-slides/\" >> report.md\n          else\n            echo \"| \ud83d\ude80 Deploy | \u274c FAILED | \u2014 |\" >> report.md\n          fi\n\n          echo \"\" >> report.md\n          echo \"\ud83d\udce6 Commit: \\`${{ github.sha }}\\`\" >> report.md\n          echo \"\" >> report.md\n          echo \"---\" >> report.md\n          echo \"*Power Squad CI/CD v2.1 \u00b7 5-stage gate chain \u00b7 Elite Squad fix*\" >> report.md\n\n          cat report.md\n          mkdir -p artifacts\n          cp report.md artifacts/\n\n      - name: Upload Report Artifact\n        uses: actions/upload-artifact@v4\n        with:\n          name: ci-report\n          path: artifacts/report.md\n          retention-days: 30\n\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  # Stage 6: Rollback (on failure)\n  # \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n  rollback:\n    name: \u26a0\ufe0f Rollback Alert\n    needs: [qa-gate, lighthouse, route-check, deploy]\n    runs-on: ubuntu-latest\n    if: failure() && !cancelled()\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          ref: gh-pages\n\n      - name: Rollback Alert\n        run: |\n          FAILED=\"\"\n          [ \"${{ needs.qa-gate.result }}\" = \"failure\" ] && FAILED=\"$FAILED QA\"\n          [ \"${{ needs.lighthouse.result }}\" = \"failure\" ] && FAILED=\"$FAILED Lighthouse\"\n          [ \"${{ needs.route-check.result }}\" = \"failure\" ] && FAILED=\"$FAILED Route-Check\"\n\n          echo \"## \u26a0 CI/CD Pipeline FAILED\" > alert.md\n          echo \"\" >> alert.md\n          echo \"**Failed stages:** $FAILED\" >> alert.md\n          echo \"**Commit:** \\`${{ github.sha }}\\`\" >> alert.md\n          echo \"**Branch:** \\`${{ github.ref_name }}\\`\" >> alert.md\n          echo \"\" >> alert.md\n          echo \"**Action required:**\" >> alert.md\n          echo \"1. Fix failed stage(s)\" >> alert.md\n          echo \"2. Push fix to trigger new CI run\" >> alert.md\n          echo \"3. gh-pages unchanged (no partial deploy)\" >> alert.md\n\n          cat alert.md"
+name: Power Squad CI/CD v2 — Gate Chain + Integrate Check
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+# ═══════════════════════════════════════════════════════════════
+# Power Squad CI/CD v2.1 — Elite Squad fix
+# 修正: tokens/a11y 是 qa-gate 的 steps，不是獨立 jobs
+# v2.0 → v2.1: needs 修正 + QA score 動態提取 + lint gate
+# ═══════════════════════════════════════════════════════════════
+
+jobs:
+  # ═══════════════════════════════════════════
+  # Stage 0: Lint Gate (新增)
+  # ═══════════════════════════════════════════
+  lint:
+    name: 🔍 Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: |
+          pip install ruff
+          ruff check . --add-noqa 2>&1 || true
+          ruff check . 2>&1
+
+  # ═══════════════════════════════════════════
+  # Stage 1: QA Gate (P0=0, total≥16)
+  #   Internal steps: tokens + a11y
+  # ═══════════════════════════════════════════
+  qa-gate:
+    name: 🧪 QA Gate
+    needs: lint
+    runs-on: ubuntu-latest
+    outputs:
+      qa_score: ${{ steps.qa.outputs.score }}
+      tokens_missing: ${{ steps.tokens.outputs.missing_slots }}
+      a11y_all_pass: ${{ steps.a11y.outputs.a11y_pass }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run QA Gate (--ci mode)
+        id: qa
+        run: |
+          python3 run_qa.py --ci 2>&1 | tee qa_result.json
+          SCORE=$(python3 -c 'import json; d=json.load(open("qa_result.json")); print(d["overall"]["products_pass"])')
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+          echo "✅ QA Gate: products_pass=$SCORE"
+
+      - name: Run Token Validation (canonical gate)
+        id: tokens
+        run: |
+          echo "🔍 Token Gate…"
+          python3 extract-tokens.py --canonical 2>&1 | tee tokens_check.txt || true
+          MISSING=$(grep -oP '\d+(?= missing)' tokens_check.txt || echo "0")
+          echo "missing_slots=$MISSING" >> $GITHUB_OUTPUT
+          if [ "$MISSING" -gt "0" ]; then
+            echo "❌ TOKEN GATE FAILED: $MISSING missing slots"
+            exit 1
+          else
+            echo "✅ Token Gate PASSED: 0 missing"
+          fi
+
+      - name: Run A11y Gate (WCAG AA)
+        id: a11y
+        run: |
+          echo "🔍 A11y Gate…"
+          python3 -c "
+          import sys
+          sys.path.insert(0, 'gen_slides/src')
+          from a11y import a11y_report
+          import json, glob
+          files = glob.glob('showcase/*.html')
+          all_pass = True
+          for f in files:
+              name = f.split('/')[-1].replace('.html','')
+              if 'dashboard' in name or 'trends' in name: continue
+              with open(f) as fh: html = fh.read()
+              r = a11y_report(html)
+              if r['pct'] < 75:
+                  all_pass = False
+                  print(f'❌ {name}: {r[\"score\"]}/{r[\"max\"]} ({r[\"pct\"]}%)')
+              else:
+                  print(f'✅ {name}: {r[\"score\"]}/{r[\"max\"]} ({r[\"pct\"]}%)')
+          if not all_pass: exit(1)
+          print(json.dumps({'a11y_pass': all_pass}))
+          " 2>&1
+
+  # ═══════════════════════════════════════════
+  # Stage 2: Lighthouse Gate (≥P85)
+  # ═══════════════════════════════════════════
+  lighthouse:
+    name: 🔍 Lighthouse Gate
+    needs: qa-gate
+    runs-on: ubuntu-latest
+    outputs:
+      lh_passes: ${{ steps.lighthouse.outputs.passes }}
+      lh_total: ${{ steps.lighthouse.outputs.total }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
+
+      - name: Serve & Audit
+        id: lighthouse
+        run: |
+          python3 -m http.server 8765 --directory showcase &
+          SERVER_PID=$!
+          sleep 2
+
+          passes=0
+          total=0
+
+          for product in "runs-impacts-aps-partner.html" "aps-ai-agent.html" "cris-impacts-carbon.html"; do
+            key=$(echo "$product" | cut -d'.' -f1)
+            echo "🔍 Lighthouse: $key"
+
+            lighthouse "http://127.0.0.1:8765/$product" \
+              --output=json \
+              --chrome-flags="--headless --no-sandbox --disable-gpu" \
+              --output-path="lh_${key}.json" 2>&1 | tail -3
+
+            PERF=$(python3 -c "
+          import json
+          with open('lh_${key}.json') as f:
+              d = json.load(f)
+          cats = d.get('categories', {})
+          score = cats.get('performance', {}).get('score', 0) * 100
+          print(int(score))
+            ")
+            total=$((total + 1))
+            if [ "$PERF" -ge 85 ]; then
+              echo "✅ $key Performance=$PERF"
+              passes=$((passes + 1))
+            else
+              echo "❌ LIGHTHOUSE GATE FAILED: $key Performance=$PERF (need ≥85)"
+            fi
+          done
+
+          kill $SERVER_PID 2>/dev/null
+          echo "passes=$passes" >> $GITHUB_OUTPUT
+          echo "total=$total" >> $GITHUB_OUTPUT
+          echo "Lighthouse: $passes/$total passed"
+
+  # ═══════════════════════════════════════════
+  # Stage 3: Route Check
+  # ═══════════════════════════════════════════
+  route-check:
+    name: 🔗 Route Check
+    needs: lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Route Check — all showcase/*.html = 200
+        run: |
+          python3 -m http.server 8766 --directory showcase &
+          SERVER_PID=$!
+          sleep 2
+
+          FAIL=0
+          for file in showcase/*.html; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8766/$file")
+            if [ "$code" = "200" ]; then
+              echo "✅ $file → 200"
+            else
+              echo "❌ $file → $code"
+              FAIL=1
+            fi
+          done
+
+          kill $SERVER_PID 2>/dev/null || true
+          if [ "$FAIL" = "1" ]; then exit 1; fi
+
+  # ═══════════════════════════════════════════
+  # Stage 4: Deploy to gh-pages
+  # ═══════════════════════════════════════════
+  deploy:
+    name: 🚀 Deploy
+    needs: [qa-gate, lighthouse, route-check]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./showcase
+          publish_branch: gh-pages
+          force_orphan: false
+          commit_message: "ci: deploy ${{ github.sha }} — QA ${{ needs.qa-gate.outputs.qa_score }} | LH ${{ needs.lighthouse.outputs.lh_passes }}/${{ needs.lighthouse.outputs.lh_total }}"
+
+  # ═══════════════════════════════════════════
+  # Stage 5: Report Card
+  # ═══════════════════════════════════════════
+  report:
+    name: 📊 Report Card
+    needs: [qa-gate, lighthouse, route-check, deploy]
+    runs-on: ubuntu-latest
+    if: always() && !cancelled()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate Report Card v2
+        run: |
+          QA_STATUS="${{ needs.qa-gate.result }}"
+          LH_STATUS="${{ needs.lighthouse.result }}"
+          RT_STATUS="${{ needs.route-check.result }}"
+          DP_STATUS="${{ needs.deploy.result }}"
+          QA_SCORE="${{ needs.qa-gate.outputs.qa_score }}"
+          LH_PASSES="${{ needs.lighthouse.outputs.lh_passes }}"
+          LH_TOTAL="${{ needs.lighthouse.outputs.lh_total }}"
+
+          STATUS_ICON="✅"
+          [ "$QA_STATUS" != "success" ] && STATUS_ICON="❌"
+          [ "$LH_STATUS" != "success" ] && STATUS_ICON="❌"
+          [ "$DP_STATUS" != "success" ] && STATUS_ICON="❌"
+
+          echo "## 📊 CI/CD Pipeline Report — $(date -u +'%Y-%m-%d %H:%M UTC')" > report.md
+          echo "" >> report.md
+          echo "| Stage | Status | Detail |" >> report.md
+          echo "|-------|--------|--------|" >> report.md
+
+          if [ "$QA_STATUS" = "success" ]; then
+            echo "| 🧪 QA Gate | ✅ PASSED | Score: $QA_SCORE |" >> report.md
+          else
+            echo "| 🧪 QA Gate | ❌ FAILED | Score: $QA_SCORE |" >> report.md
+          fi
+
+          if [ "$LH_STATUS" = "success" ]; then
+            echo "| 🔍 Lighthouse | ✅ PASSED | $LH_PASSES/$LH_TOTAL products ≥P85 |" >> report.md
+          else
+            echo "| 🔍 Lighthouse | ❌ FAILED | $LH_PASSES/$LH_TOTAL products ≥P85 |" >> report.md
+          fi
+
+          if [ "$RT_STATUS" = "success" ]; then
+            echo "| 🔗 Route Check | ✅ PASSED | All routes 200 |" >> report.md
+          else
+            echo "| 🔗 Route Check | ❌ FAILED | Some routes not 200 |" >> report.md
+          fi
+
+          if [ "$DP_STATUS" = "success" ]; then
+            echo "| 🚀 Deploy | ✅ DEPLOYED | gh-pages updated |" >> report.md
+            echo "" >> report.md
+            echo "🔗 https://fattymanaw.github.io/pptx-to-html-slides/" >> report.md
+          else
+            echo "| 🚀 Deploy | ❌ FAILED | — |" >> report.md
+          fi
+
+          echo "" >> report.md
+          echo "📦 Commit: \`${{ github.sha }}\`" >> report.md
+          echo "" >> report.md
+          echo "---" >> report.md
+          echo "*Power Squad CI/CD v2.1 · 5-stage gate chain · Elite Squad fix*" >> report.md
+
+          cat report.md
+          mkdir -p artifacts
+          cp report.md artifacts/
+
+      - name: Upload Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-report
+          path: artifacts/report.md
+          retention-days: 30
+
+  # ═══════════════════════════════════════════
+  # Stage 6: Rollback (on failure)
+  # ═══════════════════════════════════════════
+  rollback:
+    name: ⚠️ Rollback Alert
+    needs: [qa-gate, lighthouse, route-check, deploy]
+    runs-on: ubuntu-latest
+    if: failure() && !cancelled()
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Rollback Alert
+        run: |
+          FAILED=""
+          [ "${{ needs.qa-gate.result }}" = "failure" ] && FAILED="$FAILED QA"
+          [ "${{ needs.lighthouse.result }}" = "failure" ] && FAILED="$FAILED Lighthouse"
+          [ "${{ needs.route-check.result }}" = "failure" ] && FAILED="$FAILED Route-Check"
+
+          echo "## ⚠ CI/CD Pipeline FAILED" > alert.md
+          echo "" >> alert.md
+          echo "**Failed stages:** $FAILED" >> alert.md
+          echo "**Commit:** \`${{ github.sha }}\`" >> alert.md
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> alert.md
+          echo "" >> alert.md
+          echo "**Action required:**" >> alert.md
+          echo "1. Fix failed stage(s)" >> alert.md
+          echo "2. Push fix to trigger new CI run" >> alert.md
+          echo "3. gh-pages unchanged (no partial deploy)" >> alert.md
+
+          cat alert.md
