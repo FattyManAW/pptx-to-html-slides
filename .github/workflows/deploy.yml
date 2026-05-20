@@ -9,6 +9,10 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  pages: write
+
 # ═══════════════════════════════════════════════════════════════
 # Power Squad CI/CD v2.1 — Elite Squad fix
 # 修正: tokens/a11y 是 qa-gate 的 steps，不是獨立 jobs
