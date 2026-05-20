@@ -205,6 +205,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Prepare Index
+        run: cp showcase/landing.html showcase/index.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -212,6 +215,7 @@ jobs:
           publish_dir: ./showcase
           publish_branch: gh-pages
           force_orphan: false
+          enable_jekyll: false
           commit_message: "ci: deploy ${{ github.sha }} — QA ${{ needs.qa-gate.outputs.qa_score }} | LH ${{ needs.lighthouse.outputs.lh_passes }}/${{ needs.lighthouse.outputs.lh_total }}"
 
   # ═══════════════════════════════════════════
