@@ -62,7 +62,7 @@ jobs:
         id: tokens
         run: |
           echo "🔍 Token Gate…"
-          python3 extract-tokens.py --canonical 2>&1 | tee tokens_check.txt || true
+          python3 extract-tokens.py --check 2>&1 | tee tokens_check.txt || true
           MISSING=$(grep -oP '\d+(?= missing)' tokens_check.txt || echo "0")
           echo "missing_slots=$MISSING" >> $GITHUB_OUTPUT
           if [ "$MISSING" -gt "0" ]; then
