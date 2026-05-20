@@ -673,3 +673,81 @@ class SimulationEngineV02:
             "warehouse_shipments": len(_loop._warehouse_shipments),
             "avg_lead_time_days": avg_lead,
         }
+
+
+# ═══════════════════════════════════════════════════════════════
+# DueDateAdapter — OTD v0.5 (五格式: iso8601/epoch/arrival_plus_N/product_lead/default)
+# ═══════════════════════════════════════════════════════════════
+
+class DueDateAdapter:
+    """Compute due_date from config for given order + product_type.
+
+    Formats:
+      - iso8601: overrides[order_id] as ISO string ("2025-06-15" / "2025-06-15T14:00:00")
+      - epoch: overrides[order_id] as Unix timestamp
+      - arrival_plus_N: arrival_day + arrival_plus_days
+      - product_lead: arrival_day + product.lead_time_days
+      - default: arrival_day + base_days ± jitter_days
+
+    All formats fall back to arrival_day + base_days when no override exists.
+    """
+
+    def __init__(self, config: dict):
+        dd = config.get("order_template", {}).get("due_date", {})
+        self.format = dd.get("format", "default")
+        self.base_days = dd.get("base_days", 14)
+        self.jitter_days = dd.get("jitter_days", 3)
+        self.arrival_plus_days = dd.get("arrival_plus_days", 7)
+        self.overrides = dd.get("overrides", {})
+        self._products: dict[str, int] = {}
+        for p in config.get("order_template", {}).get("products", []):
+            self._products[p["type"]] = p.get("lead_time_days", 10)
+
+    def compute(self, order_id: str, product_type: str, arrival_day: int,
+                rng=None) -> datetime:
+        from datetime import datetime, timedelta
+        # Check override
+        oid = self.overrides.get(order_id)
+
+        if self.format == "iso8601":
+            return self._parse_iso(oid, arrival_day)
+        elif self.format == "epoch":
+            return self._parse_epoch(oid, arrival_day)
+        elif self.format == "arrival_plus_N":
+            return datetime(2025, 1, 1) + timedelta(days=max(arrival_day, 0) + self.arrival_plus_days)
+        elif self.format == "product_lead":
+            lead = self._products.get(product_type, self.base_days)
+            return datetime(2025, 1, 1) + timedelta(days=max(arrival_day, 0) + lead)
+        else:
+            # default / unknown → base_days ± jitter
+            return self._fallback_default(arrival_day, rng)
+
+    def _parse_iso(self, override: str | None, arrival_day: int):
+        from datetime import datetime, timedelta
+        if override:
+            try:
+                return datetime.fromisoformat(override)
+            except (ValueError, TypeError):
+                pass
+        # No override → fallback to arrival + base_days (deterministic, no jitter)
+        return datetime(2025, 1, 1) + timedelta(days=max(arrival_day, 0) + self.base_days)
+
+    def _parse_epoch(self, override: str | None, arrival_day: int):
+        from datetime import datetime, timedelta
+        if override is not None:
+            try:
+                return datetime.utcfromtimestamp(int(override))
+            except (ValueError, TypeError):
+                pass
+        # No override → fallback to arrival + base_days (deterministic, no jitter)
+        return datetime(2025, 1, 1) + timedelta(days=max(arrival_day, 0) + self.base_days)
+
+    def _fallback_default(self, arrival_day: int, rng=None) -> datetime:
+        from datetime import datetime, timedelta
+        import random as _random
+        r = rng or _random
+        jitter = r.randint(-self.jitter_days, self.jitter_days) if self.jitter_days else 0
+        return datetime(2025, 1, 1) + timedelta(days=max(arrival_day, 0) + self.base_days + jitter)
+
+    def __repr__(self):
+        return f"DueDateAdapter(format={self.format!r}, base_days={self.base_days}, jitter_days={self.jitter_days})"
