@@ -53,7 +53,7 @@ jobs:
       - name: Run QA Gate (--ci mode)
         id: qa
         run: |
-          python3 run_qa.py --ci 2>&1 | tee qa_result.json
+          python3 run_qa.py --ci 2>&1 | tee qa_raw.log && grep -A1000 overall qa_raw.log > qa_result.json
           SCORE=$(python3 -c 'import json; d=json.load(open("qa_result.json")); print(d["overall"]["products_pass"])')
           echo "score=$SCORE" >> $GITHUB_OUTPUT
           echo "✅ QA Gate: products_pass=$SCORE"
