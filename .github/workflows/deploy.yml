@@ -63,9 +63,9 @@ jobs:
         run: |
           echo "🔍 Token Gate…"
           python3 extract-tokens.py --check 2>&1 | tee tokens_check.txt || true
-          MISSING=$(grep -c '^\[CM\]' tokens_check.txt 2>/dev/null || echo "0")
-          echo "missing_slots=$MISSING" >> $GITHUB_OUTPUT
-          echo "⚡ Token Gate: $MISSING cross-product gaps (non-fatal)"
+          MISSING=$(grep '^\[CM\]' tokens_check.txt 2>/dev/null | wc -l | tr -d ' ')
+          echo "missing_slots=${MISSING:-0}" >> $GITHUB_OUTPUT
+          echo "⚡ Token Gate: ${MISSING:-0} cross-product gaps (non-fatal)"
 
       - name: Run A11y Gate (WCAG AA)
         id: a11y
