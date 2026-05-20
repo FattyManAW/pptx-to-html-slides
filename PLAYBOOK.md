@@ -797,6 +797,64 @@ https://user.github.io/slides/<project>-<theme>.html
 | `pptx2html.py` | v1 自動提取器（含圖片 base64，被 v3 取代） |
 | `build_v3_html.py` | v3 HTML 生成器（從 JSON 產出） |
 
+
+---
+
+# 15. Agent Reliability Protocol（防閒置機制）
+
+> 適用：Power Squad | 生效：Sprint 2 Phase 0+
+
+## 15.1 背景
+
+Sprint 1 retro 發現 Christina 漏取 inbox task 次數偏多（5 次 / 3 天），導致 task 堆積在 inbox 無人接手。為避免 P1/P2 task 被誤判為已完成，需建立自動化 watchdog 機制。
+
+## 15.2 防閒置規則
+
+```
+inbox task 指派後 15 分鐘內未被 pick up（狀態仍為 inbox）
+→ 自動改派給 Smart 或 Technus（優先輪流）
+→ 觸發 board chat 通知：「任務 X 超時，已改派」
+```
+
+| 參數 | 值 |
+|------|-----|
+| 指派超時閾值 | 15 分鐘 |
+| 掃描頻率 | 每 10 分鐘 |
+| 改派目標 | Smart → Technus → Smart（輪流） |
+| 通知方式 | Board chat mention |
+
+## 15.3 Task Watchdog 實現
+
+**Cron job（每 10m）：**
+```bash
+# /opt/homebrew/lib/node_modules/openclaw/cron job: cris-swat-idle-watchdog
+# 或 board-level cron: scan inbox tasks assigned to Christina
+# 條件：created_at + 15min < now AND status == inbox AND assignee == Christina
+```
+
+**Agent side（board-scan heartbeat 內檢查）：**
+```python
+# 每次 board-scan 檢查 Christina inbox tasks
+# if task.created_at + 15min < now: 觸發 escalation
+# POST /boards/{id}/tasks/{task_id}: assignee → Smart/Technus
+```
+
+## 15.4 SOP 清單
+
+- [ ] Watchdog cron 部署（Sprint 2 Phase 0）
+- [ ] Christina 改派通知測試（假 task 驗證）
+- [ ] 監控 7 天後復盤（漏取次數是否下降）
+- [ ] 如需降級閾值：15m → 30m（若誤報率過高）
+
+## 15.5 歷史數據
+
+| 日期 | 漏取次數 | 備註 |
+|------|---------|------|
+| 05-17 ~ 05-19 | 5 次 / 3 天 | Sprint 1 baseline |
+| — | — | Sprint 2 目標：≤1 次/週 |
+
+---
+
 ---
 
 > **記住**: 本 Playbook 是活的文件。每發現一個新陷阱或更好的做法，就更新它。下次開任務時讀一遍。
@@ -1148,6 +1206,99 @@ CRIS: 74% QA (Christina) → Technus 接手 → 修復 → 100% (30min)
 - [ ] OTD 模擬系統原型（Allen 原始目標）
 - [ ] 多語言支援 (i18n token system)
 - [ ] Design System 獨立 package
+
+
+---
+
+# 15. Agent Reliability Protocol（防閒置機制）
+
+> 適用：Power Squad | 生效：Sprint 2 Phase 0+
+
+## 15.1 背景
+
+Sprint 1 retro 發現 Christina 漏取 inbox task 次數偏多（5 次 / 3 天），導致 task 堆積在 inbox 無人接手。為避免 P1/P2 task 被誤判為已完成，需建立自動化 watchdog 機制。
+
+## 15.2 防閒置規則
+
+```
+inbox task 指派後 15 分鐘內未被 pick up（狀態仍為 inbox）
+→ 自動改派給 Smart 或 Technus（優先輪流）
+→ 觸發 board chat 通知：「任務 X 超時，已改派」
+```
+
+| 參數 | 值 |
+|------|-----|
+| 指派超時閾值 | 15 分鐘 |
+| 掃描頻率 | 每 10 分鐘 |
+| 改派目標 | Smart → Technus → Smart（輪流） |
+| 通知方式 | Board chat mention |
+
+## 15.3 Task Watchdog 實現
+
+**Cron job（每 10m）：**
+```bash
+# /opt/homebrew/lib/node_modules/openclaw/cron job: cris-swat-idle-watchdog
+# 或 board-level cron: scan inbox tasks assigned to Christina
+# 條件：created_at + 15min < now AND status == inbox AND assignee == Christina
+```
+
+**Agent side（board-scan heartbeat 內檢查）：**
+```python
+# 每次 board-scan 檢查 Christina inbox tasks
+# if task.created_at + 15min < now: 觸發 escalation
+# POST /boards/{id}/tasks/{task_id}: assignee → Smart/Technus
+```
+
+## 15.4 SOP 清單
+
+- [ ] Watchdog cron 部署（Sprint 2 Phase 0）
+- [ ] Christina 改派通知測試（假 task 驗證）
+- [ ] 監控 7 天後復盤（漏取次數是否下降）
+- [ ] 如需降級閾值：15m → 30m（若誤報率過高）
+
+## 15.5 歷史數據
+
+| 日期 | 漏取次數 | 備註 |
+|------|---------|------|
+| 05-17 ~ 05-19 | 5 次 / 3 天 | Sprint 1 baseline |
+| — | — | Sprint 2 目標：≤1 次/週 |
+
+---
+---
+
+# 16. Board Rule Reference（狀態管理規則）
+
+> 適用：Power Squad | 生效：Sprint 2 Phase 0+
+
+## 16.1 Status Change Authority
+
+| Rule | 值 | 說明 |
+|------|----|------|
+| `only_lead_can_change_status` | `false` ✅ | Agent 可自行更新 task status |
+| `require_approval_for_status_change` | `false` ✅ | 狀態變更無需 lead 審批 |
+
+**變更歷史：**
+- Sprint 1 前：`only_lead_can_change_status: true`
+- Sprint 1 retro P0 #3：討論放寬 → 改為 `false`
+- Sprint 2 Phase 0：正式落地文檔化
+
+**原因：** Worker Gate 模式下 Agent 完成任務需立即將 task 從 `in_progress` → `review`，等待 lead review 後才 `done`。若必須 lead 才能改狀態，將導致 30 分鐘以上手動等待。
+
+**例外：**
+- `inbox` → `in_progress`：Agent 可自行 pick up ✅
+- `review` → `done`：需 lead/Nana 審批 ✅
+- `done` → `in_progress`：需 lead 重新開啟 ✅
+
+## 16.2 Task Assignment Rules
+
+| Rule | 值 |
+|------|----|
+| Agent 可自行領取 inbox task | ✅ |
+| Inbox 超時自動改派 | ✅（15m → Smart/Technus）|
+| Task Watchdog | ✅（每 10m 掃描）|
+
+---
+
 
 ---
 
