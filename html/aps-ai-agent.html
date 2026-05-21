@@ -747,6 +747,28 @@ button:disabled, .nav button:disabled {
 .card,.stat,.nav-btn{border:1px solid var(--border);border-radius:12px;transition:transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}.card:hover,.stat:hover,.nav-btn:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(20,184,166,.15);border-color:var(--c-teal)}.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}.status-pass{background:rgba(16,185,129,.15);color:#10b981}.status-warn{background:rgba(245,158,11,.15);color:#f59e0b}.nav-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.75rem;color:var(--c-t3);animation:hintFlash 4s var(--ease) forwards;opacity:0}@keyframes hintFlash{0%,80%{opacity:1}100%{opacity:0}}
 
 .chapter-nav{position:sticky;top:0;z-index:100;display:flex;gap:var(--s4);padding:var(--s3) var(--s5);background:linear-gradient(180deg,var(--c-900)60%,transparent);backdrop-filter:blur(8px)}.chapter-dot{opacity:.4;cursor:pointer;transition:opacity var(--t-fast);font-size:.85rem;color:var(--c-t2)}.chapter-dot.active{opacity:1;font-weight:600;color:var(--c-teal)}
+
+/* === Phase 1 — Stripe Sessions Hero Number === */
+.hero-slide { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100%; }
+.hero-number {
+  font-size: clamp(5rem, 14vw, 10rem);
+  font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg, var(--c-teal), #818cf8);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: heroReveal 0.8s var(--ease) both;
+}
+.hero-label { font-size: 1.25rem; color: var(--c-t2); margin-top: var(--s3); max-width: 480px; }
+@keyframes heroReveal { from { opacity: 0; filter: blur(12px); transform: scale(1.08); } }
+
+
+/* === Phase 1 — Auto-Animate (Reveal.js 標竿) === */
+.slide { transition: opacity 0.4s ease, transform 0.4s ease; }
+.slide.slide-enter { animation: slideIn 0.45s ease both; }
+.slide.slide-exit { animation: slideOut 0.35s ease both; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(24px) scale(0.96); } }
+@keyframes slideOut { to { opacity: 0; transform: translateY(-20px) scale(0.96); } }
+
 </style>
 </head>
 
@@ -994,6 +1016,19 @@ button:disabled, .nav button:disabled {
       </div>
     </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     06h — HERO NUMBER（Stripe 標竿）
+     一畫面一核心數字：大數字 + 一句話
+     ═══════════════════════════════════════════ -->
+<section class="slide hero-slide" data-i="5h" tabindex="0">
+  <div class="bg bg--dark"></div>
+  <div class="inner col-center">
+    <p class="txt-caption" style="margin-bottom: var(--s2)">數據價值</p>
+    <p class="hero-number">97<small style="font-size:2rem">%</small></p>
+    <p class="hero-label">OTD 達成率 — 全鏈數據資產驅動精準交付</p>
   </div>
 </section>
 
