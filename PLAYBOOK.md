@@ -1,6 +1,6 @@
 # PPT → HTML 投影片轉換 Playbook
 
-> **版本**: v3.0  
+> **版本**: v4.0  
 > **最後更新**: 2026-05-20  
 > **適用對象**: AI agent / 開發者，零背景即可產出合格 HTML  
 > **基於**: 3 輪迭代（v1 → v2 → v3），3 份 PPT（APS AI Agent 10 張 / CRIS IMPACTs 28 張 / 潤思IMPACTS 51 張）  
@@ -1183,7 +1183,7 @@ CRIS: 74% QA (Christina) → Technus 接手 → 修復 → 100% (30min)
 
 ## 13. 演進路線圖
 
-### v3.0 (當前 — 2026-05-20)
+### v3.0 ✅ (2026-05-20)
 - [x] 六大原則合規模板
 - [x] QA Pipeline 35 項檢查
 - [x] gen_slides_v4 PPTX→JSON→HTML
@@ -1193,14 +1193,19 @@ CRIS: 74% QA (Christina) → Technus 接手 → 修復 → 100% (30min)
 - [x] Showcase Dashboard
 - [x] Sprint Retrospective + Lessons Learned
 
-### v4.0 (下一階段)
+### v4.0 ✅ (2026-05-21)
+- [x] Ch17: API Blocker Workaround SOP（task_assignee_mismatch, auth, rate limit）
+- [x] Ch18: Cross-Board Collaboration SOP（Power Squad ↔ CRIS SWAT）
+- [x] Ch19: Lead Absence Protocol（5-tier escalation, 自主開工範圍, 模板）
+
+### v5.0 (下一階段)
 - [ ] Token naming 統一 (`--ds-*` canonical set)
 - [ ] 反向解析: 成品 HTML → 結構化 JSON（模板剖析）
 - [ ] Lighthouse P55→P85 Performance 修復
 - [ ] Dashboard 改為 fetch() 動態讀取 .qa_baseline.json
 - [ ] Onboarding 腳本化（一鍵 `setup.sh`）
 
-### v5.0 (PMF 級產品)
+### v6.0 (PMF 級產品)
 - [ ] gen_slides_v5 模板剖析引擎（配色提取/字體適配/佈局比對）
 - [ ] 互動投影片 (D3.js charts, dark/light toggle, hover states)
 - [ ] OTD 模擬系統原型（Allen 原始目標）
@@ -1299,11 +1304,427 @@ inbox task 指派後 15 分鐘內未被 pick up（狀態仍為 inbox）
 
 ---
 
+# 17. API Blocker Workaround SOP（API 限制自救手冊）
+
+> 適用：Power Squad | 狀態：active | 最後更新：2026-05-21
+
+## 17.1 已知 API 限制
+
+| # | 問題 | 現象 | 影響 | 狀態 |
+|---|------|------|------|------|
+| 1 | `task_assignee_mismatch` | 非 assignee 無法 PATCH task status | Review→done 阻塞 | 🟡 待修 |
+| 2 | Auth token 失效 | 401 / no response | 全線阻塞（5/20 8h） | 🟢 文檔化 |
+| 3 | Rate limit | 429 Too Many Requests | PATCH 連續失敗 | 🟢 可繞 |
+| 4 | Bearer prefix 要求 | 無 Bearer → 401 | 新手誤觸 | 🟢 文檔化 |
+
+## 17.2 `task_assignee_mismatch` Workaround
+
+**問題：** review task 指派給 Smart（aef9098a），Christina/Technus 無法推→done。
+
+**Sprint 1-2 實例：** ea9b08f5（OTD 測試框架）+ d1902c27（Christina 自我審計）stuck 23h+。
+
+### 方案 A：Peer Review Comment（推薦）
+
+```bash
+# 1. 產出 review comment 貼 task thread
+curl -X POST $BASE_URL/api/v1/agent/boards/$BOARD_ID/tasks/$TASK_ID/comments \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "## Review ✅\n\n### Code Quality: PASS\n- 結構清晰，模組化完整\n- 測試覆蓋率充分\n\n### Recommendation: APPROVE\n理由：<1-2句>"
+  }'
+
+# 2. 標記 board-group chat 讓 assignee 可看到
+# 3. assignee（Smart）用自己的 credential PATCH → done
+```
+
+**優點：** 零風險，不碰 task status，純文字 review。
+**缺點：** 需 assignee 自行 PATCH（Smart 需 online）。
+
+### 方案 B：Lead Override（需 Nana）
+
+Nana 用 lead credential PATCH status review → done，不受 assignee 限制。
+
+### 方案 C：Board Rule 放寬（需開會）
+
+提議 board-level flag：`peer_review_done: true` — 任何 agent 可推非自審 task → done。
+
+## 17.3 Auth Token 失效 SOP
+
+```
+現象：401 Unauthorized / curl 無回應
+
+步驟：
+1. curl $BASE_URL/healthz（無 auth，確認服務在線）
+2. curl -v 含 Bearer → 確認 401
+3. 檢查 .env / TOOLS.md 中 AUTH_TOKEN 是否更新
+4. 通知 @Nana / @Allen 重新發 token
+5. 記錄 downtime（start/end/resolution）→ board memory
+
+歷史：5/20 08:00-16:01 失效（8h），根因未知，Allen 手動修復。
+```
+
+## 17.4 Rate Limit 繞過策略
+
+```
+429 時：
+1. 等 Retry-After header 指定秒數
+2. 若無 header：退避 30s → 重試（最多 3 次）
+3. 合併 requests：單次 POST 多個 comments / memory entries
+4. 錯開 cron 時間：3 agent 掃板間隔 ≥ 5m
+```
+
+## 17.5 Bearer Prefix 檢查清單
+
+```bash
+# ✅ 正確
+curl -H "Authorization: Bearer gby5En..."
+
+# ❌ 錯誤（Sprint 1 新手誤觸）
+curl -H "Authorization: gby5En..."          # → 401
+curl -H "Authorization: SECRET_gby5En..."    # → 401
+
+# TOOLS.md 已正確標註 ✅
+```
 
 ---
+
+# 18. Cross-Board Collaboration SOP（跨板協同）
+
+> 適用：Power Squad + CRIS SWAT | 狀態：active | 最後更新：2026-05-21
+
+## 18.1 兩板架構
+
+```
+Power Squad                         CRIS SWAT
+─────────────────────────────────────────────────
+Board: 3881607b                    Board: (<Vesper board>)
+Lead: Nana                         Lead: Allen (?) / Nana
+Agents: Smart / Technus / Christina Agents: Vesper / Luna
+Scope: PPTX→HTML pipeline           Scope: CRIS product dev
+Tools: gen_slides / run_qa / CI     Tools: ThemeToggle / CRIS engine
+```
+
+## 18.2 協同模式
+
+### Mode A：Power Squad → CRIS SWAT（QA Gate 共用）
+
+```
+CRIS SWAT 產出 → Power Squad QA Gate 審查 → 成績回流 CRIS SWAT
+```
+
+**實例：** CRIS SWAT ThemeToggle（Luna 開發）→ Power Squad QA Gate 掃描 → 成績貼兩板。
+
+SOP：
+1. CRIS agent 產出後貼 board-group memory 標記 `cross-board,qa-request`
+2. Power Squad agent 跑 run_qa.py 並產出成績單
+3. 張貼 CRIS SWAT board memory + 標記原 thread
+
+**約束：** Power Squad agent 不可修改 CRIS SWAT 成品（跨板只審不修）。
+
+### Mode B：共享 Design System
+
+```
+tokens.json → 兩板共享 canonical token set
+```
+
+- 73 common tokens 已建立
+- CRIS SWAT 可用 `--ds-*` namespace 直接引用
+- 變更 canonical set 需兩板 lead 同意
+
+### Mode C：聯合 Report
+
+```
+BEFORE_AFTER_REPORT.md（Smart，2026-05-20）
+```
+
+- 每 Sprint 結尾產出一份聯合成績單
+- 內容：兩板 done count / QA 分數 / 教訓 / 下一步
+- 張貼兩板 board memory
+
+## 18.3 跨板溝通規範
+
+| 規則 | 說明 |
+|------|------|
+| 標籤 `cross-board` | 所有跨板 memory entry 加此 tag |
+| 不跨板改 task | Power Squad agent 不碰 CRIS SWAT task |
+| Review-only | Power Squad QA gate 僅審查，不修改成品 |
+| Lead Cc | 跨板協商需 Cc 兩板 lead |
+| Memory sync | 重要決策同步兩板 memory |
+
+## 18.4 跨板 CI 統一（Sprint 3 規劃）
+
+```
+deploy.yml 共用：
+1. QA Gate stage（共用 run_qa.py）
+2. Token check stage（共用 extract-tokens.py）
+3. Lighthouse stage（共用 lighthouserc）
+4. Deploy stage（各板獨立 gh-pages）
+
+目標：一條 workflow 管兩板 deploy。
+```
+
+## 18.5 歷史
+
+| 日期 | 事件 | 結果 |
+|------|------|------|
+| 5/20 | Cross-Team Charter v1.0 | 雙 Squad 協同正式化 |
+| 5/20 | Smart 聯合 Before/After Report | 兩板數據對比完成 |
+| 5/20 | Luna ThemeToggle QA Gate | Power Squad 跨板審查成功 |
+
+---
+
+# 19. Lead Absence Protocol（Lead 離線應對）
+
+> 適用：Power Squad | 狀態：active | 最後更新：2026-05-21
+
+## 19.1 分級響應
+
+```
+Tier 1: 常規（< 4h）
+→ 正常提案 + 等待
+
+Tier 2: 注意（4-12h）
+→ 提案後不等回覆，選 best proposal 自主開工（documentation/analysis 類）
+→ 不執行 external side effect 任務
+
+Tier 3: 警報（12-24h）
+→ 每 2h lead-checkin escalation
+→ 自主開工加速（連續提案+執行）
+→ 準備 formal status report（給 Allen backfill）
+
+Tier 4: 緊急（24-48h）
+→ 發 formal escalation @Nana + @Allen（跨 channel）
+→ 附：當前 sprint status + 阻塞 + 建議行動
+→ 考慮外部溝通（email/phone）→ 需 lead 授權
+
+Tier 5: 斷聯（> 48h）
+→ 啟動 backup lead（Allen）
+→ 必要時停止新任務，維護現有成品
+→ 全線狀態凍結，等待 human decision
+```
+
+## 19.2 自主開工範圍（不需 lead approval）
+
+| ✅ 可做 | ❌ 不可做 |
+|---------|----------|
+| Documentation / SOP 更新 | External deployment |
+| Research / 分析報告 | Email / 外部通訊 |
+| PLAYBOOK.md 補完 | Public post / GitHub release |
+| Memory 重整 | Destructive action |
+| QA scan / healthcheck | Cross-team task assignment |
+| Spec / wireframe / prototype | 修改 auth / security config |
+| Review comment（純文字） | PATCH task status（跨 assignee） |
+
+## 19.3 Escalation 模板
+
+### Tier 3 Escalation（12-24h）
+
+```markdown
+⚠️ Lead Check-in — {N} hours since last response
+
+**Status:**
+- Board: {total} tasks · {done} done · {review} review · {inbox} inbox
+- Blockers: {list}
+- Agents active: Christina / Smart / Technus
+
+**What we can do right now:**
+1. {proposal 1}
+2. {proposal 2}
+3. {proposal 3}
+
+**Request:** Please confirm one direction or approve autonomous mode.
+
+@Nana
+```
+
+### Tier 4 Escalation（24-48h）
+
+```markdown
+🚨 FORMAL ESCALATION — Lead absent {N} hours
+
+@Nana @Allen
+
+**Urgency:** {why urgent}
+**Board:** Power Squad ({board_id})
+**Sprint:** Sprint 3 Phase {N}
+
+**Current state:** {summary}
+**Stalled items:** {list}
+**Risk:** {what could go wrong if left unaddressed}
+
+**Immediate ask:** 
+1. Confirm "autonomous mode" for next 24h
+2. Approve one blocked task → done
+3. Designate backup lead
+
+This will auto-escalate to Allen at 48h mark.
+```
+
+## 19.4 Auto-Escalation Cron（Sprint 3 實作）
+
+```yaml
+# OpenClaw cron job: lead-absence-watchdog
+cron: "0 */2 * * *"  # every 2h
+board_id: 3881607b
+
+trigger:
+  - last_lead_activity > 12h → Tier 3 escalation
+  - last_lead_activity > 24h → Tier 4 escalation
+  - last_lead_activity > 48h → Tier 5 escalation + @Allen
+
+action:
+  - POST board-group memory with escalation template
+  - tag: escalation, lead-absence
+  - mention: @Nana, (@Allen if Tier 4+)
+```
+
+## 19.5 歷史事件
+
+| 日期 | Duration | Tier | Result |
+|------|----------|------|--------|
+| 5/20-5/21 | 23h+ | 3→4 | 自主開工持續 · 3 agent 並行 · 零 idle |
+| — | — | — | 累積經驗：自主模式可行但 review→done 阻塞 |
+
+## 19.6 教訓
+
+1. **review→done 阻塞是自主模式最大弱點** — 需 board-level 放寬 peer review gate
+2. **三 agent 並行可在無 lead 下維持產能** — Sprint 2/3 實證
+3. **文檔類任務是安全的自動填充物** — 不依賴 external side effect
+4. **24h 是心理閾值** — 超過後需 formal escalation（本 protocol）
+
+---
+
+# 20. Three-Unit Interaction SOP（三單位互動標準作業程序）
+
+> 適用：Power Squad + CRIS SWAT + Elite | 狀態：active | 最後更新：2026-05-21
+> 觸發：Allen 2026-05-21 group broadcast — 明確三單位角色分工
+
+## 20.1 角色定義
+
+```
+Power Squad ──── 執行團隊（做）
+CRIS SWAT  ──── 執行團隊（做）
+Elite       ──── 監管審查（看 → 建議 → 輔導改善 → 複查）
+```
+
+| 單位 | 角色 | 職責 | 禁止 |
+|------|------|------|------|
+| Power Squad | 執行 | 產出 artifacts / 修復 / QA gate | — |
+| CRIS SWAT | 執行 | 產出 artifacts / 修復 / deploy | — |
+| Elite | 監管 | 審查產出 → 量化建議包 → 輔導改善 → 複查達標 | ❌ 親自執行修改 |
+
+## 20.2 互動流程
+
+```
+執行團隊產出（Power Squad / CRIS SWAT）
+  │
+  ▼
+Elite 審查（三條審計線輪流）
+  │
+  ├── 產出：量化建議包（Audit Pack）
+  │     - 🔴 Must-Fix（阻斷交付 → 進 sprint backlog）
+  │     - 🟡 Should-Fix（品質提升 → board chat 討論取捨）
+  │     - 🟢 Nice-to-Have（未來方向 → Sprint+1 planning）
+  │
+  ▼
+執行團隊改善（依建議包迭代）
+  │
+  ▼
+Elite 複查
+  │
+  ├── Pass → 達標
+  └── Fail → 回到改善步驟（下一輪）
+```
+
+## 20.3 Audit Pack 標準模板
+
+Elite 審計員出包時使用此格式（直接複製貼上）：
+
+```markdown
+## Elite Audit Pack — {product} / {audit line} / Round {N}
+
+### 審查對象
+- Task: {task_id}
+- Artifact: {file path}
+- QA baseline: {P0 X/Y · P1 X/Y · Lighthouse PXX}
+
+### 🔴 Must-Fix（阻斷交付）
+| # | 問題 | 檔案:行號 | 修法（可複製貼上） | 預期結果 |
+|---|------|----------|-------------------|---------|
+| 1 | {具體描述} | `file:42` | ```diff\n- old\n+ new``` | {可量化的改善} |
+
+### 🟡 Should-Fix（品質提升）
+| # | 問題 | 建議 | 預期影響 |
+|---|------|------|---------|
+
+### 🟢 Nice-to-Have（未來方向）
+| # | 想法 | 優先級 |
+|---|------|:------:|
+
+### 複查 Checklist
+- [ ] Must-Fix #1 已修 → QA re-run PASS
+- [ ] Must-Fix #2 已修 → token diff clean
+- [ ] Should-Fix 取捨討論完成
+
+### 建議包版本
+v1.0 · {審計員} · {日期}
+```
+
+## 20.4 執行團隊收包後的處理流程
+
+```
+收到 Audit Pack →
+  Must-Fix：直接進 current sprint backlog → 修 → QA → Elite 複查
+  Should-Fix：board chat @Elite 討論取捨 → accepted → sprint backlog / rejected → 記錄原因
+  Nice-to-Have：標記 Sprint+1 planning → 不阻塞當前交付
+```
+
+### 回應模板
+
+```markdown
+@Elite 收到 Audit Pack · Round {N}
+
+Must-Fix: {N} 項 → sprint backlog · ETA {time}
+Should-Fix: {N} 項 → 討論中（{accepted} accepted / {discussing} discussing）
+Nice-to-Have: {N} 項 → Sprint+1 backlog
+
+預計修完時間：{time}
+複查 ready：{time}
+```
+
+## 20.5 約束與規範
+
+| 規則 | 說明 |
+|------|------|
+| Elite 不親自改 code | 建議包格式確保「修法」欄位是 diff/command，非實際修改 |
+| 執行者不跳過 Elite 複查 | Must-Fix 修完後需 Elite 複查簽核才算 done |
+| Audit Pack 需量化 | 禁止模糊評論（「顏色不好看」→ ❌），需具體到「`--accent: #C0392B → #E74C3C`」 |
+| 一包一輪 | 每輪 Audit Pack 獨立版本號，覆蓋上次 Must-Fix 的複查結果 |
+| Cross-board 可見 | Audit Pack 張貼 group memory（tag: `audit-pack`），三單位全員可見 |
+
+## 20.6 審計線（三條輪流）
+
+Elite 的三條審計線依序輪流出 Audit Pack：
+
+| 審計線 | 範圍 | 頻率 |
+|--------|------|------|
+| 審計線 1 | Code / Architecture（結構、模組化、CI） | 每輪交替 |
+| 審計線 2 | Design / UX（token、色彩、排版、動畫） | 每輪交替 |
+| 審計線 3 | Content / Business（中文正確性、商業邏輯、數據一致性） | 每輪交替 |
+
+## 20.7 歷史
+
+| 日期 | 事件 | 結果 |
+|------|------|------|
+| 5/21 15:04 | Allen group broadcast — 三單位角色定義 | 此 SOP 建立 |
+| 5/21 15:09 | Henry 確認 interaction model + 建議包格式 | 模板定稿 |
+
+---
+
 
 > **記住**: 本 Playbook 是活的文件。每發現一個新陷阱或更好的做法，就更新它。下次開任務時讀一遍。
 
 ---
 
-*Playbook v3.0 — Power Squad Sprint Retrospective · 2026-05-20*
+*Playbook v4.1 — Power Squad Complete Operations Manual · 2026-05-21 · +Ch20 Three-Unit Interaction SOP*

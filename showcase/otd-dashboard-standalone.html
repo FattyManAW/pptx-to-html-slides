@@ -356,6 +356,19 @@ function setSpeed(val) {
 
 // ─── Bootstrap ─────────────────────────────────
 init();
+    // Metrics overlay (auto-injected)
+    if (typeof METRICS !== 'undefined' && METRICS.best_policy) {
+        const bp = METRICS.best_policy;
+        const bar = document.querySelector('.meta-bar');
+        if (bar) {
+            const el = document.createElement('span');
+            el.className = 'meta';
+            el.innerHTML = `<b>🏆 ${bp.name}</b> OTD ${(bp.otd*100).toFixed(1)}% · ${bp.shipped} shipped · ${bp.lead_days}d`;
+            el.style.color = 'var(--accent)';
+            bar.appendChild(el);
+        }
+    }
+    
 </script>
 </body>
 </html>

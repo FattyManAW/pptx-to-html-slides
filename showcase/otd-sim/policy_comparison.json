@@ -1,76 +1,77 @@
 {
-  "run_at": "2026-05-20T11:57:25.056695",
+  "run_at": "2026-05-21T04:45:52.167589",
   "seed": 42,
   "sim_days": 90,
   "results": [
+    {
+      "policy": "FIFO",
+      "total_orders": 900,
+      "shipped": 411,
+      "on_time": 411,
+      "overdue": 0,
+      "avg_lead_days": 26.3,
+      "on_time_rate": 0.4567,
+      "avg_queue_wait_hrs": 8.9,
+      "bottleneck_station": "L1-S1",
+      "bottleneck_score": 39.642,
+      "station_throughput": {
+        "L1-S1": 127307,
+        "L1-S2": 86457,
+        "L1-S3": 98584
+      },
+      "wip_alerts": [
+        "[L1-S1] WIP 423/500 (85%) >= threshold 80%",
+        "[L1-S2] WIP 433/400 (108%) >= threshold 80%"
+      ],
+      "total_defects": 5574,
+      "avg_yield_rate": 0.9534,
+      "records": 1260
+    },
     {
       "policy": "EDD",
       "total_orders": 900,
       "shipped": 411,
       "on_time": 411,
       "overdue": 0,
-      "avg_lead_days": 32.8,
+      "avg_lead_days": 33.0,
       "on_time_rate": 0.4567,
-      "avg_queue_wait_hrs": 7.8,
+      "avg_queue_wait_hrs": 9.4,
       "bottleneck_station": "L1-S1",
-      "bottleneck_score": 39.339,
+      "bottleneck_score": 61.55,
       "station_throughput": {
-        "L1-S1": 126374,
-        "L1-S2": 86557,
+        "L1-S1": 126965,
+        "L1-S2": 86717,
         "L1-S3": 98450
       },
       "wip_alerts": [
-        "[L1-S1] WIP 579/500 (116%) >= threshold 80%",
-        "[L1-S2] WIP 376/400 (94%) >= threshold 80%"
+        "[L1-S1] WIP 821/500 (164%) >= threshold 80%"
       ],
-      "total_defects": 5543,
-      "avg_yield_rate": 0.9536,
-      "records": 1257
-    },
-    {
-      "policy": "FIFO",
-      "total_orders": 900,
-      "shipped": 410,
-      "on_time": 410,
-      "overdue": 0,
-      "avg_lead_days": 26.5,
-      "on_time_rate": 0.4556,
-      "avg_queue_wait_hrs": 8.5,
-      "bottleneck_station": "L1-S1",
-      "bottleneck_score": 48.94,
-      "station_throughput": {
-        "L1-S1": 126984,
-        "L1-S2": 86054,
-        "L1-S3": 98109
-      },
-      "wip_alerts": [
-        "[L1-S1] WIP 714/500 (143%) >= threshold 80%",
-        "[L1-S2] WIP 485/400 (121%) >= threshold 80%"
-      ],
-      "total_defects": 5551,
-      "avg_yield_rate": 0.9535,
-      "records": 1256
+      "total_defects": 5579,
+      "avg_yield_rate": 0.9534,
+      "records": 1261
     },
     {
       "policy": "SPT",
       "total_orders": 900,
-      "shipped": 410,
-      "on_time": 410,
+      "shipped": 409,
+      "on_time": 409,
       "overdue": 0,
-      "avg_lead_days": 52.9,
-      "on_time_rate": 0.4556,
-      "avg_queue_wait_hrs": 7.6,
+      "avg_lead_days": 53.6,
+      "on_time_rate": 0.4544,
+      "avg_queue_wait_hrs": 9.1,
       "bottleneck_station": "L1-S1",
-      "bottleneck_score": 18.135,
+      "bottleneck_score": 43.164,
       "station_throughput": {
-        "L1-S1": 126856,
-        "L1-S2": 86553,
-        "L1-S3": 98695
+        "L1-S1": 127056,
+        "L1-S2": 86420,
+        "L1-S3": 98611
       },
-      "wip_alerts": [],
+      "wip_alerts": [
+        "[L1-S1] WIP 464/500 (93%) >= threshold 80%"
+      ],
       "total_defects": 5421,
       "avg_yield_rate": 0.9538,
-      "records": 1256
+      "records": 1255
     }
   ]
 }

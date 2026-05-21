@@ -1,0 +1,180 @@
+[
+  {
+    "policy": "FIFO",
+    "line_id": "L1_SMT",
+    "total_orders": 450,
+    "shipped": 418,
+    "on_time": 418,
+    "otd_pct": 92.9,
+    "avg_lead_time_days": 5.2,
+    "max_lead_time_days": 9,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 9.5,
+    "bottleneck": "L1-S1",
+    "throughput": {
+      "L1-S1": 1203,
+      "L1-S2": 1244,
+      "L1-S3": 685
+    },
+    "wip_alerts": [
+      "[L1-S1] WIP 463/500 (93%) >= threshold 80%",
+      "[L1-S2] WIP 466/400 (116%) >= threshold 80%"
+    ]
+  },
+  {
+    "policy": "SPT",
+    "line_id": "L1_SMT",
+    "total_orders": 450,
+    "shipped": 409,
+    "on_time": 409,
+    "otd_pct": 90.9,
+    "avg_lead_time_days": 5.4,
+    "max_lead_time_days": 10,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 9.1,
+    "bottleneck": "L1-S1",
+    "throughput": {
+      "L1-S1": 1222,
+      "L1-S2": 1267,
+      "L1-S3": 680
+    },
+    "wip_alerts": [
+      "[L1-S1] WIP 469/500 (94%) >= threshold 80%",
+      "[L1-S2] WIP 378/400 (94%) >= threshold 80%"
+    ]
+  },
+  {
+    "policy": "EDD",
+    "line_id": "L1_SMT",
+    "total_orders": 450,
+    "shipped": 407,
+    "on_time": 407,
+    "otd_pct": 90.4,
+    "avg_lead_time_days": 32.6,
+    "max_lead_time_days": 87,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 8.3,
+    "bottleneck": "L1-S1",
+    "throughput": {
+      "L1-S1": 1221,
+      "L1-S2": 1268,
+      "L1-S3": 669
+    },
+    "wip_alerts": [
+      "[L1-S1] WIP 897/500 (179%) >= threshold 80%"
+    ]
+  },
+  {
+    "policy": "FIFO",
+    "line_id": "L2_Assembly",
+    "total_orders": 450,
+    "shipped": 294,
+    "on_time": 294,
+    "otd_pct": 65.3,
+    "avg_lead_time_days": 16.8,
+    "max_lead_time_days": 33,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 5.4,
+    "bottleneck": "L2-S1",
+    "throughput": {
+      "L2-S1": 1522,
+      "L2-S2": 866,
+      "L2-S3": 574
+    },
+    "wip_alerts": []
+  },
+  {
+    "policy": "SPT",
+    "line_id": "L2_Assembly",
+    "total_orders": 450,
+    "shipped": 288,
+    "on_time": 288,
+    "otd_pct": 64.0,
+    "avg_lead_time_days": 17.9,
+    "max_lead_time_days": 34,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 4.9,
+    "bottleneck": "L2-S1",
+    "throughput": {
+      "L2-S1": 1534,
+      "L2-S2": 873,
+      "L2-S3": 583
+    },
+    "wip_alerts": []
+  },
+  {
+    "policy": "EDD",
+    "line_id": "L2_Assembly",
+    "total_orders": 450,
+    "shipped": 290,
+    "on_time": 290,
+    "otd_pct": 64.4,
+    "avg_lead_time_days": 32.9,
+    "max_lead_time_days": 86,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 4.8,
+    "bottleneck": "L2-S1",
+    "throughput": {
+      "L2-S1": 1528,
+      "L2-S2": 867,
+      "L2-S3": 584
+    },
+    "wip_alerts": [
+      "[L2-S1] WIP 651/300 (217%) >= threshold 80%"
+    ]
+  },
+  {
+    "policy": "FIFO",
+    "line_id": "L3_QuickTurn",
+    "total_orders": 450,
+    "shipped": 450,
+    "on_time": 450,
+    "otd_pct": 100.0,
+    "avg_lead_time_days": 1.2,
+    "max_lead_time_days": 2,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 12.3,
+    "bottleneck": "L3-S1",
+    "throughput": {
+      "L3-S1": 903,
+      "L3-S2": 903
+    },
+    "wip_alerts": []
+  },
+  {
+    "policy": "SPT",
+    "line_id": "L3_QuickTurn",
+    "total_orders": 450,
+    "shipped": 450,
+    "on_time": 450,
+    "otd_pct": 100.0,
+    "avg_lead_time_days": 1.4,
+    "max_lead_time_days": 3,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 12.8,
+    "bottleneck": "L3-S1",
+    "throughput": {
+      "L3-S1": 903,
+      "L3-S2": 903
+    },
+    "wip_alerts": []
+  },
+  {
+    "policy": "EDD",
+    "line_id": "L3_QuickTurn",
+    "total_orders": 450,
+    "shipped": 450,
+    "on_time": 450,
+    "otd_pct": 100.0,
+    "avg_lead_time_days": 25.1,
+    "max_lead_time_days": 70,
+    "min_lead_time_days": 1,
+    "avg_wait_hours": 12.8,
+    "bottleneck": "L3-S1",
+    "throughput": {
+      "L3-S1": 924,
+      "L3-S2": 924
+    },
+    "wip_alerts": []
+  }
+]

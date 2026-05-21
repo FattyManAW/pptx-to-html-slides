@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sprint 2 Roadmap — Power Squad × CRIS SWAT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700|Playfair+Display:wght@700;800;900|Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c-bg:#06080d;--c-bg2:#0f172a;--c-bg3:#1e293b;
+  --c-surface:rgba(255,255,255,.04);--c-surface2:rgba(255,255,255,.07);
+  --c-border:rgba(255,255,255,.08);--c-border-a:rgba(20,184,166,.15);
+  --c-teal:#14b8a6;--c-teal-dim:rgba(20,184,166,.12);--c-teal-hot:#2dd4bf;
+  --c-t1:rgba(255,255,255,.95);--c-t2:rgba(255,255,255,.72);--c-t3:rgba(255,255,255,.46);--c-t4:rgba(255,255,255,.28);
+  --c-success:#22c55e;--c-success-dim:rgba(34,197,94,.15);
+  --c-warning:#f59e0b;--c-warning-dim:rgba(245,158,11,.15);
+  --c-error:#ef4444;--c-error-dim:rgba(239,68,68,.15);
+  --c-violet:#a78bfa;--c-amber:#f59e0b;
+  --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s5:2.5rem;--s6:3rem;
+  --r-sm:4px;--r-md:8px;--r-lg:12px;
+  --t-fast:120ms;--t-mid:240ms;--t-slow:400ms;--ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--c-bg);color:var(--c-t1);font-family:'Inter','Noto Sans SC',sans-serif;line-height:1.7;min-height:100vh}
+h1,h2,h3{font-family:'Playfair Display','Noto Sans SC',serif}
+h2{font-size:clamp(1.2rem,3vw,1.6rem)}
+h3{font-size:1rem;font-weight:600;color:var(--c-teal);margin-bottom:var(--s1)}
+a{color:var(--c-teal);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:var(--s4) var(--s3)}
+
+/* Hero */
+.hero{text-align:center;padding:var(--s5) 0 var(--s4)}
+.hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);background:linear-gradient(135deg,var(--c-teal),var(--c-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:var(--s1)}
+.hero .sub{font-size:1rem;color:var(--c-t3);max-width:700px;margin:0 auto}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:.72rem;font-weight:600;letter-spacing:.04em;margin:2px}
+.badge-teal{background:var(--c-teal-dim);color:var(--c-teal);border:1px solid rgba(20,184,166,.25)}
+.badge-violet{background:rgba(167,139,250,.12);color:var(--c-violet);border:1px solid rgba(167,139,250,.25)}
+.badge-success{background:var(--c-success-dim);color:var(--c-success);border:1px solid rgba(34,197,94,.25)}
+.badge-amber{background:var(--c-warning-dim);color:var(--c-amber);border:1px solid rgba(245,158,11,.25)}
+.badge-error{background:var(--c-error-dim);color:var(--c-error);border:1px solid rgba(239,68,68,.25)}
+
+/* Section */
+section{margin-bottom:var(--s6)}
+.section-header{display:flex;align-items:flex-start;gap:var(--s2);margin-bottom:var(--s3)}
+.section-num{width:36px;height:36px;border-radius:50%;background:var(--c-teal-dim);color:var(--c-teal);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
+.section-title{margin-top:2px}
+
+/* Cards */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s3)}
+.card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3);transition:border-color var(--t-fast)}
+.card:hover{border-color:var(--c-border-a)}
+.card-title{font-size:.9rem;font-weight:600;margin-bottom:var(--s2)}
+.card-metric{font-size:2rem;font-weight:700;line-height:1.1}
+.card-sub{font-size:.78rem;color:var(--c-t3);margin-top:var(--s1)}
+.teal .card-metric{color:var(--c-teal)}
+.violet .card-metric{color:var(--c-violet)}
+.success .card-metric{color:var(--c-success)}
+.warn .card-metric{color:var(--c-amber)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:var(--c-bg2);color:var(--c-t2);padding:var(--s2) var(--s1);text-align:left;font-weight:600;border-bottom:1px solid var(--c-border)}
+td{padding:var(--s2) var(--s1);border-bottom:1px solid rgba(255,255,255,.04);color:var(--c-t2)}
+tr:hover td{background:var(--c-surface)}
+.metric-cell{font-weight:700;font-variant-numeric:tabular-nums}
+.pass{color:var(--c-success)}.fail{color:var(--c-error)}.warn{color:var(--c-amber)}
+
+/* Priority */
+.prio-p0{background:rgba(239,68,68,.1);border-left:3px solid var(--c-error)}
+.prio-p1{background:rgba(245,158,11,.1);border-left:3px solid var(--c-amber)}
+.prio-p2{background:rgba(20,184,166,.1);border-left:3px solid var(--c-teal)}
+.prio-item{padding:var(--s2) var(--s3);margin-bottom:var(--s1);border-radius:var(--r-md);font-size:.85rem}
+
+/* Timeline */
+.pipeline-flow{display:flex;flex-direction:column;gap:var(--s1)}
+.stage{display:flex;align-items:flex-start;gap:var(--s2)}
+.stage-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;margin-top:2px}
+.stage-content{flex:1}
+.stage-title{font-weight:600;font-size:.95rem}
+.stage-desc{font-size:.82rem;color:var(--c-t3);margin-top:2px}
+
+/* Bar */
+.bar-chart{display:flex;flex-direction:column;gap:var(--s1);margin-top:var(--s2)}
+.bar-row{display:flex;align-items:center;gap:var(--s2)}
+.bar-label{width:100px;font-size:.8rem;color:var(--c-t2);text-align:right;flex-shrink:0}
+.bar-track{flex:1;background:var(--c-bg3);border-radius:var(--r-sm);height:24px;position:relative;overflow:hidden}
+.bar-fill{height:100%;border-radius:var(--r-sm);display:flex;align-items:center;padding-left:8px;font-size:.75rem;font-weight:600}
+.bar-val{margin-left:var(--s1);font-size:.8rem;color:var(--c-t3);width:40px}
+
+/* Insight */
+.insight{background:rgba(20,184,166,.06);border-left:3px solid var(--c-teal);padding:var(--s2) var(--s3);border-radius:0 var(--r-md) var(--r-md) 0;margin-top:var(--s2);font-size:.85rem;color:var(--c-t2)}
+.insight-amber{background:rgba(245,158,11,.06);border-color:var(--c-amber)}
+.insight-violet{background:rgba(167,139,250,.06);border-color:var(--c-violet)}
+
+footer{text-align:center;padding:var(--s4) 0;color:var(--c-t4);font-size:.8rem;border-top:1px solid var(--c-border);margin-top:var(--s6)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <h1>Sprint 2 Roadmap</h1>
+  <p class="sub">Power Squad × CRIS SWAT — 2026-05-20 起<br>
+    <span style="color:var(--c-t4);font-size:.85rem">Sprint 1 總結 → Sprint 2 優先項目 → 里程碑</span></p>
+  <div style="margin-top:var(--s2)">
+    <span class="badge badge-teal">Power Squad — 靜態產出</span>
+    <span class="badge badge-violet">CRIS SWAT — 全端 SPA</span>
+    <span class="badge badge-success">Pipeline B validated</span>
+    <span class="badge badge-amber">6 priorities</span>
+  </div>
+</div>
+
+<!-- ══ §1 Sprint 1 總結 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div><div class="section-title">Sprint 1 總結</div></div>
+  </div>
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3)">
+    <div class="grid-3">
+      <div class="card teal">
+        <div class="card-title">總交付數</div>
+        <div class="card-metric">60+</div>
+        <div class="card-sub">Power Squad tasks done</div>
+      </div>
+      <div class="card violet">
+        <div class="card-title">QA Pass Rate</div>
+        <div class="card-metric">100%</div>
+        <div class="card-sub">全線 Pipeline B PASS</div>
+      </div>
+      <div class="card success">
+        <div class="card-title">Bug / Regression</div>
+        <div class="card-metric">0 / 0</div>
+        <div class="card-sub">零 bug 零回歸</div>
+      </div>
+    </div>
+    <table style="margin-top:var(--s3)">
+      <thead><tr><th>Agent</th><th>交付</th><th>Pipeline</th><th>Lighthouse</th><th>特色</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Technus</strong></td><td class="metric-cell">14</td><td class="pass">✅</td><td class="pass">P100</td><td>CI Gate v2, OTD Dashboard</td></tr>
+        <tr><td><strong>Smart</strong></td><td class="metric-cell">12</td><td class="pass">✅</td><td class="pass">P100</td><td>SPT rule, Policy comparison</td></tr>
+        <tr><td><strong>Christina</strong></td><td class="metric-cell">14</td><td class="pass">✅</td><td class="pass">P100</td><td>D1-D3, Retro×3, Case Study</td></tr>
+        <tr><td><strong>CRIS SWAT</strong></td><td class="metric-cell">3</td><td class="pass">✅</td><td class="pass">P100</td><td>ThemeToggle, OTD Engine</td></tr>
+        <tr style="background:rgba(20,184,166,.04)"><td><strong>Total</strong></td><td class="metric-cell" style="color:var(--c-teal)">92+</td><td class="pass">100%</td><td class="pass">≥P85</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ §2 Sprint 1 Key Outcomes ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div><div class="section-title">Sprint 1 Key Outcomes</div></div>
+  </div>
+  <div class="grid-3">
+    <div class="card teal">
+      <div class="card-title">Token 統一化</div>
+      <div class="card-metric">115→0</div>
+      <div class="card-sub">missing gaps -100%</div>
+    </div>
+    <div class="card violet">
+      <div class="card-title">Common tokens</div>
+      <div class="card-metric">32→73</div>
+      <div class="card-sub">+128% 跨產品共用</div>
+    </div>
+    <div class="card success">
+      <div class="card-title">Pipeline B</div>
+      <div class="card-metric">PASS</div>
+      <div class="card-sub">Design→Dev→QA 全線走通</div>
+    </div>
+    <div class="card">
+      <div class="card-title">OTD Engine</div>
+      <div class="card-metric">v0.4</div>
+      <div class="card-sub">dispatch + WIP + yield + EDD</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Lighthouse</div>
+      <div class="card-metric">P100</div>
+      <div class="card-sub">三套全線 P100</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Pipeline Stages</div>
+      <div class="card-metric">12</div>
+      <div class="card-sub">deploy.yml v2 stages</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ §3 Pipeline B 驗證結果 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div><div class="section-title">Pipeline B 驗證結果（新模式第一條專案）</div></div>
+  </div>
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3)">
+    <p style="font-size:.9rem;color:var(--c-t2);margin-bottom:var(--s2)">
+      <strong>IMPACTS v4</strong> 是第一條完整 Pipeline B 走通的專案，驗證了 Spec-First 流程的可行性。
+    </p>
+    <table>
+      <thead><tr><th>Stage</th><th>Owner</th><th>Key Output</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td><strong>D1 Spec Review</strong></td><td>Christina</td><td>104 tokens audit + QA 10/10</td><td class="pass">✅ D-approved by Nana</td></tr>
+        <tr><td><strong>D2 Token Table</strong></td><td>Christina</td><td>22→50 mappings (+127%)</td><td class="pass">✅ --ds-* 6 tokens</td></tr>
+        <tr><td><strong>D3 Wireframe</strong></td><td>Christina</td><td>256 行展示頁骨架</td><td class="pass">✅ 可直接執行</td></tr>
+        <tr><td><strong>Dev</strong></td><td>Technus</td><td>--canonical flag + gen_slides v4</td><td class="pass">✅ exit code 0</td></tr>
+        <tr><td><strong>QA Gate</strong></td><td>Smart</td><td>extract-tokens.py --canonical</td><td class="pass">✅ 5 stages PASS</td></tr>
+      </tbody>
+    </table>
+    <div class="insight" style="margin-top:var(--s2)">
+      💡 Pipeline B = Spec-First 模式：Design Stage（D1/D2/D3）先產出標準化交付物，
+      Dev 拿到可直接執行的 HTML 骨架，QA 用 --canonical gate 驗證，全線自動化。
+    </div>
+  </div>
+</section>
+
+<!-- ══ §4 Sprint 2 優先項目 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div><div class="section-title">Sprint 2 優先項目（6 項）</div></div>
+  </div>
+
+  <div class="pipeline-flow">
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(239,68,68,.15);color:var(--c-error)">P0</div>
+      <div class="stage-content">
+        <div class="stage-title">Integrate 自動化 — 消除手動 handoff 痛點</div>
+        <div class="stage-desc">Sprint 1 最大痛點：Design→Dev→QA 之間靠 @mention 手動傳遞。Sprint 2 優先建立 Integrate 自動化機制。</div>
+        <div style="margin-top:var(--s1);font-size:.82rem;color:var(--c-t3)">
+          <strong>子項：</strong>① gh-pages sync automation ② D3→Dev artifact handoff（非 @mention）③ Integrate role exit criteria 文件化
+        </div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(239,68,68,.15);color:var(--c-error)">P0</div>
+      <div class="stage-content">
+        <div class="stage-title">Sprint 1 Retro Benchmark — 第四篇</div>
+        <div class="stage-desc">IMPACTS v4 Pipeline B Case Study 納入 PLAYBOOK.md §14 作為第四篇 retro（Spec-First 流程驗證）。</div>
+        <div style="margin-top:var(--s1);font-size:.82rem;color:var(--c-t3)">
+          <strong>交付：</strong>PLAYBOOK.md §14 更新 + sprint-2-retro.md 草稿
+        </div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(245,158,11,.15);color:var(--c-amber)">P1</div>
+      <div class="stage-content">
+        <div class="stage-title">Design Stage Template 標準化</div>
+        <div class="stage-desc">D1/D2/D3 三步已完成驗證，標準化為可重複使用的 template，縮短下一個專案的 Design Stage 週期。</div>
+        <div style="margin-top:var(--s1);font-size:.82rem;color:var(--c-t3)">
+          <strong>交付：</strong>design-stage-template.md v2（含 D1/D2/D3 checklist + 預估工時）
+        </div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(245,158,11,.15);color:var(--c-amber)">P1</div>
+      <div class="stage-content">
+        <div class="stage-title">Power Squad Workflow v2 — 根據 Sprint 1 驗證更新</div>
+        <div class="stage-desc">POWER_SQUAD_WORKFLOW.md 根據 Sprint 1 實際執行情況更新（Pipeline B + CI Gate + Role Matrix 細化）。</div>
+        <div style="margin-top:var(--s1);font-size:.82rem;color:var(--c-t3)">
+          <strong>更新：</strong>Spec-First vs Trunk-based 決策樹 + Integrate stage exit criteria
+        </div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(20,184,166,.12);color:var(--c-teal)">P2</div>
+      <div class="stage-content">
+        <div class="stage-title">跨板 Unified QA Gate — CRIS SWAT + Power Squad</div>
+        <div class="stage-desc">將 Power Squad 的 Pipeline B QA gate（extract-tokens.py --canonical）封裝為跨板共享模組，CRIS SWAT 可呼叫。</div>
+        <div style="margin-top:var(--s1);font-size:.82rem;color:var(--c-t3)">
+          <strong>介面：</strong>/qa-check.sh（CRIS SWAT）→ call Power Squad gate → unified report
+        </div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(20,184,166,.12);color:var(--c-teal)">P2</div>
+      <div class="stage-content">
+        <div class="stage-title">OTD Engine — 聯動 Dashboard</div>
+        <div class="stage-desc">OTD v0.4 Policy Comparison + Dashboard 整合完成後，與 Power Squad 統一開發模式文檔打通（Factory OTD 作為 Power Squad 產品線案例）。</div>
+        <div style="margin-top:var(--s1);font-size:.82rem;color:var(--c-t3)">
+          <strong>交付：</strong>OTD v0.5（待 Smart DueDateAdapter 整合）+ Dashboard 視覺化完成
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ §5 Sprint 2 Milestones ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div><div class="section-title">Sprint 2 Milestones</div></div>
+  </div>
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3);overflow-x:auto">
+    <table>
+      <thead>
+        <tr><th>Milestone</th><th>Owner</th><th>Priority</th><th>Est.</th><th>Dependency</th><th>Exit Criteria</th></tr>
+      </thead>
+      <tbody>
+        <tr class="prio-p0">
+          <td><strong>Integrate 自動化</strong></td><td>Smart / Technus</td><td><span class="badge badge-error">P0</span></td><td>2d</td>
+          <td>Sprint 1 Retro</td><td>gh-pages sync automated + handoff script</td>
+        </tr>
+        <tr class="prio-p0">
+          <td><strong>Sprint 1 Retro Benchmark §14</strong></td><td>Christina</td><td><span class="badge badge-error">P0</span></td><td>0.5d</td>
+          <td>Case Study done</td><td>PLAYBOOK.md §14 四篇 retro 完成</td>
+        </tr>
+        <tr class="prio-p1">
+          <td><strong>Design Stage Template v2</strong></td><td>Christina</td><td><span class="badge badge-amber">P1</span></td><td>1d</td>
+          <td>Sprint 1 驗證</td><td>template.md v2 + checklist + 工時預估</td>
+        </tr>
+        <tr class="prio-p1">
+          <td><strong>Power Squad Workflow v2</strong></td><td>Christina / Smart</td><td><span class="badge badge-amber">P1</span></td><td>1d</td>
+          <td>Sprint 1 retro</td><td>workflow.md v2 包含 Integrate exit criteria</td>
+        </tr>
+        <tr class="prio-p2">
+          <td><strong>跨板 Unified QA Gate</strong></td><td>Smart / Technus</td><td><span class="badge badge-teal">P2</span></td><td>2d</td>
+          <td>Integrate stage 完成</td><td>/qa-check.sh 可跨板呼叫 + unified report</td>
+        </tr>
+        <tr class="prio-p2">
+          <td><strong>OTD Engine Dashboard 聯動</strong></td><td>Technus / Christina</td><td><span class="badge badge-teal">P2</span></td><td>3d</td>
+          <td>v0.4 policy comparison</td><td>Dashboard 整合完成 + 聯合 QA 更新</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ §6 技術債 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div><div class="section-title">Sprint 2 技術債</div></div>
+  </div>
+  <table>
+    <thead><tr><th>#</th><th>項目</th><th>來源</th><th>優先度</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Integrate 自動化</td><td>Sprint 1 retro</td><td class="fail">P0</td><td>Design→Dev→QA 手動 handoff，需自動化解決</td></tr>
+      <tr><td>2</td><td>gh-pages sync</td><td>Sprint 1 retro</td><td class="fail">P0</td><td>gh-pages 漏 sync 是 Integrate 問題的直接證據</td></tr>
+      <tr><td>3</td><td>Standing Orders 統一</td><td>Luna D2ITV</td><td class="warn">P1</td><td>AGENTS.md / HEARTBEAT.md 跨板對齊</td></tr>
+      <tr><td>4</td><td>Token gate 改 non-blocking</td><td>Smart Pipeline B</td><td class="warn">P1</td><td>extract-tokens.py --check 從 blocking 改 warning only</td></tr>
+      <tr><td>5</td><td>spec 結構層 QA 單元化</td><td>D1 Spec Review</td><td><span class="badge badge-teal">P2</span></td><td>邊角案例檢測腳本化</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ §7 模式驗證 ✅ ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div><div class="section-title">新模式驗證狀態</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--s3)">
+    <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:var(--r-lg);padding:var(--s3)">
+      <div style="font-weight:600;color:var(--c-success);margin-bottom:var(--s2)">✅ Spec-First 模式（Pipeline B）</div>
+      <ul style="font-size:.85rem;color:var(--c-t2);padding-left:1.2em">
+        <li>D1→D2→D3 三步標準化</li>
+        <li>Design Stage 可重複使用</li>
+        <li>Dev 拿到可執行 HTML 骨架</li>
+        <li>--canonical gate 自動驗證</li>
+        <li>全線 exit code 0</li>
+      </ul>
+    </div>
+    <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:var(--r-lg);padding:var(--s3)">
+      <div style="font-weight:600;color:var(--c-amber);margin-bottom:var(--s2)">⚠️ Trunk-Based 模式（Pipeline A）</div>
+      <ul style="font-size:.85rem;color:var(--c-t2);padding-left:1.2em">
+        <li>直接在 main branch 開發</li>
+        <li>快速迭代適合 UI 變動大的場景</li>
+        <li>缺少 Design Stage 前置驗證</li>
+        <li>適合單人 Dev 或小改動</li>
+        <li>CI Gate 仍須保留</li>
+      </ul>
+    </div>
+  </div>
+  <div class="insight" style="margin-top:var(--s2)">
+    💡 Sprint 2 任務：<strong>兩模式並存</strong>。Spec-First 用於新專案/大改動，Trunk-Based 用於小修改/熱修復。
+    核心原則：<em>Spec-First 是預設，Trunk-Based 是例外</em>。
+  </div>
+</section>
+
+<footer>
+  <p>Sprint 2 Roadmap · Power Squad × CRIS SWAT · 2026-05-20 · v1.0</p>
+  <p style="margin-top:4px">Pipeline B: Spec-First 已驗證 · Sprint 2: Integrate 自動化 + Design Template 標準化</p>
+</footer>
+</body>
+</html>

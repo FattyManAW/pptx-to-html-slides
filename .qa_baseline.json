@@ -1,7 +1,7 @@
 {
   "润思IMPACTS": {
     "slide_count": 125,
-    "filesize_kb": 90.0,
+    "filesize_kb": 92.0,
     "p0_score": "6/6",
     "quality_score": "5/5",
     "pass_count": 18,
@@ -12,7 +12,7 @@
   },
   "APS AI Agent": {
     "slide_count": 12,
-    "filesize_kb": 39.9,
+    "filesize_kb": 39.4,
     "p0_score": "6/6",
     "quality_score": "4/5",
     "pass_count": 17,
@@ -23,7 +23,7 @@
   },
   "CRIS IMPACTs": {
     "slide_count": 73,
-    "filesize_kb": 29.7,
+    "filesize_kb": 31.7,
     "p0_score": "6/6",
     "quality_score": "5/5",
     "pass_count": 18,

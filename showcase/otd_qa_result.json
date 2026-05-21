@@ -1,0 +1,117 @@
+{
+  "p0": {
+    "pass": 5,
+    "fail": 0,
+    "warn": 0,
+    "items": [
+      {
+        "file": "otd-comparison.html",
+        "check": "structure",
+        "status": "PASS",
+        "detail": "DOCTYPE+charset+viewport+viewport(initial-scale)"
+      },
+      {
+        "file": "otd-dashboard.html",
+        "check": "structure",
+        "status": "PASS",
+        "detail": "DOCTYPE+charset+viewport+viewport(initial-scale)"
+      },
+      {
+        "file": "otd-due-date-comparison.html",
+        "check": "structure",
+        "status": "PASS",
+        "detail": "DOCTYPE+charset+viewport+viewport(initial-scale)"
+      },
+      {
+        "file": "dashboard.html",
+        "check": "structure",
+        "status": "PASS",
+        "detail": "DOCTYPE+charset+viewport+viewport(initial-scale)"
+      },
+      {
+        "file": "due_date_matrix.json",
+        "check": "combos",
+        "status": "PASS",
+        "detail": "15/15 combos, formats={'arrival_plus_N', 'epoch', 'iso8601', 'default', 'product_lead'}, policies={'SPT', 'FIFO', 'EDD'}"
+      }
+    ]
+  },
+  "p1": {
+    "pass": 7,
+    "fail": 0,
+    "warn": 3,
+    "items": [
+      {
+        "file": "due_date_matrix.json",
+        "check": "otd_consistency",
+        "status": "PASS",
+        "detail": "All combos OTD ≥ 99.9%"
+      },
+      {
+        "file": "due_date_matrix.json",
+        "check": "wip_range",
+        "status": "PASS",
+        "detail": "WIP range: 76.33–465.33 (ratio=6.1x)"
+      },
+      {
+        "file": "due_date_matrix.json",
+        "check": "bottleneck",
+        "status": "PASS",
+        "detail": "Dominant BN: L1-S1 (12/15)"
+      },
+      {
+        "file": "otd-comparison.html",
+        "check": "token_usage",
+        "status": "WARN",
+        "msg": "file not found"
+      },
+      {
+        "file": "otd-dashboard.html",
+        "check": "token_usage",
+        "status": "PASS",
+        "detail": "6 --ds-* tokens found"
+      },
+      {
+        "file": "otd-due-date-comparison.html",
+        "check": "token_usage",
+        "status": "WARN",
+        "detail": "No --ds-* tokens (may use CSS variables directly)"
+      },
+      {
+        "file": "dashboard.html",
+        "check": "token_usage",
+        "status": "WARN",
+        "detail": "No --ds-* tokens (may use CSS variables directly)"
+      },
+      {
+        "file": "otd-due-date-comparison.html",
+        "check": "self_contained",
+        "status": "PASS",
+        "detail": "inline CSS + valid closing tag"
+      },
+      {
+        "file": "dashboard.html",
+        "check": "interactive",
+        "status": "PASS",
+        "detail": "Chart rendering: ⚠️ static"
+      },
+      {
+        "file": "policy_comparison.json",
+        "check": "policy_coverage",
+        "status": "PASS",
+        "detail": "FIFO/SPT/EDD all present (3 records)"
+      }
+    ]
+  },
+  "summary": {
+    "p0_pass": 5,
+    "p0_fail": 0,
+    "p0_warn": 0,
+    "p1_pass": 7,
+    "p1_fail": 0,
+    "p1_warn": 3,
+    "p0_ok": true,
+    "total_checks": 15,
+    "run_at": "2026-05-20T19:27:07.460478"
+  }
+}
