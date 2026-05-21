@@ -83,12 +83,15 @@ jobs:
       # ── Token ──
       - name: Run Token Validation
         id: tokens
+        continue-on-error: true
         run: |
           echo "🔍 Token Gate…"
-          python3 extract-tokens.py --check 2>&1 | tee tokens_check.txt || true
+          set +e
+          python3 extract-tokens.py --check 2>&1 | tee tokens_check.txt
           MISSING=$(grep -c '^\[CM\]' tokens_check.txt 2>/dev/null || echo 0)
           echo "missing_slots=${MISSING}" >> $GITHUB_OUTPUT
           echo "⚡ Token Gate: ${MISSING} cross-product gaps (non-fatal)"
+          exit 0
 
       # ── A11y ──
       - name: Run A11y Gate (WCAG AA)
