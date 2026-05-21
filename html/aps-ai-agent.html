@@ -746,6 +746,7 @@ button:disabled, .nav button:disabled {
 /* === Phase 0 — Linear + Stripe + Reveal 標竿 === */
 .card,.stat,.nav-btn{border:1px solid var(--border);border-radius:12px;transition:transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}.card:hover,.stat:hover,.nav-btn:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(20,184,166,.15);border-color:var(--c-teal)}.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}.status-pass{background:rgba(16,185,129,.15);color:#10b981}.status-warn{background:rgba(245,158,11,.15);color:#f59e0b}.nav-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.75rem;color:var(--c-t3);animation:hintFlash 4s var(--ease) forwards;opacity:0}@keyframes hintFlash{0%,80%{opacity:1}100%{opacity:0}}
 
+.chapter-nav{position:sticky;top:0;z-index:100;display:flex;gap:var(--s4);padding:var(--s3) var(--s5);background:linear-gradient(180deg,var(--c-900)60%,transparent);backdrop-filter:blur(8px)}.chapter-dot{opacity:.4;cursor:pointer;transition:opacity var(--t-fast);font-size:.85rem;color:var(--c-t2)}.chapter-dot.active{opacity:1;font-weight:600;color:var(--c-teal)}
 </style>
 </head>
 
@@ -756,6 +757,7 @@ button:disabled, .nav button:disabled {
 <div class="progress-bar" id="progBar"></div>
 <button class="fs-btn" id="fsBtn" onclick="toggleFs()" aria-label="切換全螢幕" title="全螢幕">⛶</button>
 
+<nav class="chapter-nav"><span class="chapter-dot active" data-chapter="0" data-slide="0">產品定位</span><span class="chapter-dot" data-chapter="1" data-slide="2">核心能力</span><span class="chapter-dot" data-chapter="2" data-slide="3">應用場景</span><span class="chapter-dot" data-chapter="3" data-slide="4">技術架構</span><span class="chapter-dot" data-chapter="4" data-slide="5">數據價值</span><span class="chapter-dot" data-chapter="5" data-slide="6">業務演示</span><span class="chapter-dot" data-chapter="6" data-slide="11">結語</span></nav>
 <main class="deck" id="deck">
 
 <!-- ═══════════════════════════════════════════
@@ -1190,6 +1192,7 @@ button:disabled, .nav button:disabled {
     // reset fragments on new slide
     slides[cur].querySelectorAll('.fragment').forEach(f => f.classList.remove('visible'));
     refresh();
+    updateChapter();
   }
   window.next = () => go(cur + 1);
   window.prev = () => go(cur - 1);
@@ -1201,6 +1204,15 @@ button:disabled, .nav button:disabled {
       (cur + 1) + ' / ' + slides.length;
     document.getElementById('prevBtn').disabled = cur === 0;
     document.getElementById('nextBtn').disabled = cur === slides.length - 1;
+  }
+
+  // ── Chapter nav highlight ──
+  const chapterMap = [0,2,3,4,5,6,11];
+  const chapterDots = [...document.querySelectorAll(".chapter-dot")];
+  function updateChapter() {
+    let i = chapterMap.length - 1;
+    while (i > 0 && chapterMap[i] > cur) i--;
+    chapterDots.forEach((d, j) => d.classList.toggle("active", j === i || (j+1 < chapterDots.length && chapterMap[j] <= cur && chapterMap[j+1] > cur)));
   }
 
   // ── Keyboard ──
@@ -1230,6 +1242,7 @@ button:disabled, .nav button:disabled {
   }, { passive: true });
 
   refresh();
+    updateChapter();
 })();
 </script>
 </body>

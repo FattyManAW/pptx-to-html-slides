@@ -22,12 +22,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
 .fs{position:fixed;top:14px;right:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;font-size:15px;backdrop-filter:blur(8px)}
 .prog{position:fixed;top:0;left:0;height:3px;background:#E60012;z-index:100;transition:width .3s}
 /* === Phase 0 — Linear + Stripe + Reveal 標竿 === */
-.card,.stat{border:1px solid var(--border);border-radius:12px;transition:transform var(--t-fast),box-shadow var(--t-fast),border-color var(--t-fast)}.card:hover,.stat:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(230,0,18,.15);border-color:#E60012}.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}.status-pass{background:rgba(16,185,129,.15);color:#10b981}.status-warn{background:rgba(245,158,11,.15);color:#f59e0b}.nav-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-size:.75rem;color:rgba(255,255,255,.6);animation:hintFlash 4s ease forwards;opacity:0}@keyframes hintFlash{0%,80%{opacity:1}100%{opacity:0}}</style>
+.card,.stat{border:1px solid var(--border);border-radius:12px;transition:transform var(--t-fast),box-shadow var(--t-fast),border-color var(--t-fast)}.card:hover,.stat:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(230,0,18,.15);border-color:#E60012}.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}.status-pass{background:rgba(16,185,129,.15);color:#10b981}.status-warn{background:rgba(245,158,11,.15);color:#f59e0b}.nav-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-size:.75rem;color:rgba(255,255,255,.6);animation:hintFlash 4s ease forwards;opacity:0}@keyframes hintFlash{0%,80%{opacity:1}100%{opacity:0}}.chapter-nav{position:sticky;top:0;z-index:100;display:flex;gap:16px;padding:8px 24px;background:linear-gradient(180deg,rgba(26,26,46,.95)60%,transparent);backdrop-filter:blur(8px)}.chapter-dot{opacity:.4;cursor:pointer;transition:opacity .2s;font-size:.85rem;color:rgba(255,255,255,.6)}.chapter-dot.active{opacity:1;font-weight:600;color:#E60012}
+</style>
 </head>
 <body>
 <div class="nav-hint"><kbd>←</kbd> <kbd>→</kbd> 切換 · <kbd>F</kbd> 全螢幕</div>
 <div class="prog" id="prog"></div>
 <button class="fs" onclick="fs()">&#x26F6;</button>
+<nav class="chapter-nav"><span class="chapter-dot active" data-chapter="0" data-slide="0">政策趨勢</span><span class="chapter-dot" data-chapter="1" data-slide="4">平台概述</span><span class="chapter-dot" data-chapter="2" data-slide="8">碳足跡管理</span><span class="chapter-dot" data-chapter="3" data-slide="12">CBAM合規</span><span class="chapter-dot" data-chapter="4" data-slide="16">核心算法</span><span class="chapter-dot" data-chapter="5" data-slide="20">碳交易市場</span><span class="chapter-dot" data-chapter="6" data-slide="24">AI碳優化</span><span class="chapter-dot" data-chapter="7" data-slide="28">數據中台</span><span class="chapter-dot" data-chapter="8" data-slide="32">案例結語</span></nav>
 <div class="deck" id="deck"><section class="slide active" data-i="0">
 <div class="sh text ttl" style="left:158px;top:278px;width:1018px;height:164px;color:#000000"><p style="text-align:left"><span style="font-family:"Arial";font-size:54.0pt">IMPACTs </span><span style="font-family:"Arial";font-size:54.0pt">双碳数字化管理系统</span></p><p style="text-align:left"><span style="font-family:"Arial";font-size:54.0pt">助力企业实现双碳目标</span></p></div>
 <div class="sh text" style="left:316px;top:580px;width:649px;height:36px;color:#727271"><p style="text-align:left"><span style="font-family:"Arial";font-size:18.0pt">大连润思科技制造行业及智能制造解决方案商</span></p></div>
@@ -310,11 +312,21 @@ function goto(n){
   slides[cur].className='slide active';
   document.getElementById('cnt').textContent=(cur+1)+' / '+tot;
   document.getElementById('prog').style.width=((cur+1)/tot*100)+'%';
+  updateChapter();
   document.getElementById('pb').disabled=cur===0;
   document.getElementById('nb').disabled=cur===tot-1;
 }
 function next(){goto(cur+1)}
 function prev(){goto(cur-1)}
+  // ── Chapter nav highlight ──
+  const chapterMap = [0,4,8,12,16,20,24,28,32];
+  const chapterDots = [...document.querySelectorAll(".chapter-dot")];
+  function updateChapter() {
+    let i = chapterMap.length - 1;
+    while (i > 0 && chapterMap[i] > cur) i--;
+    chapterDots.forEach((d, j) => d.classList.toggle("active", j === i || (j+1 < chapterDots.length && chapterMap[j] <= cur && chapterMap[j+1] > cur)));
+  }
+
 function fs(){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen()}
 document.addEventListener('keydown',function(e){
   if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next()}
