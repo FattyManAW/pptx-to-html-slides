@@ -52,6 +52,34 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
 @keyframes slideIn { from { opacity: 0; transform: translateY(24px) scale(0.96); } }
 @keyframes slideOut { to { opacity: 0; transform: translateY(-20px) scale(0.96); } }
 
+
+/* === Phase 2 — Overview 鳥瞰模式 (Reveal.js 標竿) === */
+.overlay { position:fixed; inset:0; z-index:9999; background:rgba(5,6,10,.95);
+  backdrop-filter:blur(16px); display:none; overflow-y:auto; padding:40px; }
+.overlay.show { display:block; }
+.overlay-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px; max-width:1400px; margin:0 auto; }
+.overlay-thumb { aspect-ratio:16/9; border:2px solid rgba(255,255,255,.08);
+  border-radius:6px; overflow:hidden; cursor:pointer; transition:all .2s;
+  position:relative; background:#1a1a2e; }
+.overlay-thumb:hover { border-color:rgba(255,255,255,.3); transform:scale(1.04); }
+.overlay-thumb.current { border-color:#E60012; box-shadow:0 0 16px rgba(230,0,18,.3); }
+.overlay-thumb .thumb-num { position:absolute; top:4px; left:6px; font-size:.65rem;
+  color:rgba(255,255,255,.5); font-weight:600; }
+.overlay-close { position:fixed; top:20px; right:24px; color:rgba(255,255,255,.6);
+  font-size:1.5rem; cursor:pointer; z-index:10000; background:none; border:none; }
+.overlay-close:hover { color:#fff; }
+
+
+/* === Phase 2 — Story Arc 區域經營 (Stripe 標竿) === */
+.story-divider { display:flex; align-items:center; justify-content:center; flex-direction:column;
+  min-height:100%; text-align:center; gap:var(--s3, 16px); }
+.story-icon { font-size:2.5rem; }
+.story-tag { font-size:.8rem; text-transform:uppercase; letter-spacing:.15em;
+  color:rgba(255,255,255,.35); }
+.story-title { font-size:clamp(2rem,5vw,3.5rem); font-weight:700; }
+.story-sub { font-size:1rem; color:rgba(255,255,255,.5); max-width:480px; }
+
 </style>
 </head>
 <body>
@@ -63,7 +91,50 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
 <div class="sh text ttl" style="left:158px;top:278px;width:1018px;height:164px;color:#000000"><p style="text-align:left"><span style="font-family:"Arial";font-size:54.0pt">IMPACTs </span><span style="font-family:"Arial";font-size:54.0pt">双碳数字化管理系统</span></p><p style="text-align:left"><span style="font-family:"Arial";font-size:54.0pt">助力企业实现双碳目标</span></p></div>
 <div class="sh text" style="left:316px;top:580px;width:649px;height:36px;color:#727271"><p style="text-align:left"><span style="font-family:"Arial";font-size:18.0pt">大连润思科技制造行业及智能制造解决方案商</span></p></div>
 <div class="sh text" style="left:272px;top:191px;width:735px;height:36px;color:#000000"><p style="text-align:left"><span style="font-family:"微软雅黑", "微软雅黑";font-size:16.0pt">基于用友</span><span style="font-family:"微软雅黑", "微软雅黑";font-size:16.0pt">BIP</span><span style="font-family:"微软雅黑", "微软雅黑";font-size:16.0pt">平台的碳管理一体化系统</span></p></div>
-</section><section class="slide" data-i="1">
+</section>
+
+<section class="slide story-divider" data-i="sa1">
+  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#1a1a2e;text-align:center;color:#fff">
+    <span style="font-size:2.5rem">🌍</span>
+    <span style="font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.35);margin-top:16px">01 · 問題</span>
+    <h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-top:12px">全球碳管理<br>三重壓力</h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:480px;margin-top:12px">政策法規收緊 · 供應鏈碳足跡透明化 · 歐盟 CBAM 碳邊境稅 — 企業碳管理已從「加分項」變「生存項」</p>
+  </div>
+</section>
+<section class="slide story-divider" data-i="sa2">
+  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#1a1a2e;text-align:center;color:#fff">
+    <span style="font-size:2.5rem">💡</span>
+    <span style="font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.35);margin-top:16px">02 · 洞察</span>
+    <h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-top:12px">碳管理不是成本<br>是競爭優勢</h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:480px;margin-top:12px">範圍1-3全覆蓋碳足跡追蹤 — 用數據驅動減碳決策，降低合規風險，提升品牌 ESG 評級</p>
+  </div>
+</section>
+<section class="slide story-divider" data-i="sa3">
+  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#1a1a2e;text-align:center;color:#fff">
+    <span style="font-size:2.5rem">⚡</span>
+    <span style="font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.35);margin-top:16px">03 · 方案</span>
+    <h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-top:12px">IMPACTs<br>双碳管理平台</h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:480px;margin-top:12px">基於用友 BIP · 碳足跡追蹤 + CBAM 合規 + AI 碳優化 — 一站式碳管理解決方案</p>
+  </div>
+</section>
+<section class="slide story-divider" data-i="sa4">
+  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#1a1a2e;text-align:center;color:#fff">
+    <span style="font-size:2.5rem">🏭</span>
+    <span style="font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.35);margin-top:16px">04 · 案例</span>
+    <h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-top:12px">真實客戶<br>碳管理轉型</h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:480px;margin-top:12px">PCB 製造 · 金屬加工 · 塗料化工 — 跨行業實戰驗證，100% 碳足跡覆蓋率</p>
+  </div>
+</section>
+<section class="slide story-divider" data-i="sa5">
+  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#1a1a2e;text-align:center;color:#fff">
+    <span style="font-size:2.5rem">📊</span>
+    <span style="font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.35);margin-top:16px">05 · 結果</span>
+    <h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-top:12px">可量化<br>碳管理價值</h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:480px;margin-top:12px"><span style="font-size:2rem">100%</span> 碳足跡覆蓋 · <span style="font-size:2rem">2060</span> 碳中和目標 · 合規零風險</p>
+  </div>
+</section>
+
+<section class="slide" data-i="1">
 <div class="sh text" style="left:0px;top:0px;width:0px;height:0px;color:#000000"><p style="text-align:left"><span style="font-family:"+mj-ea", "+mj-ea";font-weight:bold">双碳政策背景与行业趋势</span></p></div>
 <div class="sh text" style="left:0px;top:0px;width:0px;height:0px;color:#000000"><p style="text-align:left">01</p></div>
 <div class="sh text" style="left:0px;top:0px;width:0px;height:0px;color:#000000"><p style="text-align:left"><span style="font-family:"+mj-ea", "+mj-ea";font-weight:bold">企业双碳管理现状与挑战</span></p></div>
@@ -381,10 +452,29 @@ function prev(){goto(cur-1)}
     chapterDots.forEach((d, j) => d.classList.toggle("active", j === i || (j+1 < chapterDots.length && chapterMap[j] <= cur && chapterMap[j+1] > cur)));
   }
 
+
+  // ── Overview 鳥瞰 (ESC → grid) ──
+  const overlay=document.createElement('div');
+  overlay.className='overlay';
+  overlay.innerHTML='<button class="overlay-close" onclick="toggleOverview()">✕</button><div class="overlay-grid" id="overlayGrid"></div>';
+  document.body.appendChild(overlay);
+  function toggleOverview(){
+    const o=document.querySelector('.overlay');
+    if(o.classList.contains('show')){
+      o.classList.remove('show');
+    }else{
+      const grid=document.getElementById('overlayGrid');
+      grid.innerHTML=slides.map((s,i)=>'<div class="overlay-thumb'+(i===cur?' current':'')+'" onclick="goto('+i+');toggleOverview()"><span class="thumb-num">'+(i+1)+'</span><div style="padding:8px;font-size:.65rem;color:rgba(255,255,255,.4)">Slide '+(i+1)+'</div></div>').join('');
+      o.classList.add('show');
+    }
+  }
+
+
 function fs(){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen()}
 document.addEventListener('keydown',function(e){
   if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();if(!revealFragments())goto(cur+1)}
   if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev()}
+  if(e.key==='Escape'){e.preventDefault();toggleOverview()}
   if(e.key==='Home'){e.preventDefault();goto(0)}
   if(e.key==='End'){e.preventDefault();goto(tot-1)}
   if(e.key==='f'){fs()}
