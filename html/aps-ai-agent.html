@@ -743,11 +743,14 @@ button:disabled, .nav button:disabled {
 .supportive { opacity: .6; }
 .supportive:focus-within, .supportive:hover { opacity: 1; }
 .fragment.highlight-teal.visible { color: var(--c-teal); }
+/* === Phase 0 — Linear + Stripe + Reveal 標竿 === */
+.card,.stat,.nav-btn{border:1px solid var(--border);border-radius:12px;transition:transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}.card:hover,.stat:hover,.nav-btn:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(20,184,166,.15);border-color:var(--c-teal)}.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}.status-pass{background:rgba(16,185,129,.15);color:#10b981}.status-warn{background:rgba(245,158,11,.15);color:#f59e0b}.nav-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.75rem;color:var(--c-t3);animation:hintFlash 4s var(--ease) forwards;opacity:0}@keyframes hintFlash{0%,80%{opacity:1}100%{opacity:0}}
 
 </style>
 </head>
 
 <body>
+<div class="nav-hint"><kbd>←</kbd> <kbd>→</kbd> 切換 · <kbd>F</kbd> 全螢幕</div>
 
 <nav class="global-nav" style="position:fixed;top:12px;left:var(--s4);z-index:100;display:flex;gap:var(--s2);align-items:center"><a href="landing.html" style="color:var(--c-t3);font-size:.8rem;text-decoration:none;opacity:.6;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.6">← 產品總覽</a></nav>
 <div class="progress-bar" id="progBar"></div>

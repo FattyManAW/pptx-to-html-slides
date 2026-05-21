@@ -21,9 +21,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
 .nav .cnt{color:rgba(255,255,255,.6);font-size:13px;min-width:50px;text-align:center}
 .fs{position:fixed;top:14px;right:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;font-size:15px;backdrop-filter:blur(8px)}
 .prog{position:fixed;top:0;left:0;height:3px;background:#E60012;z-index:100;transition:width .3s}
-</style>
+/* === Phase 0 — Linear + Stripe + Reveal 標竿 === */
+.card,.stat{border:1px solid var(--border);border-radius:12px;transition:transform var(--t-fast),box-shadow var(--t-fast),border-color var(--t-fast)}.card:hover,.stat:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(230,0,18,.15);border-color:#E60012}.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}.status-pass{background:rgba(16,185,129,.15);color:#10b981}.status-warn{background:rgba(245,158,11,.15);color:#f59e0b}.nav-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-size:.75rem;color:rgba(255,255,255,.6);animation:hintFlash 4s ease forwards;opacity:0}@keyframes hintFlash{0%,80%{opacity:1}100%{opacity:0}}</style>
 </head>
 <body>
+<div class="nav-hint"><kbd>←</kbd> <kbd>→</kbd> 切換 · <kbd>F</kbd> 全螢幕</div>
 <div class="prog" id="prog"></div>
 <button class="fs" onclick="fs()">&#x26F6;</button>
 <div class="deck" id="deck"><section class="slide active" data-i="0">
