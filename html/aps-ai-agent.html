@@ -723,6 +723,25 @@ button:disabled, .nav button:disabled {
 .fragment.grow       { transform: scale(.92); }
 .fragment.grow.visible       { transform: scale(1); }
 .fragment.highlight-teal { }
+
+/* Stripe Sessions 敘事語言 — 一畫面一核心數字 · 60% 留白 */
+.kpi-number {
+  font-family: var(--ff-display), serif;
+  font-size: clamp(3.6rem, 8vw, 7.2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--c-teal);
+  letter-spacing: -.02em;
+}
+.narrative-lead {
+  max-width: 540px;
+  font-size: var(--text-heading-2);
+  line-height: 1.5;
+  color: var(--c-t2);
+}
+/* Stripe: 非核心資訊降權重 */
+.supportive { opacity: .6; }
+.supportive:focus-within, .supportive:hover { opacity: 1; }
 .fragment.highlight-teal.visible { color: var(--c-teal); }
 
 </style>
@@ -755,7 +774,7 @@ button:disabled, .nav button:disabled {
       </p>
     </div>
     <div class="fragment fade-up" data-fragment-index="4">
-      <p class="txt-body-2" style="max-width: 520px; color: var(--c-t3)">
+      <p class="narrative-lead" style="max-width: 520px; color: var(--c-t3)">
         AI 驅動的有限產能優化演算法，<br>無縫適配用友生態，精準驅動生產排程
       </p>
     </div>
@@ -954,7 +973,20 @@ button:disabled, .nav button:disabled {
       </table>
     </div>
     <div class="fragment fade-up" data-fragment-index="3" style="margin-top: var(--s3)">
-      <p class="txt-body-2" style="color: var(--c-teal); font-weight: 500">📈 OTD 提升至 97% · 延遲天數縮短 12.5% · 成本降低 9.4%</p>
+    <div class="fragment fade-up" data-fragment-index="3" style="margin-top: var(--s4); display: flex; gap: var(--s4); justify-content: center; flex-wrap: wrap">
+      <div style="text-align:center">
+        <p class="kpi-number">97%</p>
+        <p style="color: var(--c-t3); font-size: .85rem">OTD 達成率</p>
+      </div>
+      <div style="text-align:center">
+        <p class="kpi-number">-12.5%</p>
+        <p style="color: var(--c-t3); font-size: .85rem">延遲天數</p>
+      </div>
+      <div style="text-align:center">
+        <p class="kpi-number">-9.4%</p>
+        <p style="color: var(--c-t3); font-size: .85rem">成本降低</p>
+      </div>
+    </div>
     </div>
   </div>
 </section>
