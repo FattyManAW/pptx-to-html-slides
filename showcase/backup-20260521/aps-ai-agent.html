@@ -7,14 +7,14 @@
 
 <!-- ═══════════════════════════════════════
      FONTS — Google Fonts CDN
-     嚴格遵循字體對比階梯：
-     Playfair Display  = Display / 最頂層
-     Inter             = Heading  / 英文字體層次
-     Noto Sans SC      = Body     / 中文字體層次
+     非阻塞載入（media="print" onload 模式）
      ═══════════════════════════════════════ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" media="print" onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"></noscript>
+<meta name="description" content="APS AI Agent 智能体解决方案 — 大连润思科技智能制造解决方案">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
 
 <style>
 /* ═══════════════════════════════════════════════════════════
@@ -22,20 +22,18 @@
    來源：Stripe CSS variables 系統 + 8px spacing grid
    ═══════════════════════════════════════════════════════════ */
 :root {
-  /* ── P0-2: Blur 梯度四級 (§16.2) ── */
   --blur-card:  12px;
   --blur-sheet: 24px;
   --blur-modal: 32px;
   --blur-nav:   8px;
 
   /* ── 色彩：深色材質層次 ── */
-  --c-950: #05060a;       /* 最深：隱藏在底色 */
-  --c-900: #0a0c14;       /* 主要背景 */
-  --c-800: #0f131d;       /* 次要背景 */
-  --c-700: #151b28;       /* 卡片背景 */
-  --c-600: #1c2336;       /* hover 狀態 */
-  --border:   rgba(255,255,255,.06);   /* 最細分割線 */
-  --border-md: rgba(255,255,255,.10);  /* 區塊邊界 */
+  --ink-950: #05060a;       /* 最深：隱藏在底色 */
+  --ink-900: #0a0c14;       /* 主要背景 */
+  --ink-800: #0f131d;       /* 次要背景 */
+  --ink-700: #151b28;       /* 卡片背景 */
+  --ink-500: #1c2336;       /* hover 狀態 */
+  --border:   rgba(255,255,255,.06);   /* 分割線 */
 
   /* ── 文字：嚴格字體對比階梯 ── */
   /* Display — 封面/章節大標，Playfair Display，最大衝擊 */
@@ -59,10 +57,10 @@
   --accent-amber: #fbbf24;   /* amber */
 
   /* ── 文字顏色階梯 ── */
-  --c-t1:   rgba(255,255,255,.95);   /* 主要文字 */
-  --c-t2:   rgba(255,255,255,.72);   /* 次要文字 */
-  --c-t3:   rgba(255,255,255,.46);   /* 輔助文字 */
-  --c-t4:   rgba(255,255,255,.28);   /* 最低層級 */
+  --t1:   rgba(255,255,255,.95);   /* 主要文字 */
+  --t2:   rgba(255,255,255,.72);   /* 次要文字 */
+  --t3:   rgba(255,255,255,.46);   /* 輔助文字 */
+  --t4:   rgba(255,255,255,.28);   /* 最低層級 */
 
   /* ── 間距：8px base grid ── */
   --s1:  8px;   --s2:  16px;  --s3:  24px;
@@ -75,7 +73,6 @@
   --t-slow: 400ms;
   --ease:   cubic-bezier(.16,1,.3,1);   /* 精準的 decelerate-out */
   --ease-in: cubic-bezier(.4,0,.2,1);   /* ease-in */
-  --ds-ease-out: var(--ease);              /* canonical timing variable */
 
   /* ── 圓角 ── */
   --r-sm: 4px;  --r-md: 8px;  --r-lg: 16px;  --r-xl: 24px;
@@ -85,10 +82,44 @@
   --c-success: #34d399; --c-success-dim: rgba(52,211,153,.12);
   --c-warning: #fbbf24; --c-warning-dim: rgba(251,191,36,.12);
   --c-info:    #4f8ef7; --c-info-dim:    rgba(79,142,247,.12);
-  /* §15 gap4 — Blur gradient */
-  --blur-sm:  8px;  --blur-md:  16px;  --blur-lg:  24px;  --blur-xl:  32px;
+  /* ═══════ --ds-* Canonical Compat Shim v2 ═══════
+     58 common CSS variables mapped to --ds-* namespace.
+     Zero breakage: legacy vars co-exist, not replaced. */
+  --ds-c-bg: var(--c-bg);          --ds-c-bg2: var(--c-bg2);
+  --ds-c-bg3: var(--c-bg3);        --ds-c-surface: var(--c-surface);
+  --ds-c-glass: var(--c-glass);    --ds-c-border: var(--c-border);
+  --ds-accent: var(--accent);      --ds-accent-mid: var(--accent-2);
+  --ds-c-teal: var(--c-teal);      --ds-c-violet: var(--accent-2);
+  --ds-c-amber: var(--accent-amber);
+  --ds-c-error: var(--c-error);    --ds-c-success: var(--c-success);
+  --ds-c-warning: var(--c-warning); --ds-c-info: var(--c-info);
+  /* Typography */
+  --ds-t1: var(--t1);  --ds-t2: var(--t2);  --ds-t3: var(--t3);  --ds-t4: var(--t4);
+  --ds-heading-1: var(--heading-1); --ds-heading-2: var(--heading-2);
+  --ds-body-1: var(--body-1);      --ds-body-2: var(--body-2);
+  --ds-text-display-1: var(--text-display-1);
+  --ds-text-display-2: var(--text-display-2);
+  /* Spacing (8px grid) */
+  --ds-s1: var(--s1);  --ds-s2: var(--s2);  --ds-s3: var(--s3);
+  --ds-s4: var(--s4);  --ds-s5: var(--s5);  --ds-s6: var(--s6);
+  --ds-s7: var(--s7);  --ds-s8: var(--s8);
+  /* Blur */
+  --ds-blur-8: var(--blur-8);    --ds-blur-12: var(--blur-12);
+  --ds-blur-24: var(--blur-24);   --ds-blur-32: var(--blur-32);
+  --ds-blur-card: var(--blur-card); --ds-blur-modal: var(--blur-modal);
+  --ds-blur-nav: var(--blur-nav);   --ds-blur-sheet: var(--blur-sheet);
+  /* Timing */
+  --ds-t-fast: var(--t-fast);  --ds-t-mid: var(--t-mid);
+  --ds-t-slow: var(--t-slow);  --ds-ease: var(--ease);
+  --ds-ease-in: var(--ease-in);
+  /* Borders & Radius */
+  --ds-border: var(--border);   --ds-border-a: var(--border-a);
+  --ds-r-sm: var(--r-sm);  --ds-r-md: var(--r-md);
+  --ds-r-lg: var(--r-lg);  --ds-r-xl: var(--r-xl);
+  /* Shadow & Surface */
+  --ds-shadow: var(--shadow);   --ds-surface: var(--surface);
+  /* ═══ End --ds-* Compat Shim ═══ */
 }
-
 /* ═══════════════════════════════════════
    RESET + BASE
    ═══════════════════════════════════════ */
@@ -98,8 +129,8 @@ html, body {
   overflow: hidden;
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-weight: 400;
-  background: var(--c-900);
-  color: var(--c-t1);
+  background: var(--ink-900);
+  color: var(--t1);
   -webkit-font-smoothing: antialiased;
 }
 button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
@@ -118,25 +149,13 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   align-items: center; justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transform: scale(.97);
-  transition: opacity 450ms cubic-bezier(.16,1,.3,1),
-              transform 500ms cubic-bezier(.16,1,.3,1);
+  transition: opacity var(--t-slow) var(--ease);
 }
 .slide.active {
   opacity: 1;
   pointer-events: auto;
-  transform: scale(1);
 }
-.slide.prev {
-  opacity: 0;
-  transform: scale(1.03);
-}
-
-/* Auto-Animate: 相同 class 元素跨 slide 平滑 morph */
-.slide .bg--mesh, .slide .bg--dark, .slide .bg--card, .slide .bg--deep, .slide .bg--section {
-  transition: background .6s cubic-bezier(.16,1,.3,1),
-              opacity .5s cubic-bezier(.16,1,.3,1);
-}
+.slide.prev { opacity: 0; }
 
 /* stagger entrance — timing staircase */
 /* stagger entrance — timing staircase */
@@ -170,8 +189,8 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   from { opacity: 1; transform: translateX(0); }
 
 /* §14.2 — Slide direction utility classes */
-.slideUp     { animation: slideUp     var(--t-mid) var(--ds-ease-out) both; }
-.slideFromRight { animation: slideFromRight var(--t-mid) var(--ds-ease-out) both; }
+.slideUp     { animation: slideUp     var(--t-mid) var(--ease-out) both; }
+.slideFromRight { animation: slideFromRight var(--t-mid) var(--ease-out) both; }
 .slideExitLeft  { animation: slideExitLeft  var(--t-mid) var(--ease-in)  both; }
 
   to   { opacity: 0; transform: translateX(-60px) translateY(20px); }
@@ -196,21 +215,21 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   background:
     radial-gradient(ellipse 70% 60% at 80% 20%, rgba(99,91,255,.07), transparent 70%),
     radial-gradient(ellipse 50% 60% at 20% 80%, rgba(79,142,247,.05), transparent 70%),
-    var(--c-900);
+    var(--ink-900);
 }
 .bg--dark {
-  background: var(--c-900);
+  background: var(--ink-900);
 }
 .bg--deep {
-  background: var(--c-950);
+  background: var(--ink-950);
 }
 .bg--section {
-  background: var(--c-950);
+  background: var(--ink-950);
 }
 .bg--card {
   background:
     radial-gradient(ellipse 60% 50% at 70% 40%, rgba(99,91,255,.04), transparent),
-    var(--c-900);
+    var(--ink-900);
 }
 
 /* ═══════════════════════════════════════
@@ -236,7 +255,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -.02em;
-  color: var(--c-t1);
+  color: var(--t1);
 }
 .txt-display-2 {
   font-family: 'Playfair Display', serif;
@@ -244,35 +263,35 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -.015em;
-  color: var(--c-t1);
+  color: var(--t1);
 }
 .txt-heading-1 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-1);
   font-weight: 600;
   line-height: 1.25;
-  color: var(--c-t1);
+  color: var(--t1);
 }
 .txt-heading-2 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-2);
   font-weight: 500;
   line-height: 1.35;
-  color: var(--c-t1);
+  color: var(--t1);
 }
 .txt-body-1 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-1);
   font-weight: 400;
   line-height: 1.7;
-  color: var(--c-t2);
+  color: var(--t2);
 }
 .txt-body-2 {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2);
   font-weight: 300;
   line-height: 1.7;
-  color: var(--c-t3);
+  color: var(--t3);
 }
 .txt-caption {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
@@ -281,7 +300,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   line-height: 1.6;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--c-t4);
+  color: var(--t4);
 }
 
 /* accent text */
@@ -328,7 +347,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   color: rgba(99,91,255,.06);
   letter-spacing: -.04em;
 }
-.section-label { color: var(--c-t4); }
+.section-label { color: var(--t4); }
 
 /* ── CARD GRID ── */
 .card-grid {
@@ -336,9 +355,9 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   gap: var(--s3); flex: 1; align-content: start;
 }
 .card {
-  background: var(--c-700);
+  background: var(--ink-700);
   border: 1px solid var(--border);
-  border-radius: var(--r-lg);
+  border-radius: var(border-radius:16px);
   padding: var(--s4);
   transition: border-color var(--t-fast) var(--ease),
               transform var(--t-fast) var(--ease);
@@ -351,7 +370,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 /* §15 gap3 — Card :active instant feedback */
 .card:active {
   transform: scale(0.98);
-  background: var(--c-600);
+  background: var(--ink-500);
   transition-duration: 0ms;
 }
 
@@ -362,12 +381,12 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .card__title {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-3); font-weight: 600;
-  color: var(--c-t1); margin-bottom: var(--s1);
+  color: var(--t1); margin-bottom: var(--s1);
 }
 .card__body {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  line-height: 1.7; color: var(--c-t2);
+  line-height: 1.7; color: var(--t2);
 }
 
 /* ── SCENARIO GRID ── */
@@ -376,9 +395,9 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   gap: var(--s3); flex: 1; align-content: start;
 }
 .scenario-card {
-  background: var(--c-700);
+  background: var(--ink-700);
   border: 1px solid var(--border);
-  border-radius: var(--r-lg);
+  border-radius: var(border-radius:16px);
   padding: var(--s4);
   position: relative; overflow: hidden;
 }
@@ -392,19 +411,19 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .scenario-card__title {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--heading-3); font-weight: 600;
-  color: var(--c-t1); margin-bottom: var(--s1);
+  color: var(--t1); margin-bottom: var(--s1);
 }
 .scenario-card__body {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  line-height: 1.7; color: var(--c-t2);
+  line-height: 1.7; color: var(--t2);
 }
 .scenario-tag {
   display: inline-block;
   font-family: 'Inter', sans-serif;
   font-size: .65rem; font-weight: 500;
   letter-spacing: .08em; text-transform: uppercase;
-  color: var(--c-t3);
+  color: var(--t3);
   padding: 3px 10px; border-radius: 100px;
   border: 1px solid var(--border);
   margin: 2px;
@@ -418,7 +437,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .arch__label {
   font-family: 'Inter', sans-serif;
   font-size: var(--body-3); font-weight: 600;
-  color: var(--c-t4); text-transform: uppercase;
+  color: var(--t4); text-transform: uppercase;
   letter-spacing: .1em; width: 100px; flex-shrink: 0;
   text-align: right; padding-top: 2px;
 }
@@ -429,13 +448,13 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   display: inline-flex; align-items: center; gap: 5px;
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 500;
-  padding: 5px 14px; border-radius: var(--r-md);
+  padding: 5px 14px; border-radius: var(border-radius:12px);
   border: 1px solid; white-space: nowrap;
 }
 .chip--blue   { color: var(--accent-blue); border-color: rgba(79,142,247,.15); background: rgba(79,142,247,.06); }
 .chip--violet { color: var(--accent-2);   border-color: rgba(167,139,250,.15); background: rgba(167,139,250,.06); }
 .chip--em     { color: var(--accent-em);   border-color: rgba(52,211,153,.15);  background: rgba(52,211,153,.06); }
-.chip--muted  { color: var(--c-t3);          border-color: var(--border);          background: rgba(255,255,255,.03); }
+.chip--muted  { color: var(--t3);          border-color: var(--border);          background: rgba(255,255,255,.03); }
 
 /* ── DATA TABLE ── */
 .data-table {
@@ -445,7 +464,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .data-table th {
   font-family: 'Inter', sans-serif;
   font-size: var(--body-3); font-weight: 600;
-  color: var(--c-t4); text-transform: uppercase;
+  color: var(--t4); text-transform: uppercase;
   letter-spacing: .06em; text-align: left;
   padding: var(--s2) var(--s2);
   border-bottom: 1px solid var(--border);
@@ -453,13 +472,13 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .data-table td {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  color: var(--c-t2); padding: var(--s2);
+  color: var(--t2); padding: var(--s2);
   border-bottom: 1px solid rgba(255,255,255,.03);
 }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table .val {
   font-family: 'Inter', sans-serif; font-weight: 600;
-  color: var(--c-t1); text-align: right;
+  color: var(--t1); text-align: right;
 }
 
 /* ── FLOW / STEPS ── */
@@ -468,9 +487,9 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   gap: var(--s3); flex: 1; align-content: start;
 }
 .flow-col {
-  background: var(--c-700);
+  background: var(--ink-700);
   border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: var(--s4);
+  border-radius: var(border-radius:16px); padding: var(--s4);
   position: relative; overflow: hidden;
 }
 .flow-col::before {
@@ -482,7 +501,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .flow-col__title {
   font-family: 'Inter', sans-serif;
   font-size: var(--heading-3); font-weight: 600;
-  color: var(--c-t1); margin-bottom: var(--s2);
+  color: var(--t1); margin-bottom: var(--s2);
 }
 .flow-step {
   display: flex; align-items: flex-start; gap: var(--s2);
@@ -497,7 +516,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .flow-step__p {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-2); font-weight: 300;
-  line-height: 1.65; color: var(--c-t2);
+  line-height: 1.65; color: var(--t2);
 }
 
 /* ── USE CASE HERO ── */
@@ -517,7 +536,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .uc-body {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-1); font-weight: 300;
-  line-height: 1.8; color: var(--c-t2);
+  line-height: 1.8; color: var(--t2);
   max-width: 640px;
 }
 .uc-label {
@@ -535,13 +554,13 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
   font-family: 'Inter', sans-serif;
   font-size: var(--body-3); font-weight: 600;
   letter-spacing: .3em; text-transform: uppercase;
-  color: var(--c-t4); margin-bottom: var(--s5);
+  color: var(--t4); margin-bottom: var(--s5);
 }
 .thanks-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 800; line-height: 1.05;
-  background: linear-gradient(135deg, var(--c-t1) 30%, var(--accent) 70%, var(--c-t1) 90%);
+  background: linear-gradient(135deg, var(--t1) 30%, var(--accent) 70%, var(--t1) 90%);
   background-size: 200% 200%;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -554,7 +573,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 .thanks-sub {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   font-size: var(--body-1); font-weight: 300;
-  color: var(--c-t3); margin-top: var(--s3);
+  color: var(--t3); margin-top: var(--s3);
   letter-spacing: .06em;
 }
 
@@ -570,10 +589,10 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 }
 .fs-btn {
   position: fixed; top: 16px; right: 16px;
-  width: 34px; height: 34px; border-radius: var(--r-md);
+  width: 34px; height: 34px; border-radius: var(border-radius:12px);
   border: 1px solid var(--border);
   background: rgba(5,6,10,.6);
-  color: var(--c-t3); cursor: pointer; z-index: 300;
+  color: var(--t3); cursor: pointer; z-index: 300;
   display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(12px);
   font-size: 14px;
@@ -591,17 +610,17 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 }
 .nav button {
   background: none; border: none;
-  color: var(--c-t3); padding: 5px 14px;
+  color: var(--t3); padding: 5px 14px;
   border-radius: 100px; cursor: pointer;
   font-size: .8rem; font-weight: 500;
   transition: color var(--t-fast) var(--ease);
 }
-.nav button:hover { color: var(--c-t1); }
+.nav button:hover { color: var(--t1); }
 .nav button:disabled { opacity: .2; cursor: default; }
 .nav .sep { color: rgba(255,255,255,.12); font-size: 9px; margin: 0 2px; }
 .nav .cnt {
   font-family: 'Inter', sans-serif; font-size: .7rem;
-  color: var(--c-t3); min-width: 36px; text-align: center;
+  color: var(--t3); min-width: 36px; text-align: center;
 }
 
 /* ═══════════════════════════════════════
@@ -636,10 +655,10 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 
 /* §14.3 — Skeleton loading */
 .skeleton {
-  background: linear-gradient(90deg, var(--c-800) 25%, var(--c-700) 50%, var(--c-800) 75%);
+  background: linear-gradient(90deg, var(--ink-800) 25%, var(--ink-700) 50%, var(--ink-800) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: var(--r-md);
+  border-radius: var(border-radius:12px);
 }
 @keyframes shimmer {
   0%   { background-position: 200% 0; }
@@ -649,7 +668,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 
 /* §16 gradient shimmer — reusable utility class */
 .gradient-shimmer {
-  background: linear-gradient(135deg, var(--c-t1) 30%, var(--accent) 70%, var(--c-t1) 90%);
+  background: linear-gradient(135deg, var(--t1) 30%, var(--accent) 70%, var(--t1) 90%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -694,7 +713,7 @@ button:disabled, .nav button:disabled {
   border: 1px solid rgba(255,255,255,.06);
   border-radius: 12px;
   padding: var(--s4, 24px);
-  transition: border-color .3s var(--ds-ease-out, ease-out);
+  transition: border-color .3s var(--ease-out, ease-out);
 }
 
 .feat-item:hover {
@@ -702,214 +721,52 @@ button:disabled, .nav button:disabled {
   background: rgba(20,184,166,.05);
 }
 
-/* ═══════════════════════════════════════
-   §16 Fragment — Reveal.js 逐步揭示
-   ═══════════════════════════════════════ */
-.fragment {
-  opacity: 0;
-  visibility: hidden;
-  transition: all 450ms cubic-bezier(.16,1,.3,1);
-}
-.fragment.visible {
-  opacity: 1;
-  visibility: visible;
-}
-.fragment.fade-up    { transform: translateY(24px); }
-.fragment.fade-up.visible    { transform: translateY(0); }
-.fragment.fade-right { transform: translateX(-32px); }
-.fragment.fade-right.visible { transform: translateX(0); }
-.fragment.fade-left  { transform: translateX(32px); }
-.fragment.fade-left.visible  { transform: translateX(0); }
-.fragment.grow       { transform: scale(.92); }
-.fragment.grow.visible       { transform: scale(1); }
-.fragment.highlight-teal { }
-
-/* Stripe Sessions 敘事語言 — 一畫面一核心數字 · 60% 留白 */
-.kpi-number {
-  font-family: var(--ff-display), serif;
-  font-size: clamp(3.6rem, 8vw, 7.2rem);
-  font-weight: 700;
-  line-height: 1.1;
-  color: var(--c-teal);
-  letter-spacing: -.02em;
-}
-.narrative-lead {
-  max-width: 540px;
-  font-size: var(--text-heading-2);
-  line-height: 1.5;
-  color: var(--c-t2);
-}
-/* Stripe: 非核心資訊降權重 */
-.supportive { opacity: .6; }
-.supportive:focus-within, .supportive:hover { opacity: 1; }
-.fragment.highlight-teal.visible { color: var(--c-teal); }
-/* === Phase 0 — Linear + Stripe + Reveal 標竿 === */
-.card,.stat,.nav-btn{border:1px solid var(--border);border-radius:12px;transition:transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}.card:hover,.stat:hover,.nav-btn:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(20,184,166,.15);border-color:var(--c-teal)}.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:600}.status-pass{background:rgba(16,185,129,.15);color:#10b981}.status-warn{background:rgba(245,158,11,.15);color:#f59e0b}.nav-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.75rem;color:var(--c-t3);animation:hintFlash 4s var(--ease) forwards;opacity:0}@keyframes hintFlash{0%,80%{opacity:1}100%{opacity:0}}
-
-.chapter-nav{position:sticky;top:0;z-index:100;display:flex;gap:var(--s4);padding:var(--s3) var(--s5);background:linear-gradient(180deg,var(--c-900)60%,transparent);backdrop-filter:blur(8px)}.chapter-dot{opacity:.4;cursor:pointer;transition:opacity var(--t-fast);font-size:.85rem;color:var(--c-t2)}.chapter-dot.active{opacity:1;font-weight:600;color:var(--c-teal)}
-
-/* === Phase 1 — Stripe Sessions Hero Number === */
-.hero-slide { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100%; }
-.hero-number {
-  font-size: clamp(5rem, 14vw, 10rem);
-  font-weight: 900; line-height: 1;
-  background: linear-gradient(135deg, var(--c-teal), #818cf8);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: heroReveal 0.8s var(--ease) both;
-}
-.hero-label { font-size: 1.25rem; color: var(--c-t2); margin-top: var(--s3); max-width: 480px; }
-@keyframes heroReveal { from { opacity: 0; filter: blur(12px); transform: scale(1.08); } }
-
-
-/* === Phase 1 — Auto-Animate (Reveal.js 標竿) === */
-.slide { transition: opacity 0.4s ease, transform 0.4s ease; }
-.slide.slide-enter { animation: slideIn 0.45s ease both; }
-.slide.slide-exit { animation: slideOut 0.35s ease both; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(24px) scale(0.96); } }
-@keyframes slideOut { to { opacity: 0; transform: translateY(-20px) scale(0.96); } }
-
-
-/* === Phase 2 — Overview 鳥瞰模式 (Reveal.js 標竿) === */
-.overlay { position:fixed; inset:0; z-index:9999; background:rgba(5,6,10,.95);
-  backdrop-filter:blur(16px); display:none; overflow-y:auto; padding:40px; }
-.overlay.show { display:block; }
-.overlay-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:16px; max-width:1400px; margin:0 auto; }
-.overlay-thumb { aspect-ratio:16/9; border:2px solid rgba(255,255,255,.08);
-  border-radius:6px; overflow:hidden; cursor:pointer; transition:all .2s;
-  position:relative; background:var(--c-800, #1a1a2e); }
-.overlay-thumb:hover { border-color:rgba(255,255,255,.3); transform:scale(1.04); }
-.overlay-thumb.current { border-color:var(--c-teal, #4f8ef7); box-shadow:0 0 16px rgba(20,184,166,.3); }
-.overlay-thumb .thumb-num { position:absolute; top:4px; left:6px; font-size:.65rem;
-  color:rgba(255,255,255,.5); font-weight:600; }
-.overlay-close { position:fixed; top:20px; right:24px; color:rgba(255,255,255,.6);
-  font-size:1.5rem; cursor:pointer; z-index:10000; background:none; border:none; }
-.overlay-close:hover { color:#fff; }
-
-
-/* === Phase 2 — Story Arc 區域經營 (Stripe 標竿) === */
-.story-divider { display:flex; align-items:center; justify-content:center; flex-direction:column;
-  min-height:100%; text-align:center; gap:var(--s3, 16px); }
-.story-icon { font-size:2.5rem; }
-.story-tag { font-size:.8rem; text-transform:uppercase; letter-spacing:.15em;
-  color:rgba(255,255,255,.35); }
-.story-title { font-size:clamp(2rem,5vw,3.5rem); font-weight:700; }
-.story-sub { font-size:1rem; color:rgba(255,255,255,.5); max-width:480px; }
-
-
-/* === Gate 3 — prefers-reduced-motion (WCAG 2.1 AA) === */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* === Gate 3 — Shortcuts Panel (Linear-inspired) === */
-.shortcuts-panel { position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,.85);
-  backdrop-filter:blur(12px); display:none; align-items:center; justify-content:center; }
-.shortcuts-panel.show { display:flex; }
-.shortcuts-content { background:var(--surface, #1a1a2e); border:1px solid var(--border, rgba(255,255,255,.1));
-  border-radius:12px; padding:24px 32px; max-width:420px; width:90%; }
-.shortcuts-content h3 { font-size:1.1rem; margin-bottom:16px; color:var(--c-t1, #fff); }
-.shortcuts-content table { width:100%; border-collapse:collapse; }
-.shortcuts-content td { padding:6px 0; font-size:.85rem; color:var(--c-t2, rgba(255,255,255,.6)); }
-.shortcuts-content td:first-child { width:120px; }
-.shortcuts-content kbd { display:inline-block; padding:1px 6px; border:1px solid rgba(255,255,255,.2);
-  border-radius:4px; font-size:.75rem; font-family:monospace; background:rgba(255,255,255,.05); }
 </style>
 </head>
 
 <body>
-<div class="nav-hint"><kbd>←</kbd> <kbd>→</kbd> 切換 · <kbd>F</kbd> 全螢幕</div>
 
-<nav class="global-nav" style="position:fixed;top:12px;left:var(--s4);z-index:100;display:flex;gap:var(--s2);align-items:center"><a href="landing.html" style="color:var(--c-t3);font-size:.8rem;text-decoration:none;opacity:.6;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.6">← 產品總覽</a></nav>
 <div class="progress-bar" id="progBar"></div>
 <button class="fs-btn" id="fsBtn" onclick="toggleFs()" aria-label="切換全螢幕" title="全螢幕">⛶</button>
 
-<nav class="chapter-nav"><span class="chapter-dot active" data-chapter="0" data-slide="0">產品定位</span><span class="chapter-dot" data-chapter="1" data-slide="2">核心能力</span><span class="chapter-dot" data-chapter="2" data-slide="3">應用場景</span><span class="chapter-dot" data-chapter="3" data-slide="4">技術架構</span><span class="chapter-dot" data-chapter="4" data-slide="5">數據價值</span><span class="chapter-dot" data-chapter="5" data-slide="6">業務演示</span><span class="chapter-dot" data-chapter="6" data-slide="11">結語</span></nav>
-<main class="deck" id="deck">
+<div class="deck" id="deck">
 
 <!-- ═══════════════════════════════════════════
-     01 — TITLE  ✨ Fragment 逐步揭示
+     01 — TITLE
+     一畫面一訊息：公司 + 產品名 + 一句定位
      ═══════════════════════════════════════════ -->
 <section class="slide active" data-i="0" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
-    <div class="fragment fade-up" data-fragment-index="1" style="margin-bottom: var(--s3)">
+    <div class="in" style="margin-bottom: var(--s3)">
       <span class="tag tag--violet">2026 · APS</span>
     </div>
-    <div class="fragment fade-up" data-fragment-index="2">
+    <div class="in">
       <h1 class="txt-display-1" style="margin-bottom: var(--s3)">
         APS AI Agent
       </h1>
     </div>
-    <div class="fragment fade-up" data-fragment-index="3" style="margin-bottom: var(--s5)">
-      <p class="txt-heading-2" style="color: var(--c-t2); font-weight: 400">
+    <div class="in" style="margin-bottom: var(--s5)">
+      <p class="txt-heading-2" style="color: var(--t2); font-weight: 400">
         智能体解决方案
       </p>
     </div>
-    <div class="fragment fade-up" data-fragment-index="4">
-      <p class="narrative-lead" style="max-width: 520px; color: var(--c-t3)">
+    <div class="in">
+      <p class="txt-body-2" style="max-width: 520px; color: var(--t3)">
         AI 驅動的有限產能優化演算法，<br>無縫適配用友生態，精準驅動生產排程
       </p>
     </div>
-    <div class="fragment fade-up" data-fragment-index="5" style="margin-top: auto; padding-top: var(--s4)">
+    <div class="in" style="margin-top: auto; padding-top: var(--s4)">
       <p class="txt-caption">大連潤思科技 · 製造行業及智能制造解決方案商</p>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════ STORY ARC · 問題 ═══════════════════════ -->
-<section class="slide story-divider" data-i="sa1" tabindex="0">
-  <div class="bg bg--section"></div>
-  <span class="story-icon">🔍</span>
-  <span class="story-tag">01 · 問題</span>
-  <h2 class="story-title">製造業排程<br>三大核心困境</h2>
-  <p class="story-sub">多品種小批量 · 產能瓶頸 · 交期延遲 — 傳統排程已無法滿足敏捷生產需求</p>
-</section>
-<!-- ═══════════════════════ STORY ARC · 洞察 ═══════════════════════ -->
-<section class="slide story-divider" data-i="sa3" tabindex="0">
-  <div class="bg bg--dark"></div>
-  <span class="story-icon">💡</span>
-  <span class="story-tag">02 · 洞察</span>
-  <h2 class="story-title">AI + APS<br>智慧排程新典範</h2>
-  <p class="story-sub">有限產能優化演算法 — 從被動回應到主動預測的關鍵轉折</p>
-</section>
-<!-- ═══════════════════════ STORY ARC · 方案 ═══════════════════════ -->
-<section class="slide story-divider" data-i="sa4" tabindex="0">
-  <div class="bg bg--mesh"></div>
-  <span class="story-icon">⚡</span>
-  <span class="story-tag">03 · 方案</span>
-  <h2 class="story-title">七大模組<br>端到端智能排程</h2>
-  <p class="story-sub">智能插單 · 多版本對比 · 智能建議 · 一鍵排程 — 全場景覆蓋</p>
-</section>
-<!-- ═══════════════════════ STORY ARC · 案例 ═══════════════════════ -->
-<section class="slide story-divider" data-i="sa6" tabindex="0">
-  <div class="bg bg--deep"></div>
-  <span class="story-icon">🏭</span>
-  <span class="story-tag">04 · 案例</span>
-  <h2 class="story-title">從訂單到排程<br>三步完成</h2>
-  <p class="story-sub">建立訂單 → 查看排程 → 分析結果 — 真實場景全鏈路演示</p>
-</section>
-<!-- ═══════════════════════ STORY ARC · 結果 ═══════════════════════ -->
-<section class="slide story-divider" data-i="sa8" tabindex="0">
-  <div class="bg bg--dark"></div>
-  <span class="story-icon">📊</span>
-  <span class="story-tag">05 · 結果</span>
-  <h2 class="story-title">可量化<br>交付價值</h2>
-  <p class="story-sub"><span style="font-size:2rem">97%</span> OTD 達成率 · <span style="font-size:2rem">-12.5%</span> 延遲天數 · <span style="font-size:2rem">-9.4%</span> 成本降低</p>
-</section>
-
-
-
 <!-- ═══════════════════════════════════════════
      02 — 產品定位
      一畫面一訊息：一句定位 + 一句價值
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="1" tabindex="0">
+<section class="slide" data-i="1" data-stagger="0" tabindex="0">
   <div class="bg bg--section"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s8)">
@@ -935,14 +792,14 @@ button:disabled, .nav button:disabled {
      03 — 四大核心功能
      一畫面一訊息：四張卡 = 四個功能，每張一句
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="2" tabindex="0">
+<section class="slide" data-i="2" data-stagger="0" tabindex="0">
   <div class="bg bg--dark"></div>
   <div class="inner">
-    <div class="fragment fade-up" data-fragment-index="1" style="margin-bottom: var(--s4)">
+    <div class="in" style="margin-bottom: var(--s4)">
       <p class="txt-caption" style="margin-bottom: var(--s2)">核心功能</p>
       <h2 class="txt-heading-1">四大 APS 能力</h2>
     </div>
-    <div class="fragment fade-up" data-fragment-index="2">
+    <div class="in">
       <div class="card-grid">
         <div class="card">
           <span class="card__icon">⚡</span>
@@ -973,14 +830,14 @@ button:disabled, .nav button:disabled {
      04 — 三大應用場景
      一畫面一訊息：三張卡 = 三大場景
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="3" tabindex="0">
+<section class="slide" data-i="3" data-stagger="0" tabindex="0">
   <div class="bg bg--card"></div>
   <div class="inner">
-    <div class="fragment fade-up" data-fragment-index="1" style="margin-bottom: var(--s4)">
+    <div class="in" style="margin-bottom: var(--s4)">
       <p class="txt-caption" style="margin-bottom: var(--s2)">應用場景</p>
       <h2 class="txt-heading-1">三大核心場景</h2>
     </div>
-    <div class="fragment fade-up" data-fragment-index="2">
+    <div class="in">
       <div class="scenario-grid">
         <div class="scenario-card">
           <span class="scenario-card__icon">🏭</span>
@@ -1012,7 +869,7 @@ button:disabled, .nav button:disabled {
      05 — 智慧數位員工架構
      一畫面一訊息：圖 = 一句核心
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="4" tabindex="0">
+<section class="slide" data-i="4" data-stagger="0" tabindex="0">
   <div class="bg bg--deep"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s4)">
@@ -1053,14 +910,14 @@ button:disabled, .nav button:disabled {
      06 — 數據價值
      一畫面一訊息：表格 = 核心 KPI 矩陣
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="5" tabindex="0">
+<section class="slide" data-i="5" data-stagger="0" tabindex="0">
   <div class="bg bg--dark"></div>
   <div class="inner">
-    <div class="fragment fade-up" data-fragment-index="1" style="margin-bottom: var(--s4)">
+    <div class="in" style="margin-bottom: var(--s4)">
       <p class="txt-caption" style="margin-bottom: var(--s2)">數據價值</p>
       <h2 class="txt-heading-1">全鏈數據資產價值體現</h2>
     </div>
-    <div class="fragment fade-right" data-fragment-index="2">
+    <div class="in">
       <table class="data-table">
         <thead>
           <tr>
@@ -1093,35 +950,6 @@ button:disabled, .nav button:disabled {
         </tbody>
       </table>
     </div>
-    <div class="fragment fade-up" data-fragment-index="3" style="margin-top: var(--s3)">
-    <div class="fragment fade-up" data-fragment-index="3" style="margin-top: var(--s4); display: flex; gap: var(--s4); justify-content: center; flex-wrap: wrap">
-      <div style="text-align:center">
-        <p class="kpi-number">97%</p>
-        <p style="color: var(--c-t3); font-size: .85rem">OTD 達成率</p>
-      </div>
-      <div style="text-align:center">
-        <p class="kpi-number">-12.5%</p>
-        <p style="color: var(--c-t3); font-size: .85rem">延遲天數</p>
-      </div>
-      <div style="text-align:center">
-        <p class="kpi-number">-9.4%</p>
-        <p style="color: var(--c-t3); font-size: .85rem">成本降低</p>
-      </div>
-    </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     06h — HERO NUMBER（Stripe 標竿）
-     一畫面一核心數字：大數字 + 一句話
-     ═══════════════════════════════════════════ -->
-<section class="slide hero-slide" data-i="5h" tabindex="0">
-  <div class="bg bg--dark"></div>
-  <div class="inner col-center">
-    <p class="txt-caption" style="margin-bottom: var(--s2)">數據價值</p>
-    <p class="hero-number">97<small style="font-size:2rem">%</small></p>
-    <p class="hero-label">OTD 達成率 — 全鏈數據資產驅動精準交付</p>
   </div>
 </section>
 
@@ -1129,7 +957,7 @@ button:disabled, .nav button:disabled {
      07 — 案例分隔頁
      留白即語言：大片深色留白 + 一句話
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="6" tabindex="0">
+<section class="slide" data-i="6" data-stagger="0" tabindex="0">
   <div class="bg bg--section"></div>
   <div class="inner col-center">
     <div class="in" style="margin-bottom: var(--s5)">
@@ -1147,7 +975,7 @@ button:disabled, .nav button:disabled {
      08 — 業務流程
      一畫面一訊息：三步流程
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="7" tabindex="0">
+<section class="slide" data-i="7" data-stagger="0" tabindex="0">
   <div class="bg bg--dark"></div>
   <div class="inner">
     <div class="in" style="margin-bottom: var(--s4)">
@@ -1210,7 +1038,7 @@ button:disabled, .nav button:disabled {
      09 — 使用情境 01：零門檻入口
      一畫面一訊息：icon + 一句標題 + 一句說明
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="8" tabindex="0">
+<section class="slide" data-i="8" data-stagger="0" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
     <div class="in uc-hero">
@@ -1228,7 +1056,7 @@ button:disabled, .nav button:disabled {
 <!-- ═══════════════════════════════════════════
      10 — 使用情境 02：數據查詢
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="9" tabindex="0">
+<section class="slide" data-i="9" data-stagger="0" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
     <div class="in uc-hero">
@@ -1246,7 +1074,7 @@ button:disabled, .nav button:disabled {
 <!-- ═══════════════════════════════════════════
      11 — 使用情境 03：全流程自動化
      ═══════════════════════════════════════════ -->
-<section class="slide" data-i="10" tabindex="0">
+<section class="slide" data-i="10" data-stagger="0" tabindex="0">
   <div class="bg bg--mesh"></div>
   <div class="inner col-center">
     <div class="in uc-hero">
@@ -1278,12 +1106,11 @@ button:disabled, .nav button:disabled {
   </div>
 </section>
 
-</main><!-- .deck -->
+</div><!-- .deck -->
 
 <!-- ═══════════════════════════════════════════
      NAVIGATION — 鍵盤 / 觸控 / 滾輪 / 全螢幕
      ═══════════════════════════════════════════ -->
-<nav class="global-nav" style="position:fixed;top:12px;left:var(--s4);z-index:100;display:flex;gap:var(--s2);align-items:center"><a href="landing.html" style="color:var(--c-t3);font-size:.8rem;text-decoration:none;opacity:.6;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.6">← 產品總覽</a></nav>
 <div class="progress-bar" id="progBar"></div>
 <button class="fs-btn" id="fsBtn" onclick="toggleFs()" aria-label="切換全螢幕" title="全螢幕">⛶</button>
 <div class="nav" id="nav">
@@ -1301,26 +1128,12 @@ button:disabled, .nav button:disabled {
 
   function go(n) {
     if (n < 0 || n >= slides.length) return;
-    // try fragments first on current slide
-    if (n === cur + 1) {
-      const frags = [...slides[cur].querySelectorAll('.fragment:not(.visible)')];
-      if (frags.length > 0) {
-        frags.forEach((f, i) => {
-          setTimeout(() => f.classList.add('visible'), i * 80);
-        });
-        return;
-      }
-    }
-    // no fragments → go to next slide
     slides[cur].classList.remove('active');
     slides[cur].classList.add('prev');
     cur = n;
     slides[cur].classList.remove('prev');
     slides[cur].classList.add('active');
-    // reset fragments on new slide
-    slides[cur].querySelectorAll('.fragment').forEach(f => f.classList.remove('visible'));
     refresh();
-    updateChapter();
   }
   window.next = () => go(cur + 1);
   window.prev = () => go(cur - 1);
@@ -1334,42 +1147,12 @@ button:disabled, .nav button:disabled {
     document.getElementById('nextBtn').disabled = cur === slides.length - 1;
   }
 
-  // ── Chapter nav highlight ──
-  const chapterMap = [0,2,3,4,5,6,11];
-  const chapterDots = [...document.querySelectorAll(".chapter-dot")];
-  function updateChapter() {
-    let i = chapterMap.length - 1;
-    while (i > 0 && chapterMap[i] > cur) i--;
-    chapterDots.forEach((d, j) => d.classList.toggle("active", j === i || (j+1 < chapterDots.length && chapterMap[j] <= cur && chapterMap[j+1] > cur)));
-  }
-
-
-  // ── Overview 鳥瞰 (ESC → grid) ──
-  const overlay=document.createElement('div');
-  overlay.className='overlay';
-  overlay.innerHTML='<button class="overlay-close" onclick="toggleOverview()">✕</button><div class="overlay-grid" id="overlayGrid"></div>';
-  document.body.appendChild(overlay);
-  function toggleOverview(){
-    const o=document.querySelector('.overlay');
-    if(o.classList.contains('show')){
-      o.classList.remove('show');
-      slides[cur].scrollIntoView({behavior:'instant'});
-    }else{
-      const grid=document.getElementById('overlayGrid');
-      grid.innerHTML=slides.map((s,i)=>'<div class="overlay-thumb'+(i===cur?' current':'')+'" onclick="go('+i+');toggleOverview()"><span class="thumb-num">'+(i+1)+'</span><div style="padding:8px;font-size:.65rem;color:rgba(255,255,255,.4);margin-top:8px">'+((s.querySelector('h1,h2')||{}).textContent||'Slide '+(i+1))+'</div></div>').join('');
-      o.classList.add('show');
-    }
-  }
-
-
   // ── Keyboard ──
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
     if (e.key === 'ArrowLeft'  || e.key === 'PageUp') { e.preventDefault(); prev(); }
     if (e.key === 'Home') { e.preventDefault(); go(0); }
     if (e.key === 'End')  { e.preventDefault(); go(slides.length - 1); }
-        if (e.key === 'Escape') { e.preventDefault(); toggleOverview(); }
-    if (e.key === '?' || (e.key === '/' && e.shiftKey)) { e.preventDefault(); toggleShortcuts(); }
     if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFs(); }
   });
 
@@ -1391,7 +1174,6 @@ button:disabled, .nav button:disabled {
   }, { passive: true });
 
   refresh();
-    updateChapter();
 })();
 </script>
 </body>

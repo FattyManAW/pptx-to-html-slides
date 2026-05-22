@@ -1,0 +1,86 @@
+{
+  "version": "0.1",
+  "name": "Factory OTD Simulation Skeleton",
+  "seed": 42,
+  "sim_days": 90,
+  "warmup_days": 7,
+  "factory": {
+    "lines": [
+      {
+        "id": "L1",
+        "name": "SMT線",
+        "stations": [
+          {
+            "id": "L1-S1",
+            "name": "錫膏印刷",
+            "capacity": { "units_per_hour": 120, "max_batch": 500 },
+            "setup": { "base_min": 15, "per_product_min": 5 },
+            "failure": { "rate": 0.02, "mtbf_hours": 480, "mttr_min": 30 },
+            "yield": { "base_rate": 0.995, "decay_per_1k": 0.001 },
+            "maintenance": { "interval_hours": 160, "duration_min": 60 }
+          },
+          {
+            "id": "L1-S2",
+            "name": "貼片機",
+            "capacity": { "units_per_hour": 80, "max_batch": 400 },
+            "setup": { "base_min": 20, "per_product_min": 8 },
+            "failure": { "rate": 0.015, "mtbf_hours": 600, "mttr_min": 45 },
+            "yield": { "base_rate": 0.998, "decay_per_1k": 0.0005 },
+            "maintenance": { "interval_hours": 200, "duration_min": 90 }
+          },
+          {
+            "id": "L1-S3",
+            "name": "回焊爐",
+            "capacity": { "units_per_hour": 200, "max_batch": 1000 },
+            "setup": { "base_min": 10, "per_product_min": 2 },
+            "failure": { "rate": 0.008, "mtbf_hours": 1000, "mttr_min": 20 },
+            "yield": { "base_rate": 0.992, "decay_per_1k": 0.0008 },
+            "maintenance": { "interval_hours": 480, "duration_min": 30 }
+          }
+        ],
+        "buffer": { "max_wip": 200 }
+      }
+    ],
+    "warehouse": {
+      "capacity": 10000,
+      "ship_modes": [
+        { "name": "陸運", "base_days": 2, "jitter_days": 1, "cost_per_unit": 5 },
+        { "name": "空運", "base_days": 1, "jitter_days": 0.5, "cost_per_unit": 20 }
+      ]
+    }
+  },
+  "order_template": {
+    "products": [
+      { "type": "A", "name": "標準品", "mix_pct": 60, "route": ["L1-S1", "L1-S2", "L1-S3"], "cycle_time_hrs": 4 },
+      { "type": "B", "name": "急單品", "mix_pct": 25, "route": ["L1-S1", "L1-S2"], "cycle_time_hrs": 2.5, "priority_boost": 2 },
+      { "type": "C", "name": "特製品", "mix_pct": 15, "route": ["L1-S1", "L1-S2", "L1-S3", "L1-S3"], "cycle_time_hrs": 6 }
+    ],
+    "arrival": {
+      "base_per_day": 10,
+      "jitter_pct": 20,
+      "rush_order": { "prob_per_day": 0.05, "quantity": [5, 20], "due_days": 3 }
+    },
+    "due_date": { "base_days": 14, "jitter_days": 3 }
+  },
+  "parameters": {
+    "failure": { "rate_multiplier": 1.0, "default": 1.0, "min": 0.5, "max": 3.0 },
+    "yield": { "decay_multiplier": 1.0, "default": 1.0, "min": 0.8, "max": 2.0 },
+    "setup": { "jitter_pct": 15, "default": 15, "min": 0, "max": 50 },
+    "priority": { "inversion_rate": 0.05, "default": 0.05, "min": 0.0, "max": 0.15 },
+    "demand": { "spike_multiplier": 1.0, "spike_days": [] },
+    "worker": { "absenteeism_rate": 0.02, "default": 0.02, "min": 0.0, "max": 0.05 }
+  },
+  "scheduling": {
+    "rule": "EDD",
+    "replan_interval_hours": 4,
+    "allow_preemption": false,
+    "wip_limit_trigger": 0.8,
+    "overdue_priority_boost": 3
+  },
+  "output": {
+    "save_timeline": true,
+    "save_daily_snapshot": true,
+    "save_station_log": true,
+    "output_dir": "./output"
+  }
+}

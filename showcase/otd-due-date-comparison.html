@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OTD due_date 五格式 × 三政策 全矩陣</title>
+<style>
+:root{--c-bg:#06080d;--c-bg2:#0f172a;--c-surface:rgba(255,255,255,.04);--c-border:rgba(255,255,255,.08);--c-teal:#14b8a6;--c-violet:#a78bfa;--c-amber:#f59e0b;--c-t1:rgba(255,255,255,.95);--c-t2:rgba(255,255,255,.72);--c-t3:rgba(255,255,255,.46);--c-t4:rgba(255,255,255,.28);--c-success:#22c55e;--c-error:#ef4444;--s1:.5rem;--s2:1rem;--s3:1.5rem;--r-sm:4px;--r-md:8px;--t-fast:120ms;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--c-bg);color:var(--c-t1);font-family:'Inter','Noto Sans SC',sans-serif;line-height:1.6;min-height:100vh}
+h1,h2{font-family:'Playfair Display','Noto Sans SC',serif}
+.container{max-width:1100px;margin:0 auto;padding:var(--s3) var(--s2)}
+.hero{text-align:center;padding:var(--s4) 0 var(--s2)}
+.hero h1{font-size:clamp(1.2rem,3.5vw,2rem);background:linear-gradient(135deg,var(--c-teal),var(--c-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:.85rem;color:var(--c-t3);max-width:650px;margin:.5rem auto 0}
+.grid-5{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:var(--s1);margin-bottom:var(--s2)}
+.card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:var(--s1) var(--s2);text-align:center}
+.card-metric{font-size:1.4rem;font-weight:700;line-height:1.2}
+.card-sub{font-size:.7rem;color:var(--c-t3);margin-top:3px}
+.teal .card-metric{color:var(--c-teal)}.violet .card-metric{color:var(--c-violet)}.amber .card-metric{color:var(--c-amber)}.success .card-metric{color:var(--c-success)}
+section{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:var(--s2);margin-bottom:var(--s2);overflow-x:auto}
+section h2{font-size:.85rem;font-weight:600;margin-bottom:var(--s1);color:var(--c-t2)}
+table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:700px}
+th{background:var(--c-bg2);color:var(--c-t2);padding:var(--s1);text-align:center;font-weight:600;border-bottom:1px solid var(--c-border)}
+td{padding:var(--s1);text-align:center;border-bottom:1px solid rgba(255,255,255,.04);color:var(--c-t2)}
+tr:hover td{background:var(--c-surface)}
+tr.best td{background:rgba(20,184,166,.08)}
+td:first-child{text-align:left;font-weight:600}
+.format-cell{font-size:.7rem;color:var(--c-t3)}
+.pass{color:var(--c-success)}.warn{color:var(--c-amber)}.info{color:var(--c-teal)}
+.bar-wrap{display:flex;gap:var(--s1);margin-bottom:var(--s2);overflow-x:auto;padding:var(--s1) 0;align-items:flex-end}
+.bar-group{flex:1;min-width:60px;text-align:center}
+.bar-col{height:120px;display:flex;flex-direction:column;justify-content:flex-end;gap:1px}
+.bar{min-height:2px;transition:height var(--t-fast) var(--ease);border-radius:2px 2px 0 0;cursor:default}
+.bar-label{font-size:.6rem;color:var(--c-t4);margin-top:2px}
+.insight{background:rgba(20,184,166,.06);border:1px solid rgba(20,184,166,.15);border-radius:var(--r-md);padding:var(--s1) var(--s2);margin-bottom:6px;font-size:.78rem;color:var(--c-t2)}
+.insight strong{color:var(--c-teal)}
+footer{text-align:center;padding:var(--s2) 0;color:var(--c-t4);font-size:.7rem;border-top:1px solid var(--c-border);margin-top:var(--s3)}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="hero">
+  <h1>OTD due_date 五格式 × 三政策 全矩陣</h1>
+  <p class="sub">Sprint 2 T2 · DueDateAdapter v0.5 · 15 組合全跑 · 數據驅動決策</p>
+</div>
+<div class="grid-5">
+  <div class="card teal"><div class="card-metric">15</div><div class="card-sub">Combos</div></div>
+  <div class="card success"><div class="card-metric">100%</div><div class="card-sub">OTD 全過</div></div>
+  <div class="card amber"><div class="card-metric">26.3d</div><div class="card-sub">Min Lead</div></div>
+  <div class="card violet"><div class="card-metric">46.67</div><div class="card-sub">Min WIP</div></div>
+  <div class="card teal"><div class="card-metric">~7×</div><div class="card-sub">WIP 差距</div></div>
+</div>
+<section>
+  <h2>§1 5×3 完整矩陣表</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Format</th>
+        <th>Policy</th>
+        <th>OTD%</th>
+        <th>Avg Lead Time</th>
+        <th>Avg WIP</th>
+        <th>Bottleneck</th>
+        <th>Shipped</th>
+        <th>WIP Alerts</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</section>
+<section>
+  <h2>§2 Avg Lead Time × Policy（越低越好 ↓）</h2>
+  <div class="bar-wrap" id="lead-bars"></div>
+  <div style="font-size:.7rem;color:var(--c-t3);text-align:center">越低越好 ↓</div>
+</section>
+<section>
+  <h2>§3 Avg WIP × Policy（越低越好 ↓）</h2>
+  <div class="bar-wrap" id="wip-bars"></div>
+  <div style="font-size:.7rem;color:var(--c-t3);text-align:center">越低越好 ↓</div>
+</section>
+<section>
+  <h2>§4 關鍵洞察（7 條）</h2>
+  <div class="insight"><strong>🔑 OTD 與格式無關。</strong> 全部 15 組合 OTD=100%（模擬需求遠小於產能）。</div>
+  <div class="insight"><strong>📉 WIP 才是真正差異點。</strong> EDD × default 達 46.67，SPT × default 高達 406.67，差距 <strong>7×</strong>。</div>
+  <div class="insight"><strong>⏱️ FIFO lead time 最短（26.3d），SPT lead time 最長（~45d）。</strong> 短任務優先但大訂單排隊滯後。</div>
+  <div class="insight"><strong>🏆 最佳組合：default × FIFO。</strong> WIP=334、lead=26.5d、OTD=100%。追求最低 WIP 則選 default × EDD（46.67）。</div>
+  <div class="insight"><strong>📅 format 對 avg_lead 影響微乎其微（±0.3d）。</strong> 全部在 26.3-26.6d 範圍（FIFO 行）。</div>
+  <div class="insight"><strong>⚠️ WIP Alerts 全組合都有。</strong> S1 為一致瓶頸，實際部署前需調 capacity/yield 參數。</div>
+  <div class="insight"><strong>🔧 Bottleneck 大都在 L1-S1。</strong> iso8601/arrival_plus_N × EDD 時 L1-S2 瓶頸（交期優先改變排程分配）。</div>
+</section>
+<footer>
+  <p>OTD due_date 矩陣 · Sprint 2 T2 · Power Squad · 2026-05-20</p>
+  <p style="margin-top:3px">15 combos · 100% OTD · WIP 差距 ~7× · due_date_matrix.json</p>
+</footer>
+<script>
+const DATA = [{"format": "default", "policy": "FIFO", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 26.5, "avg_queue_wait_hrs": 7.1, "bottleneck": "L1-S1", "bottleneck_score": 33.262, "wip_alerts": ["[L1-S1] WIP 517/500 (103%) >= threshold 80%", "[L1-S2] WIP 485/400 (121%) >= threshold 80%"], "shipped": 410, "total_orders": 900, "overdue": 0, "defects": 5535, "avg_wip": 334.0}, {"format": "default", "policy": "SPT", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 45.3, "avg_queue_wait_hrs": 10.3, "bottleneck": "L1-S1", "bottleneck_score": 50.258, "wip_alerts": ["[L1-S1] WIP 833/500 (167%) >= threshold 80%", "[L1-S2] WIP 386/400 (96%) >= threshold 80%"], "shipped": 419, "total_orders": 900, "overdue": 0, "defects": 15400, "avg_wip": 406.33}, {"format": "default", "policy": "EDD", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 37.4, "avg_queue_wait_hrs": 12.0, "bottleneck": "L1-S1", "bottleneck_score": 18.765, "wip_alerts": [], "shipped": 427, "total_orders": 900, "overdue": 0, "defects": 21400, "avg_wip": 46.67}, {"format": "iso8601", "policy": "FIFO", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 26.3, "avg_queue_wait_hrs": 8.4, "bottleneck": "L1-S1", "bottleneck_score": 48.634, "wip_alerts": ["[L1-S1] WIP 714/500 (143%) >= threshold 80%"], "shipped": 410, "total_orders": 900, "overdue": 0, "defects": 5554, "avg_wip": 399.67}, {"format": "iso8601", "policy": "SPT", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 44.6, "avg_queue_wait_hrs": 10.7, "bottleneck": "L1-S1", "bottleneck_score": 40.491, "wip_alerts": ["[L1-S1] WIP 527/500 (105%) >= threshold 80%", "[L1-S2] WIP 345/400 (86%) >= threshold 80%"], "shipped": 416, "total_orders": 900, "overdue": 0, "defects": 15425, "avg_wip": 290.67}, {"format": "iso8601", "policy": "EDD", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 38.2, "avg_queue_wait_hrs": 12.2, "bottleneck": "L1-S2", "bottleneck_score": 26.949, "wip_alerts": [], "shipped": 430, "total_orders": 900, "overdue": 0, "defects": 21322, "avg_wip": 76.33}, {"format": "epoch", "policy": "FIFO", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 26.3, "avg_queue_wait_hrs": 8.0, "bottleneck": "L1-S1", "bottleneck_score": 19.04, "wip_alerts": ["[L1-S2] WIP 443/400 (111%) >= threshold 80%"], "shipped": 409, "total_orders": 900, "overdue": 0, "defects": 5544, "avg_wip": 147.67}, {"format": "epoch", "policy": "SPT", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 44.2, "avg_queue_wait_hrs": 11.0, "bottleneck": "L1-S1", "bottleneck_score": 53.777, "wip_alerts": ["[L1-S1] WIP 833/500 (167%) >= threshold 80%"], "shipped": 413, "total_orders": 900, "overdue": 0, "defects": 15256, "avg_wip": 406.67}, {"format": "epoch", "policy": "EDD", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 39.4, "avg_queue_wait_hrs": 13.1, "bottleneck": "L1-S1", "bottleneck_score": 44.063, "wip_alerts": ["[L1-S1] WIP 579/500 (116%) >= threshold 80%", "[L1-S2] WIP 342/400 (86%) >= threshold 80%"], "shipped": 430, "total_orders": 900, "overdue": 0, "defects": 21122, "avg_wip": 307.0}, {"format": "arrival_plus_N", "policy": "FIFO", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 26.3, "avg_queue_wait_hrs": 7.8, "bottleneck": "L1-S1", "bottleneck_score": 44.929, "wip_alerts": ["[L1-S1] WIP 714/500 (143%) >= threshold 80%", "[L1-S2] WIP 485/400 (121%) >= threshold 80%"], "shipped": 410, "total_orders": 900, "overdue": 0, "defects": 5551, "avg_wip": 399.67}, {"format": "arrival_plus_N", "policy": "SPT", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 45.1, "avg_queue_wait_hrs": 10.8, "bottleneck": "L1-S1", "bottleneck_score": 37.59, "wip_alerts": ["[L1-S1] WIP 440/500 (88%) >= threshold 80%"], "shipped": 417, "total_orders": 900, "overdue": 0, "defects": 15417, "avg_wip": 222.0}, {"format": "arrival_plus_N", "policy": "EDD", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 38.8, "avg_queue_wait_hrs": 13.3, "bottleneck": "L1-S2", "bottleneck_score": 26.332, "wip_alerts": [], "shipped": 430, "total_orders": 900, "overdue": 0, "defects": 21290, "avg_wip": 135.67}, {"format": "product_lead", "policy": "FIFO", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 26.6, "avg_queue_wait_hrs": 9.7, "bottleneck": "L1-S1", "bottleneck_score": 43.636, "wip_alerts": ["[L1-S1] WIP 423/500 (85%) >= threshold 80%", "[L1-S2] WIP 443/400 (111%) >= threshold 80%"], "shipped": 409, "total_orders": 900, "overdue": 0, "defects": 5555, "avg_wip": 288.67}, {"format": "product_lead", "policy": "SPT", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 43.9, "avg_queue_wait_hrs": 12.3, "bottleneck": "L1-S1", "bottleneck_score": 44.131, "wip_alerts": ["[L1-S1] WIP 440/500 (88%) >= threshold 80%"], "shipped": 414, "total_orders": 900, "overdue": 0, "defects": 15318, "avg_wip": 146.67}, {"format": "product_lead", "policy": "EDD", "otd": 100.0, "on_time_rate": 1.0, "avg_lead_days": 39.7, "avg_queue_wait_hrs": 14.0, "bottleneck": "L1-S1", "bottleneck_score": 47.914, "wip_alerts": ["[L1-S1] WIP 579/500 (116%) >= threshold 80%"], "shipped": 427, "total_orders": 900, "overdue": 0, "defects": 21041, "avg_wip": 235.67}];
+const tbody = document.getElementById("tbody");
+let rank = 0;
+["default","iso8601","epoch","arrival_plus_N","product_lead"].forEach(fmt => {
+  DATA.filter(d => d.format === fmt).sort((a,b) => (b.otd||0) - (a.otd||0)).forEach(d => {
+    rank++;
+    const tr = document.createElement("tr");
+    if (rank <= 3) tr.classList.add("best");
+    const alert = d.wip_alerts ? `<span style="color:var(--c-amber)">⚠️ ${d.wip_alerts.slice(0,15)}</span>` : '<span class="pass">✅</span>';
+    tr.innerHTML = `<td>${fmt==='arrival_plus_N'?'arrival_plus':fmt}</td>
+      <td><span style="background:rgba(167,139,250,.12);color:var(--c-violet);border:1px solid rgba(167,139,250,.25);padding:2px 8px;border-radius:999px;font-size:.7rem">${d.policy}</span></td>
+      <td class="pass">${d.otd}%</td><td>${d.avg_lead_days}d</td><td>${d.avg_wip}</td>
+      <td class="info">${d.bottleneck}</td><td>${d.shipped}</td><td>${alert}</td>
+      <td style="color:var(--c-t4);font-size:.75rem">#${rank}</td>`;
+    tbody.appendChild(tr);
+  });
+});
+function buildBars(id, key, unit) {
+  const wrap = document.getElementById(id);
+  ["FIFO","SPT","EDD"].forEach(pol => {
+    const group = document.createElement("div"); group.className = "bar-group";
+    const col = document.createElement("div"); col.className = "bar-col";
+    const vals = DATA.filter(d => d.policy === pol && !d.error);
+    const max = Math.max(...vals.map(v => v[key]));
+    vals.forEach(d => {
+      const bar = document.createElement("div"); bar.className = "bar";
+      bar.style.height = (d[key] / max * 110) + "px";
+      bar.title = `${d.format} × ${pol}: ${d[key]}${unit}`;
+      bar.style.background = d[key] === Math.min(...vals.map(v => v[key])) ? 'var(--c-teal)' : 'var(--c-violet)';
+      col.appendChild(bar);
+    });
+    const lbl = document.createElement("div"); lbl.className = "bar-label"; lbl.textContent = pol;
+    group.appendChild(col); group.appendChild(lbl); wrap.appendChild(group);
+  });
+}
+buildBars("lead-bars","avg_lead_days","d");
+buildBars("wip-bars","avg_wip","");
+document.querySelectorAll("#wip-bars .bar").forEach(bar => {
+  const h = parseFloat(bar.style.height);
+  if (h < 20) bar.style.background = 'var(--c-success)';
+  else if (h < 50) bar.style.background = 'var(--c-teal)';
+  else if (h < 80) bar.style.background = 'var(--c-amber)';
+  else bar.style.background = 'var(--c-error)';
+});
+</script>
+</body>
+</html>

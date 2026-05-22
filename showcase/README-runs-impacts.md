@@ -5,6 +5,8 @@
 
 ---
 
+[![CI](https://github.com/FattyManAW/pptx-to-html-slides/actions/workflows/deploy.yml/badge.svg)](https://github.com/FattyManAW/pptx-to-html-slides/actions/workflows/deploy.yml)
+
 ## 📋 產品說明
 
 润思IMPACTS APS（智能先進排程系統）生態伙伴解決方案投影片，展示大連潤思科技基於用友 BIP 平台的智能製造解決方案。涵蓋 APS 核心功能、生態架構、行業場景與客戶案例。

@@ -1,0 +1,160 @@
+/* ═══════════════════════════════════════════
+   用友簡報 Design Tokens v1
+   Track D — Christina
+   --ds-yonyou-* brand palette
+   ═══════════════════════════════════════════ */
+
+:root {
+  /* ── Yonyou Brand Colors ── */
+  --ds-yonyou-red: #d4302f;           /* 用友紅 (logo primary) */
+  --ds-yonyou-gold: #c9a84c;          /* 用友金 (accent) */
+  --ds-yonyou-ink: #1a1410;           /* 墨色 (deep bg) */
+
+  /* ── Dim/surface variants ── */
+  --ds-yonyou-red-dim: rgba(212,48,47,0.10);
+  --ds-yonyou-red-glow: rgba(212,48,47,0.20);
+  --ds-yonyou-gold-dim: rgba(201,168,76,0.10);
+  --ds-yonyou-gold-glow: rgba(201,168,76,0.15);
+  --ds-yonyou-ink-surface: #161218;
+  --ds-yonyou-ink-surface2: #1c1822;
+
+  /* ── Typography Scale ── */
+  --ds-yonyou-display-size: 2.6rem;
+  --ds-yonyou-h1-size: 1.8rem;
+  --ds-yonyou-h2-size: 1.4rem;
+  --ds-yonyou-h3-size: 1.1rem;
+  --ds-yonyou-body-size: 0.92rem;
+  --ds-yonyou-sm-size: 0.78rem;
+
+  /* ── Chinese Typography ── */
+  --ds-yonyou-font-display: "Ma Shan Zheng", "Noto Serif SC", "STSong", "SimSun", serif;
+  --ds-yonyou-font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+
+  /* ── Spacing & Rhythm ── */
+  --ds-yonyou-tracking-display: 0.06em;
+  --ds-yonyou-tracking-heading: 0.03em;
+  --ds-yonyou-leading-body: 1.8;
+  --ds-yonyou-leading-heading: 1.35;
+
+  /* ── Chart Palette (5 colors) ── */
+  --ds-yonyou-chart-red: #d4302f;
+  --ds-yonyou-chart-gold: #c9a84c;
+  --ds-yonyou-chart-jade: #2d8a6e;
+  --ds-yonyou-chart-orange: #e07b3c;
+  --ds-yonyou-chart-blue: #3b7dd8;
+
+  /* ── Timing Markers ── */
+  --ds-yonyou-timing-color: var(--ds-yonyou-gold);
+  --ds-yonyou-timing-bg: var(--ds-yonyou-gold-dim);
+
+  /* ── Section Accents ── */
+  --ds-yonyou-section-border: var(--ds-yonyou-red);
+  --ds-yonyou-card-accent: var(--ds-yonyou-red-dim);
+}
+
+/* ═══════════════════════════════════════════
+   Universal Classes
+   ═══════════════════════════════════════════ */
+
+.yonyou-slide {
+  background: var(--ds-bg);
+  color: var(--ds-text-body);
+  font-family: var(--ds-yonyou-font-body);
+  font-size: var(--ds-yonyou-body-size);
+  line-height: var(--ds-yonyou-leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.yonyou-display {
+  font-family: var(--ds-yonyou-font-display);
+  font-size: var(--ds-yonyou-display-size);
+  font-weight: 700;
+  letter-spacing: var(--ds-yonyou-tracking-display);
+  color: var(--ds-text-display);
+  line-height: var(--ds-yonyou-leading-heading);
+}
+
+.yonyou-h1 {
+  font-size: var(--ds-yonyou-h1-size);
+  font-weight: 700;
+  letter-spacing: var(--ds-yonyou-tracking-heading);
+  color: var(--ds-text-display);
+  line-height: var(--ds-yonyou-leading-heading);
+}
+
+.yonyou-h2 {
+  font-size: var(--ds-yonyou-h2-size);
+  font-weight: 600;
+  color: var(--ds-text-heading);
+}
+
+.yonyou-accent-text {
+  background: linear-gradient(135deg, var(--ds-yonyou-red), var(--ds-yonyou-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.yonyou-card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--r-md);
+  padding: var(--s6);
+  transition: border-color var(--t-fast);
+}
+
+.yonyou-card:hover {
+  border-color: var(--ds-yonyou-card-accent);
+}
+
+.yonyou-timing {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--ds-yonyou-sm-size);
+  color: var(--ds-yonyou-timing-color);
+  background: var(--ds-yonyou-timing-bg);
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.yonyou-tag-red {
+  background: var(--ds-yonyou-red-dim);
+  color: var(--ds-yonyou-red);
+  font-size: var(--ds-yonyou-sm-size);
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+.yonyou-tag-gold {
+  background: var(--ds-yonyou-gold-dim);
+  color: var(--ds-yonyou-gold);
+  font-size: var(--ds-yonyou-sm-size);
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+.yonyou-section-title {
+  font-size: var(--ds-yonyou-h2-size);
+  font-weight: 700;
+  color: var(--ds-text-display);
+  border-bottom: 2px solid var(--ds-yonyou-section-border);
+  padding-bottom: var(--s3);
+  display: inline-block;
+}
+
+/* ═══════════════════════════════════════════
+   P0 QA Checklist (8 項)
+   1. 所有 --ds-yonyou-* tokens declared ✅
+   2. .yonyou-display font-family loads ✅
+   3. .yonyou-card hover effect ✅
+   4. .yonyou-accent-text gradient ✅
+   5. .yonyou-timing component ✅
+   6. .yonyou-tag-red/gold ✅
+   7. Chart palette 5 colors ✅
+   8. Section border accent ✅
+   ═══════════════════════════════════════════ */

@@ -1,0 +1,6218 @@
+[
+  {
+    "ts": "2025-01-01T08:00:00",
+    "day": 0,
+    "hour": 0,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 509,
+        "processed": 0,
+        "yield_rate": 0.995,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.998,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T09:00:00",
+    "day": 0,
+    "hour": 1,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 509,
+        "processed": 120,
+        "yield_rate": 0.9949,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.998,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T10:00:00",
+    "day": 0,
+    "hour": 2,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 509,
+        "processed": 240,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.998,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T11:00:00",
+    "day": 0,
+    "hour": 3,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 268,
+        "yield_rate": 0.9947,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 266,
+        "processed": 0,
+        "yield_rate": 0.998,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T12:00:00",
+    "day": 0,
+    "hour": 4,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 243,
+        "processed": 268,
+        "yield_rate": 0.9947,
+        "bottleneck_score": 0.495,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 266,
+        "processed": 0,
+        "yield_rate": 0.998,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T13:00:00",
+    "day": 0,
+    "hour": 5,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 690,
+        "processed": 268,
+        "yield_rate": 0.9947,
+        "bottleneck_score": 0.793,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 266,
+        "processed": 80,
+        "yield_rate": 0.998,
+        "bottleneck_score": 1.665,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T14:00:00",
+    "day": 0,
+    "hour": 6,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 690,
+        "processed": 388,
+        "yield_rate": 0.9946,
+        "bottleneck_score": 0.595,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 266,
+        "processed": 160,
+        "yield_rate": 0.9979,
+        "bottleneck_score": 0.833,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T15:00:00",
+    "day": 0,
+    "hour": 7,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 690,
+        "processed": 508,
+        "yield_rate": 0.9945,
+        "bottleneck_score": 0.476,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 240,
+        "yield_rate": 0.9979,
+        "bottleneck_score": 0.333,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 266,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T16:00:00",
+    "day": 0,
+    "hour": 8,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 513,
+        "yield_rate": 0.9945,
+        "bottleneck_score": 0.167,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 243,
+        "processed": 240,
+        "yield_rate": 0.9979,
+        "bottleneck_score": 1.072,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 266,
+        "processed": 0,
+        "yield_rate": 0.992,
+        "bottleneck_score": 0.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T17:00:00",
+    "day": 0,
+    "hour": 9,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 447,
+        "processed": 513,
+        "yield_rate": 0.9945,
+        "bottleneck_score": 2.21,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 243,
+        "processed": 240,
+        "yield_rate": 0.9979,
+        "bottleneck_score": 1.072,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 187,
+        "yield_rate": 0.9919,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T18:00:00",
+    "day": 0,
+    "hour": 10,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 671,
+        "processed": 513,
+        "yield_rate": 0.9945,
+        "bottleneck_score": 2.732,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 243,
+        "processed": 320,
+        "yield_rate": 0.9978,
+        "bottleneck_score": 0.804,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 187,
+        "yield_rate": 0.9919,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T19:00:00",
+    "day": 0,
+    "hour": 11,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 671,
+        "processed": 633,
+        "yield_rate": 0.9944,
+        "bottleneck_score": 2.342,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 243,
+        "processed": 400,
+        "yield_rate": 0.9978,
+        "bottleneck_score": 0.643,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 187,
+        "yield_rate": 0.9919,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T20:00:00",
+    "day": 0,
+    "hour": 12,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 671,
+        "processed": 753,
+        "yield_rate": 0.9942,
+        "bottleneck_score": 2.049,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 480,
+        "yield_rate": 0.9978,
+        "bottleneck_score": 0.333,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 243,
+        "processed": 187,
+        "yield_rate": 0.9919,
+        "bottleneck_score": 2.486,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T21:00:00",
+    "day": 0,
+    "hour": 13,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 671,
+        "processed": 873,
+        "yield_rate": 0.9941,
+        "bottleneck_score": 1.822,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 480,
+        "yield_rate": 0.9978,
+        "bottleneck_score": 0.333,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 243,
+        "processed": 187,
+        "yield_rate": 0.9919,
+        "bottleneck_score": 2.486,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T22:00:00",
+    "day": 0,
+    "hour": 14,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 963,
+        "yield_rate": 0.994,
+        "bottleneck_score": 0.7,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 447,
+        "processed": 480,
+        "yield_rate": 0.9978,
+        "bottleneck_score": 1.059,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-01T23:00:00",
+    "day": 0,
+    "hour": 15,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 224,
+        "processed": 963,
+        "yield_rate": 0.994,
+        "bottleneck_score": 2.606,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 447,
+        "processed": 480,
+        "yield_rate": 0.9978,
+        "bottleneck_score": 1.059,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T00:00:00",
+    "day": 0,
+    "hour": 16,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 314,
+        "processed": 963,
+        "yield_rate": 0.994,
+        "bottleneck_score": 2.93,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 447,
+        "processed": 560,
+        "yield_rate": 0.9977,
+        "bottleneck_score": 0.907,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T01:00:00",
+    "day": 0,
+    "hour": 17,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 314,
+        "processed": 1083,
+        "yield_rate": 0.9939,
+        "bottleneck_score": 2.664,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 447,
+        "processed": 640,
+        "yield_rate": 0.9977,
+        "bottleneck_score": 0.794,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T02:00:00",
+    "day": 0,
+    "hour": 18,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 1188,
+        "yield_rate": 0.9938,
+        "bottleneck_score": 1.5,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 447,
+        "processed": 720,
+        "yield_rate": 0.9976,
+        "bottleneck_score": 0.706,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T03:00:00",
+    "day": 0,
+    "hour": 19,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 90,
+        "processed": 1188,
+        "yield_rate": 0.9938,
+        "bottleneck_score": 3.442,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 447,
+        "processed": 800,
+        "yield_rate": 0.9976,
+        "bottleneck_score": 0.635,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T04:00:00",
+    "day": 0,
+    "hour": 20,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 587,
+        "processed": 1188,
+        "yield_rate": 0.9938,
+        "bottleneck_score": 6.341,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 842,
+        "yield_rate": 0.9976,
+        "bottleneck_score": 0.273,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T05:00:00",
+    "day": 0,
+    "hour": 21,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 1278,
+        "yield_rate": 0.9937,
+        "bottleneck_score": 2.692,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 224,
+        "processed": 842,
+        "yield_rate": 0.9976,
+        "bottleneck_score": 0.567,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T06:00:00",
+    "day": 0,
+    "hour": 22,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 497,
+        "processed": 1278,
+        "yield_rate": 0.9937,
+        "bottleneck_score": 8.59,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 224,
+        "processed": 842,
+        "yield_rate": 0.9976,
+        "bottleneck_score": 0.567,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T07:00:00",
+    "day": 0,
+    "hour": 23,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 752,
+        "processed": 1278,
+        "yield_rate": 0.9937,
+        "bottleneck_score": 10.786,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 224,
+        "processed": 922,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 0.52,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T08:00:00",
+    "day": 1,
+    "hour": 0,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 752,
+        "processed": 1398,
+        "yield_rate": 0.9936,
+        "bottleneck_score": 10.016,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 963,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 0.308,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T09:00:00",
+    "day": 1,
+    "hour": 1,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 752,
+        "processed": 1518,
+        "yield_rate": 0.9935,
+        "bottleneck_score": 9.348,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 90,
+        "processed": 963,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 0.565,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T10:00:00",
+    "day": 1,
+    "hour": 2,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 752,
+        "processed": 1638,
+        "yield_rate": 0.9934,
+        "bottleneck_score": 8.764,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 90,
+        "processed": 963,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 0.565,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T11:00:00",
+    "day": 1,
+    "hour": 3,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 752,
+        "processed": 1758,
+        "yield_rate": 0.9932,
+        "bottleneck_score": 8.248,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 964,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 0.429,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 90,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.635,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T12:00:00",
+    "day": 1,
+    "hour": 4,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 1779,
+        "yield_rate": 0.9932,
+        "bottleneck_score": 3.111,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 497,
+        "processed": 964,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 1.121,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 90,
+        "processed": 351,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 1.635,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T13:00:00",
+    "day": 1,
+    "hour": 5,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 255,
+        "processed": 1779,
+        "yield_rate": 0.9932,
+        "bottleneck_score": 6.711,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 497,
+        "processed": 964,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 1.121,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 441,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T14:00:00",
+    "day": 1,
+    "hour": 6,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 582,
+        "processed": 1779,
+        "yield_rate": 0.9932,
+        "bottleneck_score": 9.618,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 497,
+        "processed": 1044,
+        "yield_rate": 0.9975,
+        "bottleneck_score": 1.046,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 90,
+        "processed": 441,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.453,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T15:00:00",
+    "day": 1,
+    "hour": 7,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 582,
+        "processed": 1899,
+        "yield_rate": 0.9931,
+        "bottleneck_score": 9.112,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 497,
+        "processed": 1124,
+        "yield_rate": 0.9974,
+        "bottleneck_score": 0.981,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 90,
+        "processed": 441,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.453,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T16:00:00",
+    "day": 1,
+    "hour": 8,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 582,
+        "processed": 2019,
+        "yield_rate": 0.993,
+        "bottleneck_score": 8.656,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 497,
+        "processed": 1204,
+        "yield_rate": 0.9974,
+        "bottleneck_score": 0.923,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 442,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T17:00:00",
+    "day": 1,
+    "hour": 9,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 2036,
+        "yield_rate": 0.993,
+        "bottleneck_score": 3.81,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 497,
+        "processed": 1284,
+        "yield_rate": 0.9974,
+        "bottleneck_score": 0.872,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 442,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T18:00:00",
+    "day": 1,
+    "hour": 10,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 327,
+        "processed": 2036,
+        "yield_rate": 0.993,
+        "bottleneck_score": 8.743,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 497,
+        "processed": 1364,
+        "yield_rate": 0.9973,
+        "bottleneck_score": 0.826,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 442,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.0,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T19:00:00",
+    "day": 1,
+    "hour": 11,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 472,
+        "processed": 2036,
+        "yield_rate": 0.993,
+        "bottleneck_score": 10.275,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 1444,
+        "yield_rate": 0.9973,
+        "bottleneck_score": 0.35,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 497,
+        "processed": 442,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.871,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T20:00:00",
+    "day": 1,
+    "hour": 12,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 472,
+        "processed": 2156,
+        "yield_rate": 0.9928,
+        "bottleneck_score": 9.808,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 255,
+        "processed": 1444,
+        "yield_rate": 0.9973,
+        "bottleneck_score": 0.655,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 497,
+        "processed": 442,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 1.871,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T21:00:00",
+    "day": 1,
+    "hour": 13,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 472,
+        "processed": 2276,
+        "yield_rate": 0.9927,
+        "bottleneck_score": 9.382,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 255,
+        "processed": 1444,
+        "yield_rate": 0.9973,
+        "bottleneck_score": 0.655,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 497,
+        "processed": 642,
+        "yield_rate": 0.9915,
+        "bottleneck_score": 1.497,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T22:00:00",
+    "day": 1,
+    "hour": 14,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 2365,
+        "yield_rate": 0.9926,
+        "bottleneck_score": 4.625,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 255,
+        "processed": 1524,
+        "yield_rate": 0.9972,
+        "bottleneck_score": 0.624,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 497,
+        "processed": 842,
+        "yield_rate": 0.9913,
+        "bottleneck_score": 1.248,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-02T23:00:00",
+    "day": 1,
+    "hour": 15,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 145,
+        "processed": 2365,
+        "yield_rate": 0.9926,
+        "bottleneck_score": 7.901,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 255,
+        "processed": 1604,
+        "yield_rate": 0.9972,
+        "bottleneck_score": 0.595,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 864,
+        "yield_rate": 0.9913,
+        "bottleneck_score": 0.714,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T00:00:00",
+    "day": 1,
+    "hour": 16,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 534,
+        "processed": 2365,
+        "yield_rate": 0.9926,
+        "bottleneck_score": 12.667,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 1684,
+        "yield_rate": 0.9972,
+        "bottleneck_score": 0.348,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 255,
+        "processed": 864,
+        "yield_rate": 0.9913,
+        "bottleneck_score": 1.076,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T01:00:00",
+    "day": 1,
+    "hour": 17,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 534,
+        "processed": 2485,
+        "yield_rate": 0.9925,
+        "bottleneck_score": 12.16,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 327,
+        "processed": 1684,
+        "yield_rate": 0.9972,
+        "bottleneck_score": 0.711,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 255,
+        "processed": 864,
+        "yield_rate": 0.9913,
+        "bottleneck_score": 1.076,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T02:00:00",
+    "day": 1,
+    "hour": 18,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 2511,
+        "yield_rate": 0.9925,
+        "bottleneck_score": 5.654,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 327,
+        "processed": 1684,
+        "yield_rate": 0.9972,
+        "bottleneck_score": 0.711,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1040,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 0.75,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T03:00:00",
+    "day": 1,
+    "hour": 19,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 389,
+        "processed": 2511,
+        "yield_rate": 0.9925,
+        "bottleneck_score": 12.856,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 327,
+        "processed": 1764,
+        "yield_rate": 0.9971,
+        "bottleneck_score": 0.682,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1040,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 0.75,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T04:00:00",
+    "day": 1,
+    "hour": 20,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 461,
+        "processed": 2511,
+        "yield_rate": 0.9925,
+        "bottleneck_score": 13.898,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 327,
+        "processed": 1844,
+        "yield_rate": 0.9971,
+        "bottleneck_score": 0.654,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1040,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 0.75,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T05:00:00",
+    "day": 1,
+    "hour": 21,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 461,
+        "processed": 2631,
+        "yield_rate": 0.9924,
+        "bottleneck_score": 13.383,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 1924,
+        "yield_rate": 0.997,
+        "bottleneck_score": 0.346,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 327,
+        "processed": 1040,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 1.161,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T06:00:00",
+    "day": 1,
+    "hour": 22,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 461,
+        "processed": 2751,
+        "yield_rate": 0.9922,
+        "bottleneck_score": 12.905,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 145,
+        "processed": 1924,
+        "yield_rate": 0.997,
+        "bottleneck_score": 0.524,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 327,
+        "processed": 1040,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 1.161,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T07:00:00",
+    "day": 1,
+    "hour": 23,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 461,
+        "processed": 2871,
+        "yield_rate": 0.9921,
+        "bottleneck_score": 12.46,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 145,
+        "processed": 1924,
+        "yield_rate": 0.997,
+        "bottleneck_score": 0.524,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 327,
+        "processed": 1240,
+        "yield_rate": 0.991,
+        "bottleneck_score": 1.032,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T08:00:00",
+    "day": 2,
+    "hour": 0,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 2903,
+        "yield_rate": 0.9921,
+        "bottleneck_score": 6.267,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 145,
+        "processed": 2004,
+        "yield_rate": 0.997,
+        "bottleneck_score": 0.505,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1290,
+        "yield_rate": 0.991,
+        "bottleneck_score": 0.7,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T09:00:00",
+    "day": 2,
+    "hour": 1,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 72,
+        "processed": 2903,
+        "yield_rate": 0.9921,
+        "bottleneck_score": 8.885,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 2045,
+        "yield_rate": 0.997,
+        "bottleneck_score": 0.357,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 145,
+        "processed": 1290,
+        "yield_rate": 0.991,
+        "bottleneck_score": 0.916,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T10:00:00",
+    "day": 2,
+    "hour": 2,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 463,
+        "processed": 2903,
+        "yield_rate": 0.9921,
+        "bottleneck_score": 14.959,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 389,
+        "processed": 2045,
+        "yield_rate": 0.997,
+        "bottleneck_score": 0.775,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 145,
+        "processed": 1290,
+        "yield_rate": 0.991,
+        "bottleneck_score": 0.916,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T11:00:00",
+    "day": 2,
+    "hour": 3,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 2975,
+        "yield_rate": 0.992,
+        "bottleneck_score": 7.516,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 389,
+        "processed": 2045,
+        "yield_rate": 0.997,
+        "bottleneck_score": 0.775,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1395,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 0.727,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T12:00:00",
+    "day": 2,
+    "hour": 4,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 391,
+        "processed": 2975,
+        "yield_rate": 0.992,
+        "bottleneck_score": 16.325,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 389,
+        "processed": 2125,
+        "yield_rate": 0.9969,
+        "bottleneck_score": 0.748,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1395,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 0.727,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T13:00:00",
+    "day": 2,
+    "hour": 5,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 622,
+        "processed": 2975,
+        "yield_rate": 0.992,
+        "bottleneck_score": 20.558,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 389,
+        "processed": 2205,
+        "yield_rate": 0.9969,
+        "bottleneck_score": 0.723,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1395,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 0.727,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T14:00:00",
+    "day": 2,
+    "hour": 6,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 622,
+        "processed": 3095,
+        "yield_rate": 0.9919,
+        "bottleneck_score": 19.915,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 389,
+        "processed": 2285,
+        "yield_rate": 0.9969,
+        "bottleneck_score": 0.7,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1395,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 0.727,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T15:00:00",
+    "day": 2,
+    "hour": 7,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 622,
+        "processed": 3215,
+        "yield_rate": 0.9918,
+        "bottleneck_score": 19.312,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 389,
+        "processed": 2365,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.678,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1395,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 0.727,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T16:00:00",
+    "day": 2,
+    "hour": 8,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 622,
+        "processed": 3335,
+        "yield_rate": 0.9917,
+        "bottleneck_score": 18.744,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 2407,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.333,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 389,
+        "processed": 1395,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 1.136,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T17:00:00",
+    "day": 2,
+    "hour": 9,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 3369,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 8.114,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 72,
+        "processed": 2407,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.429,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 389,
+        "processed": 1395,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 1.136,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T18:00:00",
+    "day": 2,
+    "hour": 10,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 231,
+        "processed": 3369,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 14.119,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 72,
+        "processed": 2407,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.429,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 389,
+        "processed": 1595,
+        "yield_rate": 0.9907,
+        "bottleneck_score": 1.042,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T19:00:00",
+    "day": 2,
+    "hour": 11,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 314,
+        "processed": 3369,
+        "yield_rate": 0.9916,
+        "bottleneck_score": 15.722,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 2408,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.353,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T20:00:00",
+    "day": 2,
+    "hour": 12,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 314,
+        "processed": 3489,
+        "yield_rate": 0.9915,
+        "bottleneck_score": 15.285,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 391,
+        "processed": 2408,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.814,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T21:00:00",
+    "day": 2,
+    "hour": 13,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 3602,
+        "yield_rate": 0.9914,
+        "bottleneck_score": 9.135,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 391,
+        "processed": 2408,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.814,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T22:00:00",
+    "day": 2,
+    "hour": 14,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 83,
+        "processed": 3602,
+        "yield_rate": 0.9914,
+        "bottleneck_score": 12.542,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 391,
+        "processed": 2488,
+        "yield_rate": 0.9968,
+        "bottleneck_score": 0.791,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-03T23:00:00",
+    "day": 2,
+    "hour": 15,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 204,
+        "processed": 3602,
+        "yield_rate": 0.9914,
+        "bottleneck_score": 15.146,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 391,
+        "processed": 2568,
+        "yield_rate": 0.9967,
+        "bottleneck_score": 0.769,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T00:00:00",
+    "day": 2,
+    "hour": 16,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 3685,
+        "yield_rate": 0.9913,
+        "bottleneck_score": 10.474,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 391,
+        "processed": 2648,
+        "yield_rate": 0.9967,
+        "bottleneck_score": 0.748,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T01:00:00",
+    "day": 2,
+    "hour": 17,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 121,
+        "processed": 3685,
+        "yield_rate": 0.9913,
+        "bottleneck_score": 15.1,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 391,
+        "processed": 2728,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.729,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T02:00:00",
+    "day": 2,
+    "hour": 18,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 297,
+        "processed": 3685,
+        "yield_rate": 0.9913,
+        "bottleneck_score": 19.38,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 2770,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.359,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T03:00:00",
+    "day": 2,
+    "hour": 19,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 297,
+        "processed": 3805,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 18.883,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 231,
+        "processed": 2770,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.607,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T04:00:00",
+    "day": 2,
+    "hour": 20,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 3808,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 11.55,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 231,
+        "processed": 2770,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.607,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T05:00:00",
+    "day": 2,
+    "hour": 21,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 176,
+        "processed": 3808,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 17.88,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 231,
+        "processed": 2850,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.592,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.692,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T06:00:00",
+    "day": 2,
+    "hour": 22,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 527,
+        "processed": 3808,
+        "yield_rate": 0.9912,
+        "bottleneck_score": 27.164,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 2890,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.366,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 231,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.947,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T07:00:00",
+    "day": 2,
+    "hour": 23,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 527,
+        "processed": 3928,
+        "yield_rate": 0.9911,
+        "bottleneck_score": 26.502,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 83,
+        "processed": 2890,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.501,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 231,
+        "processed": 1745,
+        "yield_rate": 0.9906,
+        "bottleneck_score": 0.947,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T08:00:00",
+    "day": 3,
+    "hour": 0,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 3986,
+        "yield_rate": 0.991,
+        "bottleneck_score": 12.595,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 83,
+        "processed": 2890,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.501,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 1937,
+        "yield_rate": 0.9905,
+        "bottleneck_score": 0.714,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T09:00:00",
+    "day": 3,
+    "hour": 1,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 351,
+        "processed": 3986,
+        "yield_rate": 0.991,
+        "bottleneck_score": 24.314,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 2891,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.405,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 83,
+        "processed": 1937,
+        "yield_rate": 0.9905,
+        "bottleneck_score": 0.851,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T10:00:00",
+    "day": 3,
+    "hour": 2,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 649,
+        "processed": 3986,
+        "yield_rate": 0.991,
+        "bottleneck_score": 32.829,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 121,
+        "processed": 2891,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.589,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 83,
+        "processed": 1937,
+        "yield_rate": 0.9905,
+        "bottleneck_score": 0.851,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T11:00:00",
+    "day": 3,
+    "hour": 3,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 649,
+        "processed": 4106,
+        "yield_rate": 0.9909,
+        "bottleneck_score": 32.065,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 121,
+        "processed": 2891,
+        "yield_rate": 0.9966,
+        "bottleneck_score": 0.589,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2020,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 0.733,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T12:00:00",
+    "day": 3,
+    "hour": 4,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 649,
+        "processed": 4226,
+        "yield_rate": 0.9908,
+        "bottleneck_score": 31.336,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 121,
+        "processed": 2971,
+        "yield_rate": 0.9965,
+        "bottleneck_score": 0.576,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2020,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 0.733,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T13:00:00",
+    "day": 3,
+    "hour": 5,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 4341,
+        "yield_rate": 0.9907,
+        "bottleneck_score": 13.333,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 3011,
+        "yield_rate": 0.9965,
+        "bottleneck_score": 0.432,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 121,
+        "processed": 2020,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 0.897,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T14:00:00",
+    "day": 3,
+    "hour": 6,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 298,
+        "processed": 4341,
+        "yield_rate": 0.9907,
+        "bottleneck_score": 23.94,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 176,
+        "processed": 3011,
+        "yield_rate": 0.9965,
+        "bottleneck_score": 0.687,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 121,
+        "processed": 2020,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 0.897,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T15:00:00",
+    "day": 3,
+    "hour": 7,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 782,
+        "processed": 4341,
+        "yield_rate": 0.9907,
+        "bottleneck_score": 38.46,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 176,
+        "processed": 3011,
+        "yield_rate": 0.9965,
+        "bottleneck_score": 0.687,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2102,
+        "yield_rate": 0.9903,
+        "bottleneck_score": 0.75,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T16:00:00",
+    "day": 3,
+    "hour": 8,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 782,
+        "processed": 4461,
+        "yield_rate": 0.9905,
+        "bottleneck_score": 37.624,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 176,
+        "processed": 3091,
+        "yield_rate": 0.9965,
+        "bottleneck_score": 0.672,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2102,
+        "yield_rate": 0.9903,
+        "bottleneck_score": 0.75,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T17:00:00",
+    "day": 3,
+    "hour": 9,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 782,
+        "processed": 4581,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 36.823,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 3131,
+        "yield_rate": 0.9964,
+        "bottleneck_score": 0.457,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 176,
+        "processed": 2102,
+        "yield_rate": 0.9903,
+        "bottleneck_score": 0.955,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T18:00:00",
+    "day": 3,
+    "hour": 10,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 4643,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 14.062,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 351,
+        "processed": 3131,
+        "yield_rate": 0.9964,
+        "bottleneck_score": 0.939,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 176,
+        "processed": 2102,
+        "yield_rate": 0.9903,
+        "bottleneck_score": 0.955,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T19:00:00",
+    "day": 3,
+    "hour": 11,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 484,
+        "processed": 4643,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 30.955,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 351,
+        "processed": 3131,
+        "yield_rate": 0.9964,
+        "bottleneck_score": 0.939,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2239,
+        "yield_rate": 0.9902,
+        "bottleneck_score": 0.765,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T20:00:00",
+    "day": 3,
+    "hour": 12,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 783,
+        "processed": 4643,
+        "yield_rate": 0.9904,
+        "bottleneck_score": 40.361,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 351,
+        "processed": 3211,
+        "yield_rate": 0.9964,
+        "bottleneck_score": 0.919,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2239,
+        "yield_rate": 0.9902,
+        "bottleneck_score": 0.765,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T21:00:00",
+    "day": 3,
+    "hour": 13,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 783,
+        "processed": 4763,
+        "yield_rate": 0.9902,
+        "bottleneck_score": 39.537,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 351,
+        "processed": 3291,
+        "yield_rate": 0.9964,
+        "bottleneck_score": 0.9,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2239,
+        "yield_rate": 0.9902,
+        "bottleneck_score": 0.765,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T22:00:00",
+    "day": 3,
+    "hour": 14,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 783,
+        "processed": 4883,
+        "yield_rate": 0.9901,
+        "bottleneck_score": 38.747,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 3371,
+        "yield_rate": 0.9963,
+        "bottleneck_score": 0.469,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 351,
+        "processed": 2239,
+        "yield_rate": 0.9902,
+        "bottleneck_score": 1.113,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-04T23:00:00",
+    "day": 3,
+    "hour": 15,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 783,
+        "processed": 5003,
+        "yield_rate": 0.99,
+        "bottleneck_score": 37.987,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 298,
+        "processed": 3371,
+        "yield_rate": 0.9963,
+        "bottleneck_score": 0.89,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 351,
+        "processed": 2239,
+        "yield_rate": 0.9902,
+        "bottleneck_score": 1.113,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T00:00:00",
+    "day": 3,
+    "hour": 16,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 783,
+        "processed": 5123,
+        "yield_rate": 0.9899,
+        "bottleneck_score": 37.256,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 298,
+        "processed": 3371,
+        "yield_rate": 0.9963,
+        "bottleneck_score": 0.89,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 351,
+        "processed": 2439,
+        "yield_rate": 0.99,
+        "bottleneck_score": 1.051,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T01:00:00",
+    "day": 3,
+    "hour": 17,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 783,
+        "processed": 5123,
+        "yield_rate": 0.9899,
+        "bottleneck_score": 37.256,
+        "is_down": true,
+        "downtime_min": 30
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 298,
+        "processed": 3451,
+        "yield_rate": 0.9963,
+        "bottleneck_score": 0.873,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2513,
+        "yield_rate": 0.99,
+        "bottleneck_score": 0.737,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T02:00:00",
+    "day": 3,
+    "hour": 18,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 783,
+        "processed": 5123,
+        "yield_rate": 0.9899,
+        "bottleneck_score": 37.256,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 298,
+        "processed": 3531,
+        "yield_rate": 0.9962,
+        "bottleneck_score": 0.855,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2513,
+        "yield_rate": 0.99,
+        "bottleneck_score": 0.737,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T03:00:00",
+    "day": 3,
+    "hour": 19,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 5135,
+        "yield_rate": 0.9899,
+        "bottleneck_score": 14.245,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 3610,
+        "yield_rate": 0.9962,
+        "bottleneck_score": 0.481,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 298,
+        "processed": 2513,
+        "yield_rate": 0.99,
+        "bottleneck_score": 1.025,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T04:00:00",
+    "day": 3,
+    "hour": 20,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 299,
+        "processed": 5135,
+        "yield_rate": 0.9899,
+        "bottleneck_score": 25.327,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 484,
+        "processed": 3610,
+        "yield_rate": 0.9962,
+        "bottleneck_score": 1.105,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 298,
+        "processed": 2513,
+        "yield_rate": 0.99,
+        "bottleneck_score": 1.025,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T05:00:00",
+    "day": 3,
+    "hour": 21,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 640,
+        "processed": 5135,
+        "yield_rate": 0.9899,
+        "bottleneck_score": 36.136,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 484,
+        "processed": 3610,
+        "yield_rate": 0.9962,
+        "bottleneck_score": 1.105,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 298,
+        "processed": 2713,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 0.974,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T06:00:00",
+    "day": 3,
+    "hour": 22,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 640,
+        "processed": 5255,
+        "yield_rate": 0.9897,
+        "bottleneck_score": 35.467,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 484,
+        "processed": 3690,
+        "yield_rate": 0.9962,
+        "bottleneck_score": 1.084,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2736,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 0.714,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T07:00:00",
+    "day": 3,
+    "hour": 23,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 640,
+        "processed": 5375,
+        "yield_rate": 0.9896,
+        "bottleneck_score": 34.822,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 484,
+        "processed": 3770,
+        "yield_rate": 0.9961,
+        "bottleneck_score": 1.064,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2736,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 0.714,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T08:00:00",
+    "day": 4,
+    "hour": 0,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 5438,
+        "yield_rate": 0.9896,
+        "bottleneck_score": 15.0,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 484,
+        "processed": 3850,
+        "yield_rate": 0.9961,
+        "bottleneck_score": 1.045,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2736,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 0.714,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T09:00:00",
+    "day": 4,
+    "hour": 1,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 341,
+        "processed": 5438,
+        "yield_rate": 0.9896,
+        "bottleneck_score": 25.32,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 484,
+        "processed": 3930,
+        "yield_rate": 0.996,
+        "bottleneck_score": 1.026,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2736,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 0.714,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T10:00:00",
+    "day": 4,
+    "hour": 2,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 526,
+        "processed": 5438,
+        "yield_rate": 0.9896,
+        "bottleneck_score": 30.89,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 484,
+        "processed": 4010,
+        "yield_rate": 0.996,
+        "bottleneck_score": 1.008,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 2736,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 0.714,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T11:00:00",
+    "day": 4,
+    "hour": 3,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 526,
+        "processed": 5558,
+        "yield_rate": 0.9894,
+        "bottleneck_score": 30.348,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 4088,
+        "yield_rate": 0.996,
+        "bottleneck_score": 0.448,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 2736,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 1.131,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T12:00:00",
+    "day": 4,
+    "hour": 4,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 526,
+        "processed": 5678,
+        "yield_rate": 0.9893,
+        "bottleneck_score": 29.825,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 299,
+        "processed": 4088,
+        "yield_rate": 0.996,
+        "bottleneck_score": 0.813,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 2736,
+        "yield_rate": 0.9898,
+        "bottleneck_score": 1.131,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T13:00:00",
+    "day": 4,
+    "hour": 5,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 5783,
+        "yield_rate": 0.9892,
+        "bottleneck_score": 14.288,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 299,
+        "processed": 4088,
+        "yield_rate": 0.996,
+        "bottleneck_score": 0.813,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 2936,
+        "yield_rate": 0.9897,
+        "bottleneck_score": 1.079,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T14:00:00",
+    "day": 4,
+    "hour": 6,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 185,
+        "processed": 5783,
+        "yield_rate": 0.9892,
+        "bottleneck_score": 19.761,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 299,
+        "processed": 4168,
+        "yield_rate": 0.9959,
+        "bottleneck_score": 0.8,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 3136,
+        "yield_rate": 0.9895,
+        "bottleneck_score": 1.032,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T15:00:00",
+    "day": 4,
+    "hour": 7,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 588,
+        "processed": 5783,
+        "yield_rate": 0.9892,
+        "bottleneck_score": 31.386,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 299,
+        "processed": 4248,
+        "yield_rate": 0.9959,
+        "bottleneck_score": 0.786,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 3149,
+        "yield_rate": 0.9895,
+        "bottleneck_score": 0.667,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T16:00:00",
+    "day": 4,
+    "hour": 8,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 588,
+        "processed": 5903,
+        "yield_rate": 0.9891,
+        "bottleneck_score": 30.863,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 4327,
+        "yield_rate": 0.9958,
+        "bottleneck_score": 0.443,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 3149,
+        "yield_rate": 0.9895,
+        "bottleneck_score": 1.051,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T17:00:00",
+    "day": 4,
+    "hour": 9,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 5970,
+        "yield_rate": 0.989,
+        "bottleneck_score": 13.951,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 341,
+        "processed": 4327,
+        "yield_rate": 0.9958,
+        "bottleneck_score": 0.85,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 3149,
+        "yield_rate": 0.9895,
+        "bottleneck_score": 1.051,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T18:00:00",
+    "day": 4,
+    "hour": 10,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 403,
+        "processed": 5970,
+        "yield_rate": 0.989,
+        "bottleneck_score": 25.58,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 341,
+        "processed": 4327,
+        "yield_rate": 0.9958,
+        "bottleneck_score": 0.85,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 3349,
+        "yield_rate": 0.9893,
+        "bottleneck_score": 1.009,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T19:00:00",
+    "day": 4,
+    "hour": 11,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 843,
+        "processed": 5970,
+        "yield_rate": 0.989,
+        "bottleneck_score": 38.044,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 341,
+        "processed": 4407,
+        "yield_rate": 0.9958,
+        "bottleneck_score": 0.837,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 484,
+        "processed": 3549,
+        "yield_rate": 0.9892,
+        "bottleneck_score": 0.97,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T20:00:00",
+    "day": 4,
+    "hour": 12,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 843,
+        "processed": 6090,
+        "yield_rate": 0.9889,
+        "bottleneck_score": 37.431,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 341,
+        "processed": 4487,
+        "yield_rate": 0.9958,
+        "bottleneck_score": 0.823,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 3627,
+        "yield_rate": 0.9891,
+        "bottleneck_score": 0.63,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T21:00:00",
+    "day": 4,
+    "hour": 13,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 843,
+        "processed": 6210,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 36.837,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 4567,
+        "yield_rate": 0.9957,
+        "bottleneck_score": 0.438,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 341,
+        "processed": 3627,
+        "yield_rate": 0.9891,
+        "bottleneck_score": 0.894,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T22:00:00",
+    "day": 4,
+    "hour": 14,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 843,
+        "processed": 6330,
+        "yield_rate": 0.9887,
+        "bottleneck_score": 36.261,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 185,
+        "processed": 4567,
+        "yield_rate": 0.9957,
+        "bottleneck_score": 0.686,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 341,
+        "processed": 3627,
+        "yield_rate": 0.9891,
+        "bottleneck_score": 0.894,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-05T23:00:00",
+    "day": 4,
+    "hour": 15,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 6379,
+        "yield_rate": 0.9886,
+        "bottleneck_score": 13.292,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 185,
+        "processed": 4567,
+        "yield_rate": 0.9957,
+        "bottleneck_score": 0.686,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 341,
+        "processed": 3827,
+        "yield_rate": 0.9889,
+        "bottleneck_score": 0.862,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T00:00:00",
+    "day": 4,
+    "hour": 16,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 440,
+        "processed": 6379,
+        "yield_rate": 0.9886,
+        "bottleneck_score": 25.481,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 185,
+        "processed": 4647,
+        "yield_rate": 0.9957,
+        "bottleneck_score": 0.675,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 3892,
+        "yield_rate": 0.9889,
+        "bottleneck_score": 0.621,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T01:00:00",
+    "day": 4,
+    "hour": 17,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 885,
+        "processed": 6379,
+        "yield_rate": 0.9886,
+        "bottleneck_score": 37.544,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 4687,
+        "yield_rate": 0.9957,
+        "bottleneck_score": 0.455,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 185,
+        "processed": 3892,
+        "yield_rate": 0.9889,
+        "bottleneck_score": 0.776,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T02:00:00",
+    "day": 4,
+    "hour": 18,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 885,
+        "processed": 6499,
+        "yield_rate": 0.9885,
+        "bottleneck_score": 36.975,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 403,
+        "processed": 4687,
+        "yield_rate": 0.9957,
+        "bottleneck_score": 0.943,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 185,
+        "processed": 3892,
+        "yield_rate": 0.9889,
+        "bottleneck_score": 0.776,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T03:00:00",
+    "day": 4,
+    "hour": 19,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 885,
+        "processed": 6619,
+        "yield_rate": 0.9884,
+        "bottleneck_score": 36.423,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 403,
+        "processed": 4687,
+        "yield_rate": 0.9957,
+        "bottleneck_score": 0.943,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4038,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 0.633,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T04:00:00",
+    "day": 4,
+    "hour": 20,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 885,
+        "processed": 6739,
+        "yield_rate": 0.9883,
+        "bottleneck_score": 35.888,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 403,
+        "processed": 4767,
+        "yield_rate": 0.9956,
+        "bottleneck_score": 0.929,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4038,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 0.633,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T05:00:00",
+    "day": 4,
+    "hour": 21,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 6825,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 12.768,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 403,
+        "processed": 4847,
+        "yield_rate": 0.9956,
+        "bottleneck_score": 0.915,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4038,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 0.633,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T06:00:00",
+    "day": 4,
+    "hour": 22,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 445,
+        "processed": 6825,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 24.762,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 403,
+        "processed": 4927,
+        "yield_rate": 0.9955,
+        "bottleneck_score": 0.902,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4038,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 0.633,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T07:00:00",
+    "day": 4,
+    "hour": 23,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 689,
+        "processed": 6825,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 31.155,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 403,
+        "processed": 5007,
+        "yield_rate": 0.9955,
+        "bottleneck_score": 0.889,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4038,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 0.633,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T08:00:00",
+    "day": 5,
+    "hour": 0,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 689,
+        "processed": 6945,
+        "yield_rate": 0.9881,
+        "bottleneck_score": 30.71,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 5046,
+        "yield_rate": 0.9955,
+        "bottleneck_score": 0.437,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 403,
+        "processed": 4038,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 0.935,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T09:00:00",
+    "day": 5,
+    "hour": 1,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 689,
+        "processed": 7065,
+        "yield_rate": 0.9879,
+        "bottleneck_score": 30.278,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 440,
+        "processed": 5046,
+        "yield_rate": 0.9955,
+        "bottleneck_score": 0.946,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 403,
+        "processed": 4038,
+        "yield_rate": 0.9888,
+        "bottleneck_score": 0.935,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T10:00:00",
+    "day": 5,
+    "hour": 2,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 689,
+        "processed": 7185,
+        "yield_rate": 0.9878,
+        "bottleneck_score": 29.857,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 440,
+        "processed": 5046,
+        "yield_rate": 0.9955,
+        "bottleneck_score": 0.946,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 403,
+        "processed": 4238,
+        "yield_rate": 0.9886,
+        "bottleneck_score": 0.905,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T11:00:00",
+    "day": 5,
+    "hour": 3,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 7276,
+        "yield_rate": 0.9877,
+        "bottleneck_score": 12.384,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 440,
+        "processed": 5126,
+        "yield_rate": 0.9954,
+        "bottleneck_score": 0.933,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4406,
+        "yield_rate": 0.9885,
+        "bottleneck_score": 0.625,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T12:00:00",
+    "day": 5,
+    "hour": 4,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 244,
+        "processed": 7276,
+        "yield_rate": 0.9877,
+        "bottleneck_score": 19.018,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 440,
+        "processed": 5206,
+        "yield_rate": 0.9954,
+        "bottleneck_score": 0.921,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4406,
+        "yield_rate": 0.9885,
+        "bottleneck_score": 0.625,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T13:00:00",
+    "day": 5,
+    "hour": 5,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 372,
+        "processed": 7276,
+        "yield_rate": 0.9877,
+        "bottleneck_score": 22.29,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 440,
+        "processed": 5286,
+        "yield_rate": 0.9954,
+        "bottleneck_score": 0.908,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4406,
+        "yield_rate": 0.9885,
+        "bottleneck_score": 0.625,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T14:00:00",
+    "day": 5,
+    "hour": 6,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 372,
+        "processed": 7396,
+        "yield_rate": 0.9876,
+        "bottleneck_score": 21.989,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 440,
+        "processed": 5366,
+        "yield_rate": 0.9953,
+        "bottleneck_score": 0.896,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4406,
+        "yield_rate": 0.9885,
+        "bottleneck_score": 0.625,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T15:00:00",
+    "day": 5,
+    "hour": 7,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 372,
+        "processed": 7516,
+        "yield_rate": 0.9875,
+        "bottleneck_score": 21.695,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 5406,
+        "yield_rate": 0.9953,
+        "bottleneck_score": 0.421,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 440,
+        "processed": 4406,
+        "yield_rate": 0.9885,
+        "bottleneck_score": 0.945,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T16:00:00",
+    "day": 5,
+    "hour": 8,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 7524,
+        "yield_rate": 0.9875,
+        "bottleneck_score": 12.276,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 445,
+        "processed": 5406,
+        "yield_rate": 0.9953,
+        "bottleneck_score": 0.917,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 440,
+        "processed": 4406,
+        "yield_rate": 0.9885,
+        "bottleneck_score": 0.945,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T17:00:00",
+    "day": 5,
+    "hour": 9,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 128,
+        "processed": 7524,
+        "yield_rate": 0.9875,
+        "bottleneck_score": 15.997,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 445,
+        "processed": 5406,
+        "yield_rate": 0.9953,
+        "bottleneck_score": 0.917,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 440,
+        "processed": 4606,
+        "yield_rate": 0.9883,
+        "bottleneck_score": 0.916,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T18:00:00",
+    "day": 5,
+    "hour": 10,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 484,
+        "processed": 7524,
+        "yield_rate": 0.9875,
+        "bottleneck_score": 25.066,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 445,
+        "processed": 5486,
+        "yield_rate": 0.9953,
+        "bottleneck_score": 0.905,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T19:00:00",
+    "day": 5,
+    "hour": 11,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 484,
+        "processed": 7644,
+        "yield_rate": 0.9874,
+        "bottleneck_score": 24.741,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 445,
+        "processed": 5566,
+        "yield_rate": 0.9952,
+        "bottleneck_score": 0.894,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T20:00:00",
+    "day": 5,
+    "hour": 12,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 7654,
+        "yield_rate": 0.9873,
+        "bottleneck_score": 12.41,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 445,
+        "processed": 5646,
+        "yield_rate": 0.9952,
+        "bottleneck_score": 0.882,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T21:00:00",
+    "day": 5,
+    "hour": 13,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 356,
+        "processed": 7654,
+        "yield_rate": 0.9873,
+        "bottleneck_score": 22.124,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 445,
+        "processed": 5726,
+        "yield_rate": 0.9951,
+        "bottleneck_score": 0.871,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T22:00:00",
+    "day": 5,
+    "hour": 14,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 490,
+        "processed": 7654,
+        "yield_rate": 0.9873,
+        "bottleneck_score": 25.588,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 5766,
+        "yield_rate": 0.9951,
+        "bottleneck_score": 0.407,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-06T23:00:00",
+    "day": 5,
+    "hour": 15,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 490,
+        "processed": 7774,
+        "yield_rate": 0.9872,
+        "bottleneck_score": 25.264,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 244,
+        "processed": 5766,
+        "yield_rate": 0.9951,
+        "bottleneck_score": 0.696,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T00:00:00",
+    "day": 5,
+    "hour": 16,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 490,
+        "processed": 7894,
+        "yield_rate": 0.9871,
+        "bottleneck_score": 24.948,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 244,
+        "processed": 5766,
+        "yield_rate": 0.9951,
+        "bottleneck_score": 0.696,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T01:00:00",
+    "day": 5,
+    "hour": 17,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 8014,
+        "yield_rate": 0.987,
+        "bottleneck_score": 12.444,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 244,
+        "processed": 5846,
+        "yield_rate": 0.9951,
+        "bottleneck_score": 0.687,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T02:00:00",
+    "day": 5,
+    "hour": 18,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 134,
+        "processed": 8014,
+        "yield_rate": 0.987,
+        "bottleneck_score": 16.468,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 244,
+        "processed": 5926,
+        "yield_rate": 0.995,
+        "bottleneck_score": 0.679,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.618,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T03:00:00",
+    "day": 5,
+    "hour": 19,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 556,
+        "processed": 8014,
+        "yield_rate": 0.987,
+        "bottleneck_score": 27.43,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 6005,
+        "yield_rate": 0.995,
+        "bottleneck_score": 0.417,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 244,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.805,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T04:00:00",
+    "day": 5,
+    "hour": 20,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 556,
+        "processed": 8134,
+        "yield_rate": 0.9869,
+        "bottleneck_score": 27.095,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 128,
+        "processed": 6005,
+        "yield_rate": 0.995,
+        "bottleneck_score": 0.581,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 244,
+        "processed": 4806,
+        "yield_rate": 0.9882,
+        "bottleneck_score": 0.805,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T05:00:00",
+    "day": 5,
+    "hour": 21,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 8150,
+        "yield_rate": 0.9869,
+        "bottleneck_score": 12.675,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 128,
+        "processed": 6005,
+        "yield_rate": 0.995,
+        "bottleneck_score": 0.581,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 4972,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.629,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T06:00:00",
+    "day": 5,
+    "hour": 22,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 422,
+        "processed": 8150,
+        "yield_rate": 0.9869,
+        "bottleneck_score": 24.461,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 128,
+        "processed": 6085,
+        "yield_rate": 0.995,
+        "bottleneck_score": 0.575,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 244,
+        "processed": 4972,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.817,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T07:00:00",
+    "day": 5,
+    "hour": 23,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 838,
+        "processed": 8150,
+        "yield_rate": 0.9869,
+        "bottleneck_score": 35.497,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 6125,
+        "yield_rate": 0.9949,
+        "bottleneck_score": 0.43,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 244,
+        "processed": 4972,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.817,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T08:00:00",
+    "day": 6,
+    "hour": 0,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 838,
+        "processed": 8270,
+        "yield_rate": 0.9867,
+        "bottleneck_score": 35.075,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 356,
+        "processed": 6125,
+        "yield_rate": 0.9949,
+        "bottleneck_score": 0.857,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5052,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.639,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T09:00:00",
+    "day": 6,
+    "hour": 1,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 838,
+        "processed": 8390,
+        "yield_rate": 0.9866,
+        "bottleneck_score": 34.662,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 356,
+        "processed": 6125,
+        "yield_rate": 0.9949,
+        "bottleneck_score": 0.857,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5052,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.639,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T10:00:00",
+    "day": 6,
+    "hour": 2,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 838,
+        "processed": 8510,
+        "yield_rate": 0.9865,
+        "bottleneck_score": 34.259,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 356,
+        "processed": 6205,
+        "yield_rate": 0.9949,
+        "bottleneck_score": 0.847,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5052,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.639,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T11:00:00",
+    "day": 6,
+    "hour": 3,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 8578,
+        "yield_rate": 0.9864,
+        "bottleneck_score": 12.655,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 356,
+        "processed": 6285,
+        "yield_rate": 0.9949,
+        "bottleneck_score": 0.838,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5052,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.639,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T12:00:00",
+    "day": 6,
+    "hour": 4,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 416,
+        "processed": 8578,
+        "yield_rate": 0.9864,
+        "bottleneck_score": 24.3,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 6365,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.438,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 356,
+        "processed": 5052,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.904,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T13:00:00",
+    "day": 6,
+    "hour": 5,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 655,
+        "processed": 8578,
+        "yield_rate": 0.9864,
+        "bottleneck_score": 30.641,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 134,
+        "processed": 6365,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.615,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 356,
+        "processed": 5052,
+        "yield_rate": 0.988,
+        "bottleneck_score": 0.904,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T14:00:00",
+    "day": 6,
+    "hour": 6,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 655,
+        "processed": 8698,
+        "yield_rate": 0.9863,
+        "bottleneck_score": 30.293,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 134,
+        "processed": 6365,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.615,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 356,
+        "processed": 5252,
+        "yield_rate": 0.9878,
+        "bottleneck_score": 0.88,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T15:00:00",
+    "day": 6,
+    "hour": 7,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 655,
+        "processed": 8818,
+        "yield_rate": 0.9862,
+        "bottleneck_score": 29.952,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 134,
+        "processed": 6445,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.608,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5332,
+        "yield_rate": 0.9877,
+        "bottleneck_score": 0.632,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T16:00:00",
+    "day": 6,
+    "hour": 8,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 655,
+        "processed": 8938,
+        "yield_rate": 0.9861,
+        "bottleneck_score": 29.619,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 6485,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.451,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 356,
+        "processed": 5332,
+        "yield_rate": 0.9877,
+        "bottleneck_score": 0.892,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T17:00:00",
+    "day": 6,
+    "hour": 9,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 9000,
+        "yield_rate": 0.986,
+        "bottleneck_score": 12.681,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 422,
+        "processed": 6485,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.971,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 356,
+        "processed": 5332,
+        "yield_rate": 0.9877,
+        "bottleneck_score": 0.892,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T18:00:00",
+    "day": 6,
+    "hour": 10,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 239,
+        "processed": 9000,
+        "yield_rate": 0.986,
+        "bottleneck_score": 19.701,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 422,
+        "processed": 6485,
+        "yield_rate": 0.9948,
+        "bottleneck_score": 0.971,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 356,
+        "processed": 5532,
+        "yield_rate": 0.9876,
+        "bottleneck_score": 0.869,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T19:00:00",
+    "day": 6,
+    "hour": 11,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 656,
+        "processed": 9000,
+        "yield_rate": 0.986,
+        "bottleneck_score": 30.818,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 422,
+        "processed": 6565,
+        "yield_rate": 0.9947,
+        "bottleneck_score": 0.96,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5612,
+        "yield_rate": 0.9875,
+        "bottleneck_score": 0.625,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T20:00:00",
+    "day": 6,
+    "hour": 12,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 656,
+        "processed": 9120,
+        "yield_rate": 0.9859,
+        "bottleneck_score": 30.483,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 422,
+        "processed": 6645,
+        "yield_rate": 0.9947,
+        "bottleneck_score": 0.95,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 134,
+        "processed": 5612,
+        "yield_rate": 0.9875,
+        "bottleneck_score": 0.765,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T21:00:00",
+    "day": 6,
+    "hour": 13,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 9240,
+        "yield_rate": 0.9858,
+        "bottleneck_score": 13.043,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 422,
+        "processed": 6725,
+        "yield_rate": 0.9946,
+        "bottleneck_score": 0.94,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 134,
+        "processed": 5612,
+        "yield_rate": 0.9875,
+        "bottleneck_score": 0.765,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T22:00:00",
+    "day": 6,
+    "hour": 14,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 417,
+        "processed": 9240,
+        "yield_rate": 0.9858,
+        "bottleneck_score": 25.203,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 422,
+        "processed": 6805,
+        "yield_rate": 0.9946,
+        "bottleneck_score": 0.93,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5707,
+        "yield_rate": 0.9874,
+        "bottleneck_score": 0.659,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-07T23:00:00",
+    "day": 6,
+    "hour": 15,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 722,
+        "processed": 9240,
+        "yield_rate": 0.9858,
+        "bottleneck_score": 33.585,
+        "is_down": true,
+        "downtime_min": 60
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 6844,
+        "yield_rate": 0.9946,
+        "bottleneck_score": 0.448,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 134,
+        "processed": 5707,
+        "yield_rate": 0.9874,
+        "bottleneck_score": 0.774,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T00:00:00",
+    "day": 6,
+    "hour": 16,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 722,
+        "processed": 9240,
+        "yield_rate": 0.9858,
+        "bottleneck_score": 33.585,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 416,
+        "processed": 6844,
+        "yield_rate": 0.9946,
+        "bottleneck_score": 0.956,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 134,
+        "processed": 5707,
+        "yield_rate": 0.9874,
+        "bottleneck_score": 0.774,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T01:00:00",
+    "day": 6,
+    "hour": 17,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 722,
+        "processed": 9240,
+        "yield_rate": 0.9858,
+        "bottleneck_score": 33.585,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 416,
+        "processed": 6844,
+        "yield_rate": 0.9946,
+        "bottleneck_score": 0.956,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 5748,
+        "yield_rate": 0.9874,
+        "bottleneck_score": 0.667,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T02:00:00",
+    "day": 6,
+    "hour": 18,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 722,
+        "processed": 9360,
+        "yield_rate": 0.9856,
+        "bottleneck_score": 33.228,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 416,
+        "processed": 6924,
+        "yield_rate": 0.9945,
+        "bottleneck_score": 0.946,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 422,
+        "processed": 5748,
+        "yield_rate": 0.9874,
+        "bottleneck_score": 1.016,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T03:00:00",
+    "day": 6,
+    "hour": 19,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 722,
+        "processed": 9480,
+        "yield_rate": 0.9855,
+        "bottleneck_score": 32.878,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 416,
+        "processed": 7004,
+        "yield_rate": 0.9945,
+        "bottleneck_score": 0.937,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 422,
+        "processed": 5748,
+        "yield_rate": 0.9874,
+        "bottleneck_score": 1.016,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T04:00:00",
+    "day": 6,
+    "hour": 20,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 722,
+        "processed": 9600,
+        "yield_rate": 0.9854,
+        "bottleneck_score": 32.536,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 416,
+        "processed": 7084,
+        "yield_rate": 0.9945,
+        "bottleneck_score": 0.927,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 422,
+        "processed": 5948,
+        "yield_rate": 0.9872,
+        "bottleneck_score": 0.992,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T05:00:00",
+    "day": 6,
+    "hour": 21,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 0,
+        "processed": 9663,
+        "yield_rate": 0.9853,
+        "bottleneck_score": 13.175,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 416,
+        "processed": 7164,
+        "yield_rate": 0.9944,
+        "bottleneck_score": 0.918,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 0,
+        "processed": 6135,
+        "yield_rate": 0.9871,
+        "bottleneck_score": 0.682,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T06:00:00",
+    "day": 6,
+    "hour": 22,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 305,
+        "processed": 9663,
+        "yield_rate": 0.9853,
+        "bottleneck_score": 22.357,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 0,
+        "processed": 7203,
+        "yield_rate": 0.9944,
+        "bottleneck_score": 0.446,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 416,
+        "processed": 6135,
+        "yield_rate": 0.9871,
+        "bottleneck_score": 0.998,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  },
+  {
+    "ts": "2025-01-08T07:00:00",
+    "day": 6,
+    "hour": 23,
+    "stations": [
+      {
+        "id": "L1-S1",
+        "name": "錫膏印刷",
+        "wip": 692,
+        "processed": 9663,
+        "yield_rate": 0.9853,
+        "bottleneck_score": 33.106,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S2",
+        "name": "貼片機",
+        "wip": 239,
+        "processed": 7203,
+        "yield_rate": 0.9944,
+        "bottleneck_score": 0.743,
+        "is_down": false,
+        "downtime_min": 0
+      },
+      {
+        "id": "L1-S3",
+        "name": "回焊爐",
+        "wip": 416,
+        "processed": 6135,
+        "yield_rate": 0.9871,
+        "bottleneck_score": 0.998,
+        "is_down": false,
+        "downtime_min": 0
+      }
+    ]
+  }
+]

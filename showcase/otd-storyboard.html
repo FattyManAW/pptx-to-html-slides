@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OTD 模擬引擎 — 四幕流程 Storyboard</title>
+<style>
+/* ═══════════ Design System Tokens ═══════════ */
+:root{
+  --accent:#14b8a6;--accent-2:#a78bfa;--accent-amber:#f59e0b;--accent-rose:#f43f5e;
+  --c-bg:#06080d;--c-surface:#0c1018;--c-surface2:#131a27;
+  --c-t1:#f8fafc;--c-t2:#94a3b8;--c-t3:#4b5563;--c-t4:#2d3748;
+  --c-success:#22c55e;--c-warning:#f59e0b;--c-error:#ef4444;
+  --c-border:#1e293b;--border:1px solid var(--c-border);
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+  --t-fast:150ms;--t-mid:300ms;--t-slow:600ms;--ease:cubic-bezier(.22,1,.36,1);
+  --blur-card:blur(12px);--blur-modal:blur(24px);
+  /* --ds-* canonical aliases */
+  --ds-impacts-brand:var(--accent);
+  --ds-cris-carbon:var(--accent);
+  --ds-aps-violet:var(--accent-2);
+  --ds-text-display:var(--c-t1);
+  --ds-text-heading:var(--c-t1);
+  --ds-text-body:var(--c-t2);
+  --ds-text-muted:var(--c-t3);
+  --ds-surface:var(--c-surface);
+  --ds-surface-raised:var(--c-surface2);
+  --ds-bg:var(--c-bg);
+  --ds-border:var(--c-border);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:scroll;height:100vh}
+body{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;background:var(--c-bg);color:var(--c-t2)}
+
+/* ═══════════ Navigation Bar ═══════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;
+  padding:.7rem 1.5rem;background:linear-gradient(180deg,rgba(6,8,13,.97),rgba(6,8,13,.7));
+  backdrop-filter:var(--blur-card);border-bottom:var(--border)}
+.nav-logo{font-size:.88rem;font-weight:700;color:var(--c-t1);letter-spacing:.02em}
+.nav-logo span{color:var(--accent)}
+.nav-steps{display:flex;gap:.3rem}
+.nav-step{font-size:.7rem;color:var(--c-t3);padding:.35rem .7rem;border-radius:6px;cursor:pointer;transition:all var(--t-fast);
+  text-decoration:none;font-weight:500}
+.nav-step:hover{color:var(--c-t2);background:var(--c-surface2)}
+.nav-step.visited{color:var(--accent);border:1px solid rgba(20,184,166,.3)}
+.nav-step.active{color:var(--c-t1);background:rgba(20,184,166,.12);font-weight:700}
+
+/* ═══════════ Act Sections ═══════════ */
+.act{scroll-snap-align:start;min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 2rem 2rem;position:relative}
+.act-header{text-align:center;margin-bottom:2rem;animation:fadeUp .8s var(--ease) both}
+.act-num{font-size:.7rem;text-transform:uppercase;letter-spacing:.18em;color:var(--c-t4);margin-bottom:.5rem}
+.act-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--c-t1);margin-bottom:.5rem}
+.act-sub{font-size:.9rem;color:var(--c-t3);max-width:480px;margin:0 auto;line-height:1.6}
+
+/* ═══════════ Act Content ═══════════ */
+.act-content{display:flex;gap:1.5rem;max-width:1100px;width:100%;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.card{background:var(--c-surface);border:var(--border);border-radius:14px;padding:1.5rem;
+  flex:1 1 220px;max-width:320px;min-width:200px;box-shadow:var(--shadow);
+  transition:transform var(--t-mid),border-color var(--t-mid)}
+.card:hover{transform:translateY(-4px);border-color:rgba(20,184,166,.35)}
+.card-icon{font-size:2rem;margin-bottom:.8rem}
+.card-title{font-size:.95rem;font-weight:700;color:var(--c-t1);margin-bottom:.4rem}
+.card-desc{font-size:.78rem;color:var(--c-t3);line-height:1.6}
+.card-metric{margin-top:.8rem;display:flex;align-items:baseline;gap:.4rem}
+.card-metric .val{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+.card-metric .unit{font-size:.65rem;color:var(--c-t4);text-transform:uppercase;letter-spacing:.08em}
+
+.c1 .val{color:var(--accent-amber)}
+.c2 .val{color:var(--accent)}
+.c3 .val{color:var(--accent-2)}
+.c4 .val{color:var(--accent-rose)}
+
+/* ═══════════ Flow Diagram ═══════════ */
+.flow{flex:1 1 100%;display:flex;align-items:center;justify-content:center;gap:0;padding:1.5rem 0}
+.flow-node{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.flow-dot{width:56px;height:56px;border-radius:50%;border:2px solid var(--c-border);
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  background:var(--c-surface2);transition:all var(--t-mid)}
+.flow-label{font-size:.7rem;color:var(--c-t3);font-weight:600;text-align:center;max-width:80px}
+.flow-arrow{font-size:1.6rem;color:var(--c-t3);margin:0 .5rem;transition:color var(--t-mid)}
+.flow-node.highlight .flow-dot{border-color:var(--accent);box-shadow:0 0 14px rgba(20,184,166,.25)}
+.flow-node.highlight .flow-label{color:var(--accent)}
+
+/* ═══════════ Metric Banner ═══════════ */
+.metric-banner{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;animation:fadeUp 1s var(--ease) .5s both}
+.mb-item{text-align:center}
+.mb-num{font-size:2rem;font-weight:700;color:var(--c-t1);font-variant-numeric:tabular-nums}
+.mb-label{font-size:.68rem;color:var(--c-t4);text-transform:uppercase;letter-spacing:.1em;margin-top:.2rem}
+
+/* ═══════════ Color Themes per Act ═══════════ */
+.act-1{--act-accent:var(--accent-amber)}
+.act-2{--act-accent:var(--accent)}
+.act-3{--act-accent:var(--accent-2)}
+.act-4{--act-accent:var(--accent-rose)}
+
+.act .act-title a{color:inherit;text-decoration:none}
+.act .act-num{color:var(--act-accent)}
+
+/* ═══════════ Timeline Bar ═══════════ */
+.timeline-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:1001;transition:width .15s linear}
+
+/* ═══════════ Galleries ═══════════ */
+.order-table{width:100%;max-width:700px;margin:0 auto;border-collapse:collapse;font-size:.78rem}
+.order-table th{text-align:left;color:var(--c-t3);font-weight:600;padding:.4rem .7rem;font-size:.68rem;
+  text-transform:uppercase;letter-spacing:.08em;border-bottom:var(--border)}
+.order-table td{padding:.45rem .7rem;color:var(--c-t2);border-bottom:1px solid var(--c-surface2)}
+.order-table .oid{font-weight:700;color:var(--c-t1);font-variant-numeric:tabular-nums}
+.order-table .oamt{font-variant-numeric:tabular-nums;color:var(--c-t1)}
+
+.badge{padding:.15rem .5rem;border-radius:4px;font-size:.62rem;font-weight:600;display:inline-block}
+.badge-pending{background:rgba(245,158,11,.15);color:var(--accent-amber)}
+.badge-prod{background:rgba(20,184,166,.15);color:var(--accent)}
+.badge-done{background:rgba(34,197,94,.15);color:var(--c-success)}
+
+/* ═══════════ Station Cards in Act 3 ═══════════ */
+.station-grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));max-width:900px;width:100%}
+.station-card{background:var(--c-surface);border:var(--border);border-radius:12px;padding:1rem;text-align:center}
+.station-card .sc-name{font-size:.82rem;font-weight:700;color:var(--c-t1);margin-bottom:.4rem}
+.station-card .sc-meta{font-size:.68rem;color:var(--c-t3);line-height:1.6}
+.station-card .sc-wip{margin-top:.7rem;height:5px;background:var(--c-surface2);border-radius:3px;overflow:hidden}
+.station-card .sc-wip-fill{height:100%;border-radius:3px}
+.station-card .sc-wip-num{font-size:.7rem;color:var(--c-t3);margin-top:.3rem;font-variant-numeric:tabular-nums}
+.sc-bn{border-color:rgba(244,63,94,.4);background:rgba(244,63,94,.04)}
+
+/* ═══════════ Animated Ship in Act 4 ═══════════ */
+.ship-track{position:relative;height:80px;max-width:600px;width:100%;margin:0 auto;
+  background:linear-gradient(90deg,var(--c-surface2),var(--c-surface));border-radius:8px;overflow:hidden}
+.ship-icon{position:absolute;top:50%;transform:translateY(-50%);font-size:2rem;animation:shipSail 8s ease-in-out infinite}
+.ship-port{position:absolute;top:50%;right:16px;transform:translateY(-50%);font-size:1.5rem;opacity:.5}
+
+/* ═══════════ Footer CTA ═══════════ */
+.act-cta{padding:3rem 2rem;text-align:center;background:var(--c-surface);border-top:var(--border);
+  scroll-snap-align:start;min-height:40vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.act-cta h2{font-size:1.6rem;color:var(--c-t1);margin-bottom:.8rem}
+.act-cta p{font-size:.85rem;color:var(--c-t3);max-width:500px;margin:0 auto 1.5rem;line-height:1.7}
+.cta-row{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.cta-link{padding:.6rem 1.4rem;border-radius:8px;font-size:.8rem;font-weight:600;
+  text-decoration:none;transition:all var(--t-fast)}
+.cta-primary{background:var(--accent);color:var(--c-bg)}
+.cta-primary:hover{box-shadow:0 0 20px rgba(20,184,166,.3)}
+.cta-secondary{border:1px solid var(--c-border);color:var(--c-t2)}
+.cta-secondary:hover{border-color:var(--accent);color:var(--c-t1)}
+
+/* ═══════════ Responsive ═══════════ */
+@media (max-width:768px){
+  .nav-steps{display:none}
+  .act{padding:3rem 1rem 1.5rem}
+  .flow{flex-wrap:wrap;gap:1rem}
+  .flow-arrow{transform:rotate(90deg);margin:.3rem 0}
+  .card{max-width:100%}
+}
+
+/* ═══════════ Keyframe Animations ═══════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shipSail{0%{left:0}45%{left:calc(50% - 20px)}55%{left:calc(50% - 20px)}100%{left:calc(100% - 40px)}}
+@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="timeline-bar" id="timelineBar"></div>
+
+<!-- ═══════════ Fixed Nav ═══════════ -->
+<nav class="nav">
+  <div class="nav-logo">OTD Engine <span>Storyboard</span></div>
+  <div class="nav-steps">
+    <a class="nav-step" href="#act1">❶ 接單</a>
+    <a class="nav-step" href="#act2">❷ 排程</a>
+    <a class="nav-step" href="#act3">❸ 生產</a>
+    <a class="nav-step" href="#act4">❹ 出貨</a>
+  </div>
+</nav>
+
+<!-- ═══════════ ACT 1: Order ═══════════ -->
+<section class="act act-1" id="act1">
+  <div class="act-header">
+    <div class="act-num">Act Ⅰ — 接單</div>
+    <h2 class="act-title">訂單進來，一切開始</h2>
+    <p class="act-sub">客戶下單 → 系統建立訂單記錄 → 進入排程佇列。每筆訂單都是 OTD 旅程的起點。</p>
+  </div>
+
+  <div class="act-content">
+    <div class="card c1" style="animation:fadeUp .6s var(--ease) .1s both">
+      <div class="card-icon">📋</div>
+      <div class="card-title">訂單創建</div>
+      <div class="card-desc">系統接收客戶訂單，記錄產品類型、數量、交期需求，賦予唯一訂單編號。</div>
+      <div class="card-metric"><span class="val">12</span><span class="unit">新訂單 / 日</span></div>
+    </div>
+    <div class="card c1" style="animation:fadeUp .6s var(--ease) .2s both">
+      <div class="card-icon">🏷️</div>
+      <div class="card-title">產品分類</div>
+      <div class="card-desc">自動辨識產品類型（A/B/C/D），對應不同製程路徑與標準工時。</div>
+      <div class="card-metric"><span class="val">4</span><span class="unit">產品類型</span></div>
+    </div>
+    <div class="card c1" style="animation:fadeUp .6s var(--ease) .3s both">
+      <div class="card-icon">📅</div>
+      <div class="card-title">交期解析</div>
+      <div class="card-desc">支援五種交期格式（ISO8601 / epoch / YYMMDD / lead_time / product_lead），自動適配。</div>
+      <div class="card-metric"><span class="val">5</span><span class="unit">格式支援</span></div>
+    </div>
+  </div>
+
+  <div style="max-width:700px;margin:1.5rem auto 0;animation:fadeUp .8s var(--ease) .5s both">
+    <table class="order-table">
+      <thead><tr><th>訂單編號</th><th>產品</th><th>數量</th><th>交期</th><th>狀態</th></tr></thead>
+      <tbody>
+        <tr><td class="oid">WO-2026-001</td><td>A</td><td class="oamt">500</td><td>2026-06-15</td><td><span class="badge badge-pending">待排程</span></td></tr>
+        <tr><td class="oid">WO-2026-002</td><td>B</td><td class="oamt">200</td><td>2026-06-18</td><td><span class="badge badge-pending">待排程</span></td></tr>
+        <tr><td class="oid">WO-2026-003</td><td>A</td><td class="oamt">800</td><td>2026-06-12</td><td><span class="badge badge-prod">生產中</span></td></tr>
+        <tr><td class="oid">WO-2026-004</td><td>C</td><td class="oamt">300</td><td>2026-06-22</td><td><span class="badge badge-done">已出貨</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════ ACT 2: Schedule ═══════════ -->
+<section class="act act-2" id="act2">
+  <div class="act-header">
+    <div class="act-num">Act Ⅱ — 排程</div>
+    <h2 class="act-title">三種策略，一條路線</h2>
+    <p class="act-sub">FIFO 先進先出 · EDD 最早交期優先 · SPT 最短工時優先。引擎根據選定策略決定生產順序。</p>
+  </div>
+
+  <div class="act-content">
+    <div class="card c2" style="animation:fadeUp .6s var(--ease) .1s both">
+      <div class="card-icon">⏱️</div>
+      <div class="card-title">FIFO</div>
+      <div class="card-desc">先進先出 — 最早到的訂單先排。公平穩定，適合標準品量產。</div>
+      <div class="card-metric"><span class="val">82%</span><span class="unit">OTD</span></div>
+    </div>
+    <div class="card c2" style="animation:fadeUp .6s var(--ease) .2s both">
+      <div class="card-icon">📅</div>
+      <div class="card-title">EDD</div>
+      <div class="card-desc">最早交期優先 — 趕急單，最大化準時率。適合交期壓力高的環境。</div>
+      <div class="card-metric"><span class="val">91%</span><span class="unit">OTD</span></div>
+    </div>
+    <div class="card c2" style="animation:fadeUp .6s var(--ease) .3s both">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">SPT</div>
+      <div class="card-desc">最短工時優先 — 快速清單，降低 WIP。適合瓶頸站卸壓。</div>
+      <div class="card-metric"><span class="val">78%</span><span class="unit">OTD</span></div>
+    </div>
+  </div>
+
+  <div class="flow" style="animation:fadeUp .8s var(--ease) .5s both">
+    <div class="flow-node highlight">
+      <div class="flow-dot">📥</div>
+      <div class="flow-label">排程器</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-dot" style="border-color:var(--accent-amber)">📊</div>
+      <div class="flow-label">策略選擇</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-dot" style="border-color:var(--accent-2)">📋</div>
+      <div class="flow-label">工單佇列</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-dot" style="border-color:var(--accent-rose)">🏭</div>
+      <div class="flow-label">釋放到產線</div>
+    </div>
+  </div>
+
+  <div class="metric-banner">
+    <div class="mb-item"><div class="mb-num" style="color:var(--accent)">91%</div><div class="mb-label">最佳 OTD (EDD)</div></div>
+    <div class="mb-item"><div class="mb-num" style="color:var(--accent-amber)">3</div><div class="mb-label">排程策略</div></div>
+    <div class="mb-item"><div class="mb-num" style="color:var(--c-t2)">&lt;10ms</div><div class="mb-label">排程決策延遲</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ ACT 3: Production ═══════════ -->
+<section class="act act-3" id="act3">
+  <div class="act-header">
+    <div class="act-num">Act Ⅲ — 生產</div>
+    <h2 class="act-title">三個站點，一道工序</h2>
+    <p class="act-sub">SMT 打件 → Assembly 組裝 → QA 測試。每站有產能上限與換線時間，WIP 即時追蹤。</p>
+  </div>
+
+  <div class="act-content">
+    <div class="card c3" style="animation:fadeUp .6s var(--ease) .1s both">
+      <div class="card-icon">🔧</div>
+      <div class="card-title">SMT 打件站</div>
+      <div class="card-desc">高速自動打件，每小時 200 單位。換線需 30 分鐘 setup，偶發設備故障。</div>
+      <div class="card-metric"><span class="val">200</span><span class="unit">units / hr</span></div>
+    </div>
+    <div class="card c3" style="animation:fadeUp .6s var(--ease) .2s both">
+      <div class="card-icon">🏗️</div>
+      <div class="card-title">組裝站</div>
+      <div class="card-desc">半自動組裝，每小時 120 單位。良率受上游來料影響，衰減係數 0.97。</div>
+      <div class="card-metric"><span class="val">120</span><span class="unit">units / hr</span></div>
+    </div>
+    <div class="card c3" style="animation:fadeUp .6s var(--ease) .3s both">
+      <div class="card-icon">🔍</div>
+      <div class="card-title">QA 測試站</div>
+      <div class="card-desc">全自動測試，每小時 180 單位。不合格品退回前站重工，合格品送往出貨倉。</div>
+      <div class="card-metric"><span class="val">180</span><span class="unit">units / hr</span></div>
+    </div>
+  </div>
+
+  <div class="station-grid" style="margin:1.5rem auto 0;animation:fadeUp .8s var(--ease) .5s both">
+    <div class="station-card">
+      <div class="sc-name">SMT</div>
+      <div class="sc-meta">實際速率 185/hr<br>換線中 · 良率 99.2%</div>
+      <div class="sc-wip"><div class="sc-wip-fill" style="width:65%;background:var(--accent)"></div></div>
+      <div class="sc-wip-num">WIP: 650</div>
+    </div>
+    <div class="station-card sc-bn">
+      <div class="sc-name">Assembly</div>
+      <div class="sc-meta">實際速率 98/hr<br>⛔ 瓶頸站 · 良率 94.7%</div>
+      <div class="sc-wip"><div class="sc-wip-fill" style="width:88%;background:var(--accent-rose)"></div></div>
+      <div class="sc-wip-num" style="color:var(--accent-rose)">WIP: 880</div>
+    </div>
+    <div class="station-card">
+      <div class="sc-name">QA</div>
+      <div class="sc-meta">實際速率 175/hr<br>正常 · 良率 98.5%</div>
+      <div class="sc-wip"><div class="sc-wip-fill" style="width:35%;background:var(--accent-2)"></div></div>
+      <div class="sc-wip-num">WIP: 350</div>
+    </div>
+  </div>
+
+  <div class="metric-banner">
+    <div class="mb-item"><div class="mb-num" style="color:var(--accent-rose)">Assembly</div><div class="mb-label">即時瓶頸站</div></div>
+    <div class="mb-item"><div class="mb-num" style="color:var(--c-t2)">1,880</div><div class="mb-label">總 WIP</div></div>
+    <div class="mb-item"><div class="mb-num" style="color:var(--accent-amber)">3h</div><div class="mb-label">最長排隊時間</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ ACT 4: Shipment ═══════════ -->
+<section class="act act-4" id="act4">
+  <div class="act-header">
+    <div class="act-num">Act Ⅳ — 出貨</div>
+    <h2 class="act-title">包裹上路，OTD 結算</h2>
+    <p class="act-sub">成品進倉 → 運輸排程 → 客戶簽收。從下單到交付，全程 14.7 天。</p>
+  </div>
+
+  <div class="act-content">
+    <div class="card c4" style="animation:fadeUp .6s var(--ease) .1s both">
+      <div class="card-icon">📦</div>
+      <div class="card-title">成品入倉</div>
+      <div class="card-desc">QA 合格品入庫，FIFO 出倉排隊。倉庫容量 5,000 單位，即時水位監控。</div>
+      <div class="card-metric"><span class="val">2,340</span><span class="unit">倉庫庫存</span></div>
+    </div>
+    <div class="card c4" style="animation:fadeUp .6s var(--ease) .2s both">
+      <div class="card-icon">🚚</div>
+      <div class="card-title">運輸排程</div>
+      <div class="card-desc">每日兩班發車，運輸延遲 1-3 天（視目的地）。自動生成提單與出貨通知。</div>
+      <div class="card-metric"><span class="val">2.1d</span><span class="unit">平均運輸</span></div>
+    </div>
+    <div class="card c4" style="animation:fadeUp .6s var(--ease) .3s both">
+      <div class="card-icon">✅</div>
+      <div class="card-title">OTD 結算</div>
+      <div class="card-desc">客戶簽收 → 關閉工單 → 計算 OTD%。On-Time 定義：實際交期 ≤ 承諾交期。</div>
+      <div class="card-metric"><span class="val">82%</span><span class="unit">OTD (FIFO)</span></div>
+    </div>
+  </div>
+
+  <div class="ship-track" style="margin:1.5rem auto 0;animation:fadeUp .8s var(--ease) .5s both">
+    <div class="ship-icon">🚚</div>
+    <div class="ship-port">🏭</div>
+  </div>
+
+  <div class="metric-banner">
+    <div class="mb-item"><div class="mb-num" style="color:var(--accent)">14.7d</div><div class="mb-label">平均 Lead Time</div></div>
+    <div class="mb-item"><div class="mb-num" style="color:var(--c-t1)">82%</div><div class="mb-label">OTD (Baseline)</div></div>
+    <div class="mb-item"><div class="mb-num" style="color:var(--c-success)">91%</div><div class="mb-label">OTD (EDD 策略)</div></div>
+    <div class="mb-item"><div class="mb-num" style="color:var(--accent-rose)">8%</div><div class="mb-label">遲交率</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA Footer ═══════════ -->
+<section class="act-cta">
+  <h2>想看引擎跑起來？</h2>
+  <p>這個 Storyboard 是 OTD 模擬引擎的視覺入口。背後的真實模擬引擎支援 5 種交期格式 × 3 種排程策略 = 15 種組合，pytest 50/50 全過。</p>
+  <div class="cta-row">
+    <a class="cta-link cta-primary" href="otd-dashboard.html">📊 即時 Dashboard</a>
+    <a class="cta-link cta-secondary" href="otd-due-date-comparison.html">📐 5×3 策略矩陣</a>
+    <a class="cta-link cta-secondary" href="otd-domain-model.html">🏗️ Domain Model</a>
+  </div>
+</section>
+
+<script>
+/* ═══════════ Scroll Spying ═══════════ */
+const acts = document.querySelectorAll('.act')
+const navSteps = document.querySelectorAll('.nav-step')
+const timeline = document.getElementById('timelineBar')
+
+function updateNav(){
+  const scrollY = window.scrollY
+  const docH = document.documentElement.scrollHeight - window.innerHeight
+  timeline.style.width = ((scrollY / docH) * 100) + '%'
+
+  let current = ''
+  acts.forEach(act => {
+    const top = act.offsetTop - 120
+    if(scrollY >= top) current = act.id
+  })
+  navSteps.forEach(s => {
+    s.classList.remove('active','visited')
+    if(s.getAttribute('href') === '#' + current) s.classList.add('active')
+    else if(acts.length){
+      const actEl = document.querySelector(s.getAttribute('href'))
+      if(actEl && scrollY > actEl.offsetTop + actEl.offsetHeight * 0.3) s.classList.add('visited')
+    }
+  })
+}
+
+window.addEventListener('scroll', updateNav, {passive:true})
+updateNav()
+
+/* ═══════════ Smooth Scroll Nav ═══════════ */
+navSteps.forEach(step => {
+  step.addEventListener('click', e => {
+    e.preventDefault()
+    const target = document.querySelector(step.getAttribute('href'))
+    if(target) target.scrollIntoView({behavior:'smooth'})
+  })
+})
+</script>
+</body>
+</html>
