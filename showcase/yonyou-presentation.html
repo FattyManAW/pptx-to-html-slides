@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>润思科技 × 用友 — 區域經營與產品協同方案</title>
+<link rel="stylesheet" href="yonyou-design-tokens.css">
+<style>
+/* ═══════════════════════════════════════════
+   Track C — Smart: HTML Engineering
+   5-section flow · 25min timing · Ci auto deploy
+   ═══════════════════════════════════════════ */
+
+/* Base tokens (--ds-*) */
+:root {
+  --ds-bg: #0a0c12;
+  --ds-bg2: #11141e;
+  --ds-bg3: #181c28;
+  --ds-surface: #1c2030;
+  --ds-surface2: #222838;
+  --ds-border: rgba(255,255,255,0.06);
+  --ds-text-body: #8890a8;
+  --ds-text-heading: #c8cfe0;
+  --ds-text-display: #f0f2f8;
+  --ds-accent: #4f46e5;
+  --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px;
+  --s8: 32px; --s10: 40px; --s12: 48px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px;
+  --t-fast: 150ms;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--ds-bg);
+  color: var(--ds-text-body);
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans SC", "PingFang SC",
+               "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  font-size: 15px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════
+   Navigation Bar
+   ═══════════════════════════════════════════ */
+.nav-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,17,24,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--ds-border);
+  padding: var(--s3) var(--s6);
+  display: flex; align-items: center; gap: var(--s6);
+}
+.nav-logo {
+  font-size: 1rem; font-weight: 700;
+  color: var(--ds-text-display);
+  display: flex; align-items: center; gap: var(--s2);
+}
+.nav-logo .brand { color: var(--ds-yonyou-red); }
+.nav-links {
+  display: flex; gap: var(--s6); margin-left: auto;
+}
+.nav-link {
+  color: var(--ds-text-body); text-decoration: none;
+  font-size: 0.85rem; font-weight: 500;
+  transition: color var(--t-fast);
+  padding: var(--s2) 0; border-bottom: 2px solid transparent;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--ds-yonyou-gold);
+  border-bottom-color: var(--ds-yonyou-gold);
+}
+
+/* ═══════════════════════════════════════════
+   Hero Section — 1. 市場機會 (3min)
+   ═══════════════════════════════════════════ */
+.hero {
+  padding: var(--s12) var(--s8);
+  text-align: center;
+  background: linear-gradient(180deg, var(--ds-yonyou-bg), var(--ds-bg));
+  border-bottom: 1px solid var(--ds-border);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute; top: -50%; left: 50%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--ds-yonyou-red-dim), transparent 70%);
+  transform: translate(-50%, -30%);
+  pointer-events: none;
+}
+.hero .timing {
+  font-size: 0.75rem; color: var(--ds-yonyou-gold);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: var(--s4);
+}
+.hero h1 {
+  font-size: 2.4rem; color: var(--ds-text-display);
+  font-weight: 800; line-height: 1.3;
+  margin-bottom: var(--s4);
+  position: relative;
+}
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--ds-yonyou-red), var(--ds-yonyou-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero .subtitle {
+  font-size: 1.1rem; color: var(--ds-text-heading);
+  max-width: 680px; margin: 0 auto var(--s6);
+}
+.hero .meta {
+  font-size: 0.8rem; color: var(--ds-text-body);
+  display: flex; justify-content: center; gap: var(--s8);
+}
+.hero .meta span { display:flex; align-items:center; gap:4px; }
+
+/* ═══════════════════════════════════════════
+   Section Template
+   ═══════════════════════════════════════════ */
+.section {
+  max-width: 1100px; margin: 0 auto;
+  padding: var(--s10) var(--s6);
+}
+.section-header {
+  margin-bottom: var(--s8);
+  display: flex; align-items: baseline; gap: var(--s4);
+}
+.section-num {
+  font-size: 3rem; font-weight: 900;
+  color: var(--ds-yonyou-red-dim);
+  line-height: 1;
+}
+.section-title {
+  font-size: 1.6rem; font-weight: 700;
+  color: var(--ds-text-display);
+  border-bottom: 2px solid var(--ds-yonyou-red);
+  padding-bottom: var(--s3);
+  display: inline-block;
+}
+.section-sub {
+  font-size: 0.85rem; color: var(--ds-yonyou-gold);
+  margin-top: var(--s2);
+}
+
+/* ═══════════════════════════════════════════
+   Cards
+   ═══════════════════════════════════════════ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--s5);
+}
+.card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--r-md);
+  padding: var(--s6);
+  transition: border-color var(--t-fast);
+}
+.card:hover { border-color: var(--ds-yonyou-red-dim); }
+.card-icon {
+  font-size: 1.5rem; margin-bottom: var(--s4);
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ds-yonyou-red-dim);
+  border-radius: var(--r-sm);
+}
+.card h3 {
+  font-size: 1.1rem; color: var(--ds-text-display);
+  margin-bottom: var(--s3); font-weight: 700;
+}
+.card p {
+  font-size: 0.9rem; color: var(--ds-text-body);
+  line-height: 1.6;
+}
+.card .tag {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px;
+  margin-top: var(--s4);
+}
+.tag-red { background: var(--ds-yonyou-red-dim); color: var(--ds-yonyou-red); }
+.tag-gold { background: var(--ds-yonyou-gold-dim); color: var(--ds-yonyou-gold); }
+
+/* ═══════════════════════════════════════════
+   Case Story Cards
+   ═══════════════════════════════════════════ */
+.case-card {
+  background: var(--ds-surface2);
+  border: 1px solid var(--ds-border);
+  border-left: 4px solid var(--ds-yonyou-red);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding: var(--s6); margin-bottom: var(--s5);
+}
+.case-card h4 {
+  color: var(--ds-text-display); font-size: 1.05rem;
+  margin-bottom: var(--s4);
+}
+.case-flow {
+  display: flex; gap: var(--s3); flex-wrap: wrap;
+  align-items: center; margin-bottom: var(--s4);
+}
+.case-step {
+  background: var(--ds-surface);
+  border-radius: var(--r-sm);
+  padding: var(--s3) var(--s4);
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--ds-text-heading);
+}
+.case-arrow { color: var(--ds-yonyou-gold); font-size: 0.8rem; }
+.case-result {
+  font-size: 0.85rem; color: var(--ds-yonyou-gold);
+}
+
+/* ═══════════════════════════════════════════
+   Comparison Table
+   ═══════════════════════════════════════════ */
+.comp-table {
+  width: 100%; border-collapse: collapse;
+  margin-top: var(--s4);
+}
+.comp-table th, .comp-table td {
+  padding: var(--s4); text-align: left;
+  border-bottom: 1px solid var(--ds-border);
+  font-size: 0.9rem;
+}
+.comp-table th {
+  color: var(--ds-text-heading);
+  background: var(--ds-surface2);
+  font-weight: 700;
+}
+.comp-table tr:hover td { background: var(--ds-yonyou-red-dim); }
+
+/* ═══════════════════════════════════════════
+   CTA
+   ═══════════════════════════════════════════ */
+.cta {
+  text-align: center; padding: var(--s12) var(--s6);
+  background: linear-gradient(180deg, var(--ds-bg), var(--ds-yonyou-bg));
+  border-top: 1px solid var(--ds-border);
+}
+.cta h2 {
+  font-size: 1.8rem; color: var(--ds-text-display);
+  margin-bottom: var(--s4);
+}
+.cta p {
+  font-size: 1rem; color: var(--ds-text-heading);
+  max-width: 600px; margin: 0 auto var(--s6);
+}
+.cta-grid {
+  display: flex; gap: var(--s5); justify-content: center; flex-wrap: wrap;
+}
+.cta-card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--r-md);
+  padding: var(--s6); width: 280px;
+  text-align: center;
+}
+.cta-card h3 {
+  font-size: 1.1rem; color: var(--ds-text-display);
+  margin-bottom: var(--s3);
+}
+
+/* ═══════════════════════════════════════════
+   Footer
+   ═══════════════════════════════════════════ */
+.footer {
+  text-align: center; padding: var(--s6);
+  background: var(--ds-bg2);
+  border-top: 1px solid var(--ds-border);
+  font-size: 0.75rem; color: var(--ds-text-body);
+}
+.footer .brand { color: var(--ds-yonyou-red); font-weight: 600; }
+
+/* ═══════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .cards { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .section { padding: var(--s8) var(--s4); }
+}
+
+/* ═══════════════════════════════════════════
+   Print
+   ═══════════════════════════════════════════ */
+@media print {
+  body { font-size: 12px; }
+  .nav-bar { display: none; }
+  .section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Navigation ═══ -->
+<nav class="nav-bar">
+  <div class="nav-logo">
+    <span class="brand">润思</span> × 用友
+  </div>
+  <div class="nav-links">
+    <a href="#market" class="nav-link active">市場機會</a>
+    <a href="#region" class="nav-link">區域經營</a>
+    <a href="#products" class="nav-link">產品方案</a>
+    <a href="#cases" class="nav-link">案例故事</a>
+    <a href="#cooperation" class="nav-link">合作機制</a>
+  </div>
+</nav>
+
+<!-- ═══ Section 1: 市場機會 (3min) ═══ -->
+<section class="hero" id="market">
+  <div class="timing">📍 Part 1 · 3 分鐘</div>
+  <h1>
+    區域協同 × <span class="highlight">產品融合</span><br>
+    與用友共築智慧製造新版圖
+  </h1>
+  <p class="subtitle">
+    上海、蘇州、寧波三地聯合經營 — 以 APS 排程為入口、ESG 碳管理為增值、
+    AI 為加速引擎，打造用友生態閉環
+  </p>
+  <div class="meta">
+    <span>🏭 潤思科技</span>
+    <span>🤝 用友生態夥伴</span>
+    <span>📅 2026 年</span>
+  </div>
+</section>
+
+<!-- ═══ Section 2: 區域經營 (7min) ═══ -->
+<section class="section" id="region">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div>
+      <div class="section-title">三區域聯合經營模式</div>
+      <div class="section-sub">📍 Part 2 · 7 分鐘 — 從單點突破到區域協同</div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🏙️</div>
+      <h3>上海</h3>
+      <p>長三角製造業總部聚集地。汽車零部件、精密機械、生物醫藥 — 多品種小批量典範。</p>
+      <span class="tag tag-red">MTO 模式</span>
+      <span class="tag tag-gold">多品種小批量</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏗️</div>
+      <h3>蘇州</h3>
+      <p>電子資訊、高端裝備製造重鎮。供應鏈密集，協同排程需求強。</p>
+      <span class="tag tag-red">供應鏈協同</span>
+      <span class="tag tag-gold">電子製造</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚢</div>
+      <h3>寧波</h3>
+      <p>港口物流 + 石化 + 模具產業。MTO+ETO 混合，交期壓力最大。</p>
+      <span class="tag tag-red">港口經濟</span>
+      <span class="tag tag-gold">MTO+ETO</span>
+    </div>
+  </div>
+
+  <div class="cards" style="margin-top:var(--s5);">
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <h3>聯合經營模型</h3>
+      <p>上海總部 + 蘇州/寧波區域中心：用友 ERP 為數據底座，潤思 APS/AI 為智能層。</p>
+      <p style="margin-top:8px;font-size:0.82rem;color:var(--ds-yonyou-gold);">
+        分階段推進：單廠試點 → 區域同步 → 長三角聯網
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Section 3: 產品方案 (7min) ═══ -->
+<section class="section" id="products">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div>
+      <div class="section-title">三產品協同方案</div>
+      <div class="section-sub">📍 Part 3 · 7 分鐘 — APS + ESG + AI 全棧</div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>APS 智能排程</h3>
+      <p>多品種小批量動態排程、有限產能約束、即時插單與重排程。</p>
+      <span class="tag tag-red">OTD 提升 15-25%</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌱</div>
+      <h3>ESG 碳管理</h3>
+      <p>產品碳足跡追蹤、供應鏈碳排放可視化、歐盟 CBAM 合規。</p>
+      <span class="tag tag-gold">合規出口</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>AI 智能助手</h3>
+      <p>異常預警、排程建議、自然語言查詢、知識庫檢索。</p>
+      <span class="tag tag-red">7×24 運維</span>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>場景</th><th>痛點</th><th>APS</th><th>ESG</th><th>AI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>多品種排程</td>
+        <td>Excel 人工、交期延誤</td>
+        <td>✅ 自動排程</td>
+        <td>—</td>
+        <td>✅ 建議優化</td>
+      </tr>
+      <tr>
+        <td>出口合規</td>
+        <td>碳數據缺失</td>
+        <td>—</td>
+        <td>✅ 足跡追蹤</td>
+        <td>✅ 報告生成</td>
+      </tr>
+      <tr>
+        <td>夜間巡檢</td>
+        <td>人力成本高</td>
+        <td>—</td>
+        <td>—</td>
+        <td>✅ 異常預警</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══ Section 4: 案例故事 (5min) ═══ -->
+<section class="section" id="cases">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div>
+      <div class="section-title">協同成交故事</div>
+      <div class="section-sub">📍 Part 4 · 5 分鐘 — Problem → Joint Approach → Win</div>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <h4>🏭 案例一：蘇州電子零部件廠 — 從交期失控到 OTD 85%</h4>
+    <div class="case-flow">
+      <span class="case-step">📋 問題</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">🔍 用友 ERP 診斷</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">📊 潤思 APS 建模</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">✅ 聯合交付</span>
+    </div>
+    <p class="case-result">
+      🎯 結果：OTD 從 52%→85%，排程時間 4h→15min，年省 300 萬人力成本
+    </p>
+  </div>
+
+  <div class="case-card" style="border-left-color: var(--ds-yonyou-gold);">
+    <h4>🌱 案例二：寧波模具出口商 — CBAM 碳合規一次通過</h4>
+    <div class="case-flow">
+      <span class="case-step">📋 問題</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">🔍 用友供應鏈數據</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">🌱 潤思 ESG 碳足跡</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">✅ CBAM 合規</span>
+    </div>
+    <p class="case-result">
+      🎯 結果：CBAM 報告一次審核通過，歐盟訂單增長 40%
+    </p>
+  </div>
+
+  <div class="case-card" style="border-left-color: var(--ds-accent);">
+    <h4>🤖 案例三：上海汽車零部件廠 — AI 夜間巡檢代替 3 班人力</h4>
+    <div class="case-flow">
+      <span class="case-step">📋 問題</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">🔍 用友 MES 數據</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">🤖 潤思 AI 預警</span>
+      <span class="case-arrow">→</span>
+      <span class="case-step">✅ 減人增效</span>
+    </div>
+    <p class="case-result">
+      🎯 結果：夜班人力 3→1 人，異常響應 30min→3min，年省 120 萬
+    </p>
+  </div>
+</section>
+
+<!-- ═══ Section 5: 合作機制 (3min) ═══ -->
+<section class="section" id="cooperation">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div>
+      <div class="section-title">下一步合作機制</div>
+      <div class="section-sub">📍 Part 5 · 3 分鐘 — 閉環路徑</div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <h3>聯合診斷</h3>
+      <p>用友客戶成功團隊 + 潤思顧問，一個月內完成 3-5 家標杆客戶深度調研。</p>
+      <span class="tag tag-red">1 個月</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧪</div>
+      <h3>試點驗證</h3>
+      <p>選 2 家意願客戶，APS/ESG/AI 最小閉環部署，60 天內產出 ROI 數據。</p>
+      <span class="tag tag-gold">60 天</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>規模複製</h3>
+      <p>成功案例包裝 → 用友生態管道分發 → 三區域同步推進。</p>
+      <span class="tag tag-red">規模化</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta">
+  <h2>讓數據說話，用結果證明</h2>
+  <p>我們不只提供產品，我們與用友共同交付客戶成功</p>
+  <div class="cta-grid">
+    <div class="cta-card">
+      <h3>📊 APS</h3>
+      <p style="font-size:0.85rem;">交期準確率提升 15-25%</p>
+    </div>
+    <div class="cta-card">
+      <h3>🌱 ESG</h3>
+      <p style="font-size:0.85rem;">碳合規一次通過率 100%</p>
+    </div>
+    <div class="cta-card">
+      <h3>🤖 AI</h3>
+      <p style="font-size:0.85rem;">運維人力成本降低 60%</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Footer ═══ -->
+<footer class="footer">
+  <span class="brand">润思科技</span> × 用友 · 區域經營與產品協同方案 · 2026
+</footer>
+
+</body>
+</html>

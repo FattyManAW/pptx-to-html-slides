@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OTD 模擬引擎 Domain Model — Order → Schedule → Production → Shipment 四階段流程圖">
+<title>OTD Domain Model · Power Squad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06080d; --bg-card: #0a0c14; --bg-float: #0d1018;
+  --t1: #f0f4f8; --t2: #a0a8b8; --t3: #5a6270; --t4: #2e3440;
+  --accent: #14b8a6; --accent-2: #2dd4bf; --accent-3: #a78bfa;
+  --surf: rgba(255,255,255,.035); --surf-h: rgba(255,255,255,.07);
+  --border: rgba(255,255,255,.07); --border-h: rgba(255,255,255,.12);
+  --ease: cubic-bezier(0.4,0,0.2,1); --t-base: 300ms;
+  --ff-display: 'Playfair Display','Noto Serif SC',serif;
+  --ff-body: 'Inter','Noto Sans SC',sans-serif;
+  --s1:.5rem; --s2:1rem; --s3:1.5rem; --s4:2rem; --s6:3rem; --s8:4rem;
+  /* --ds-* canonical aliases */
+  --ds-bg: var(--bg);--ds-surface: var(--bg-card);--ds-surface-raised: var(--bg-float);
+  --ds-text-display: var(--t1);--ds-text-heading: var(--t1);--ds-text-body: var(--t2);--ds-text-muted: var(--t3);
+  --ds-impacts-brand: var(--accent);--ds-cris-carbon: var(--accent);--ds-aps-violet: var(--accent-3);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);background:var(--bg);color:var(--t2);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── Hero ── */
+.hero{text-align:center;padding:var(--s8) var(--s4) var(--s4);position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 0%,rgba(20,184,166,.06),transparent);pointer-events:none}
+.hero h1{font-family:var(--ff-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--t1);letter-spacing:-.02em;margin-bottom:.5rem}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--t3);font-size:.9rem;max-width:560px;margin:0 auto;font-weight:300}
+
+/* ── Container ── */
+.container{max-width:1100px;margin:0 auto;padding:0 var(--s4) var(--s8)}
+
+/* ── Flow Diagram ── */
+.flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:var(--s6) 0;position:relative}
+.flow::before{content:'';position:absolute;top:50%;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));border-radius:2px;z-index:0;opacity:.3}
+@media(max-width:768px){.flow::before{display:none}}
+
+.stage{position:relative;z-index:1;flex:0 0 auto}
+.stage-card{border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.8rem;min-width:160px;text-align:center;background:var(--bg-card);transition:border-color var(--t-base) var(--ease),box-shadow var(--t-base) var(--ease)}
+.stage-card:hover{border-color:var(--border-h);box-shadow:0 0 30px rgba(20,184,166,.1)}
+.stage-card.order{border-color:rgba(20,184,166,.2)}
+.stage-card.schedule{border-color:rgba(45,212,191,.2)}
+.stage-card.production{border-color:rgba(167,139,250,.2)}
+.stage-card.shipment{border-color:rgba(245,158,11,.2)}
+.stage-icon{font-size:2rem;margin-bottom:.5rem}
+.stage-num{font-size:.6rem;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.2rem}
+.stage-name{font-family:var(--ff-display);font-size:1.1rem;font-weight:700;color:var(--t1);margin-bottom:.3rem}
+.stage-sub{font-size:.7rem;color:var(--t3);font-weight:300}
+.stage-attrs{margin-top:.7rem;display:flex;flex-direction:column;gap:.2rem}
+.attr{font-size:.62rem;color:var(--accent);font-family:var(--ff-body);background:rgba(20,184,166,.08);padding:.15rem .5rem;border-radius:4px;display:inline-block;text-align:left}
+
+.arrow{color:var(--accent);font-size:1.4rem;opacity:.5;margin:0 .3rem;flex-shrink:0}
+
+/* ── Factory Topology ── */
+.topo{margin:var(--s6) 0}
+.topo-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.topo-grid{grid-template-columns:1fr}}
+.topo-box{border:1px solid var(--border);border-radius:14px;padding:1.3rem;background:var(--bg-card)}
+.topo-box h3{font-size:.9rem;font-weight:600;color:var(--t1);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+.topo-box h3 .icon{font-size:1.1rem}
+.topo-list{list-style:none;padding:0;margin:0}
+.topo-list li{padding:.3rem 0;border-bottom:1px solid var(--border);font-size:.78rem;color:var(--t2);display:flex;align-items:center;gap:.5rem}
+.topo-list li:last-child{border:none}
+.topo-list .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.topo-list .tag{font-size:.6rem;padding:.1rem .4rem;border-radius:3px;background:var(--surf);color:var(--t3);margin-left:auto;font-family:var(--ff-body)}
+
+/* ── Variant Parameters ── */
+.params{margin:var(--s6) 0}
+.params-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.8rem}
+.param-card{border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;background:var(--bg-card);transition:border-color var(--t-fast) var(--ease)}
+.param-card:hover{border-color:var(--accent)}
+.param-name{font-family:var(--ff-body);font-size:.75rem;font-weight:600;color:var(--t1);margin-bottom:.3rem}
+.param-type{font-size:.62rem;color:var(--accent);background:rgba(20,184,166,.08);padding:.1rem .4rem;border-radius:4px;display:inline-block;margin-bottom:.4rem}
+.param-desc{font-size:.7rem;color:var(--t3);line-height:1.5}
+.param-loc{font-size:.6rem;color:var(--t4);margin-top:.3rem;font-style:italic}
+
+/* ── Scheduling Rules ── */
+.sched{margin:var(--s6) 0}
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem}
+.sched-card{border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;text-align:center;background:var(--bg-card)}
+.sched-name{font-family:var(--ff-display);font-weight:700;font-size:.95rem;color:var(--t1)}
+.sched-desc{font-size:.65rem;color:var(--t3);margin-top:.2rem}
+
+/* ── Full Pipeline Table ── */
+.pipeline{margin:var(--s6) 0}
+.pipe-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.pipe-table th{text-align:left;padding:.5rem .8rem;color:var(--t3);font-weight:500;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border)}
+.pipe-table td{padding:.55rem .8rem;border-bottom:1px solid var(--border);color:var(--t2);vertical-align:top}
+.pipe-table .phase{font-family:var(--ff-display);font-weight:700;color:var(--accent)}
+.pipe-table .attrs{font-size:.65rem;color:var(--t3);font-family:var(--ff-body)}
+.pipe-table .output{font-size:.65rem;color:var(--accent-2)}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:var(--s5) var(--s4);color:var(--t4);font-size:.65rem;border-top:1px solid var(--border)}
+
+/* ── RWD ── */
+@media(max-width:640px){
+  .container{padding:0 var(--s3) var(--s5)}
+  .flow{flex-direction:column;gap:.8rem}
+  .flow::before{display:none}
+  .arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>OTD <span>Domain Model</span></h1>
+  <p>工廠接單到出貨（Order-to-Delivery）流程模擬引擎 — 四階段 + 變異參數 + 工廠拓撲</p>
+</header>
+
+<div class="container">
+
+<!-- ════════════════ FLOW ════════════════ -->
+<section>
+  <div class="section-header" style="display:flex;align-items:baseline;gap:.8rem;margin-bottom:var(--s4)">
+    <span class="section-num" style="font-family:var(--ff-display);font-size:.9rem;font-weight:700;color:var(--accent);opacity:.6">01</span>
+    <div class="section-title" style="font-family:var(--ff-display);font-size:1.4rem;font-weight:700;color:var(--t1)">四階段流程</div>
+  </div>
+  <div class="flow">
+    <div class="stage">
+      <div class="stage-card order">
+        <div class="stage-icon">📋</div>
+        <div class="stage-num">Stage 1</div>
+        <div class="stage-name">Order</div>
+        <div class="stage-sub">訂單</div>
+        <div class="stage-attrs">
+          <span class="attr">customer</span>
+          <span class="attr">product_type</span>
+          <span class="attr">quantity</span>
+          <span class="attr">due_date</span>
+          <span class="attr">priority</span>
+          <span class="attr">status</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="stage">
+      <div class="stage-card schedule">
+        <div class="stage-icon">📅</div>
+        <div class="stage-num">Stage 2</div>
+        <div class="stage-name">Schedule</div>
+        <div class="stage-sub">排程（工單）</div>
+        <div class="stage-attrs">
+          <span class="attr">work_order_id</span>
+          <span class="attr">assigned_line</span>
+          <span class="attr">planned_start</span>
+          <span class="attr">planned_end</span>
+          <span class="attr">priority_rule</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="stage">
+      <div class="stage-card production">
+        <div class="stage-icon">🏭</div>
+        <div class="stage-num">Stage 3</div>
+        <div class="stage-name">Production</div>
+        <div class="stage-sub">生產</div>
+        <div class="stage-attrs">
+          <span class="attr">station_id</span>
+          <span class="attr">actual_start</span>
+          <span class="attr">actual_end</span>
+          <span class="attr">yield_rate</span>
+          <span class="attr">defect_count</span>
+          <span class="attr">downtime_min</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="stage">
+      <div class="stage-card shipment">
+        <div class="stage-icon">🚚</div>
+        <div class="stage-num">Stage 4</div>
+        <div class="stage-name">Shipment</div>
+        <div class="stage-sub">出貨</div>
+        <div class="stage-attrs">
+          <span class="attr">ship_date</span>
+          <span class="attr">carrier</span>
+          <span class="attr">transit_days</span>
+          <span class="attr">delivery_date</span>
+          <span class="attr">on_time ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FACTORY TOPOLOGY ════════════════ -->
+<section class="topo">
+  <div class="section-header" style="display:flex;align-items:baseline;gap:.8rem;margin-bottom:var(--s4)">
+    <span class="section-num" style="font-family:var(--ff-display);font-size:.9rem;font-weight:700;color:var(--accent);opacity:.6">02</span>
+    <div class="section-title" style="font-family:var(--ff-display);font-size:1.4rem;font-weight:700;color:var(--t1)">工廠拓撲</div>
+  </div>
+  <div class="topo-grid">
+    <div class="topo-box">
+      <h3><span class="icon">🏗️</span> Factory</h3>
+      <ul class="topo-list">
+        <li><span class="dot"></span>Lines[] <span class="tag">產線陣列</span></li>
+        <li><span class="dot"></span>Stations[] <span class="tag">工作站</span></li>
+        <li><span class="dot"></span>buffer_size <span class="tag">WIP 上限</span></li>
+        <li><span class="dot"></span>Warehouse <span class="tag">成品倉</span></li>
+        <li><span class="dot"></span>ship_modes[] <span class="tag">運輸方式</span></li>
+      </ul>
+    </div>
+    <div class="topo-box">
+      <h3><span class="icon">⚙️</span> Station</h3>
+      <ul class="topo-list">
+        <li><span class="dot"></span>capacity (units/hr)</li>
+        <li><span class="dot"></span>setup_time (min)</li>
+        <li><span class="dot"></span>failure_rate (0-1)</li>
+        <li><span class="dot"></span>yield_decay /1k units</li>
+        <li><span class="dot"></span>maintenance_interval (hrs)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PIPELINE TABLE ════════════════ -->
+<section class="pipeline">
+  <div class="section-header" style="display:flex;align-items:baseline;gap:.8rem;margin-bottom:var(--s4)">
+    <span class="section-num" style="font-family:var(--ff-display);font-size:.9rem;font-weight:700;color:var(--accent);opacity:.6">03</span>
+    <div class="section-title" style="font-family:var(--ff-display);font-size:1.4rem;font-weight:700;color:var(--t1)">完整 Pipeline</div>
+  </div>
+  <table class="pipe-table">
+    <thead><tr><th>階段</th><th>觸發條件</th><th>核心屬性</th><th>輸出</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="phase">① Order</td>
+        <td>外部訂單到達 / 急單觸發</td>
+        <td class="attrs">customer · product_type · quantity · due_date · priority · status</td>
+        <td class="output">work_order_id</td>
+      </tr>
+      <tr>
+        <td class="phase">② Schedule</td>
+        <td>排程引擎（EDD/FIFO/SPT/CR/Hybrid）</td>
+        <td class="attrs">assigned_line · planned_start · planned_end · priority_rule</td>
+        <td class="output">station assignments · timeline</td>
+      </tr>
+      <tr>
+        <td class="phase">③ Production</td>
+        <td>planned_start <= now AND station idle</td>
+        <td class="attrs">actual_start · actual_end · yield_rate · defect_count · downtime_min</td>
+        <td class="output">wip status · yield decay · completed units</td>
+      </tr>
+      <tr>
+        <td class="phase">④ Shipment</td>
+        <td>Production completed → Warehouse full OR ship trigger</td>
+        <td class="attrs">ship_date · carrier · transit_days · delivery_date · on_time</td>
+        <td class="output">OTD rate · avg lead time</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ VARIANT PARAMS ════════════════ -->
+<section class="params">
+  <div class="section-header" style="display:flex;align-items:baseline;gap:.8rem;margin-bottom:var(--s4)">
+    <span class="section-num" style="font-family:var(--ff-display);font-size:.9rem;font-weight:700;color:var(--accent);opacity:.6">04</span>
+    <div class="section-title" style="font-family:var(--ff-display);font-size:1.4rem;font-weight:700;color:var(--t1)">變異參數（8 個隨機變數）</div>
+  </div>
+  <div class="params-grid">
+    <div class="param-card">
+      <div class="param-name">machine_failure_rate</div>
+      <span class="param-type">Poisson λ/100h</span>
+      <div class="param-desc">機器故障率。觸發位置：Station</div>
+      <div class="param-loc">範圍：0.01 – 0.20</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">setup_time_jitter</div>
+      <span class="param-type">Normal(μ, σ)</span>
+      <div class="param-desc">換線時間抖動。觸發位置：換線時</div>
+      <div class="param-loc">±30%</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">yield_decay_rate</div>
+      <span class="param-type">Linear decay</span>
+      <div class="param-desc">良率衰減。觸發位置：Station / 每 1000 件</div>
+      <div class="param-loc">0.1 – 2.0% / 1k units</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">priority_inversion</div>
+      <span class="param-type">Bernoulli(p)</span>
+      <div class="param-desc">優先級翻轉（低優先級搶先執行）</div>
+      <div class="param-loc">p：0 – 0.15</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">rush_order_prob</div>
+      <span class="param-type">Poisson λ/day</span>
+      <div class="param-desc">急單到達機率。觸發位置：Order generator</div>
+      <div class="param-loc">λ：0 – 3 / day</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">transit_delay</div>
+      <span class="param-type">Log-normal(μ, σ)</span>
+      <div class="param-desc">運輸延遲。觸發位置：Shipment</div>
+      <div class="param-loc">1 – 5 days</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">demand_spike</div>
+      <span class="param-type">Periodic multiplier</span>
+      <div class="param-desc">需求尖峰。觸發位置：Order generator</div>
+      <div class="param-loc">1.0 – 3.0×</div>
+    </div>
+    <div class="param-card">
+      <div class="param-name">worker_absenteeism</div>
+      <span class="param-type">Bernoulli(p)</span>
+      <div class="param-desc">工人缺勤。觸發位置：Station</div>
+      <div class="param-loc">p：0 – 0.05</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SCHEDULING RULES ════════════════ -->
+<section class="sched">
+  <div class="section-header" style="display:flex;align-items:baseline;gap:.8rem;margin-bottom:var(--s4)">
+    <span class="section-num" style="font-family:var(--ff-display);font-size:.9rem;font-weight:700;color:var(--accent);opacity:.6">05</span>
+    <div class="section-title" style="font-family:var(--ff-display);font-size:1.4rem;font-weight:700;color:var(--t1)">排程規則（5 種）</div>
+  </div>
+  <div class="sched-grid">
+    <div class="sched-card">
+      <div class="sched-name">FIFO</div>
+      <div class="sched-desc">先進先出<br>baseline</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-name">EDD</div>
+      <div class="sched-desc">最早交期優先<br>Earliest Due Date</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-name">SPT</div>
+      <div class="sched-desc">最短加工優先<br>Shortest Processing Time</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-name">CR</div>
+      <div class="sched-desc">關鍵比值<br>(due - now) / remaining</div>
+    </div>
+    <div class="sched-card" style="border-color:rgba(20,184,166,.3)">
+      <div class="sched-name" style="color:var(--accent)">Hybrid</div>
+      <div class="sched-desc">EDD + WIP limit<br>+ 逾期優先提升</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer class="footer">OTD Domain Model · Power Squad · v0.1-draft · 2026-05-20 · 從 spec 自動生成</footer>
+
+</body>
+</html>

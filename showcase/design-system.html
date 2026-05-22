@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Power Squad Design System Reference — 104 tokens × 21 categories">
+<title>Design System Reference · Power Squad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   DESIGN SYSTEM REFERENCE — Page Design Tokens
+   Reads from :root tokens for self-referencing examples
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Self-referencing design tokens ── */
+:root {
+  /* Same as tokens.json v4 */
+  --ink-50:#f8fafc; --ink-100:#f1f5f9; --ink-200:#e2e8f0; --ink-300:#cbd5e1;
+  --ink-400:#94a3b8; --ink-500:#64748b; --ink-600:#475569; --ink-700:#334155;
+  --ink-800:#1e293b; --ink-900:#0f172a; --ink-950:#06080d;
+
+  --c-t1:#f0f4f8; --c-t2:#a0a8b8; --c-t3:#5a6270; --c-t4:#2e3440;
+  --c-error:#ef4444; --c-success:#22c55e; --c-warning:#f59e0b; --c-info:#3b82f6;
+
+  --accent:#14b8a6; --accent-mid:#2dd4bf; --accent-2:#a78bfa;
+  --c-teal:#14b8a6; --c-teal-dim:rgba(20,184,166,.12); --c-teal-glow:rgba(20,184,166,.25); --c-teal-hot:#2dd4bf;
+
+  --surface:rgba(255,255,255,.035); --surface-h:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.07); --border-h:rgba(255,255,255,.12);
+  --shadow:0 8px 40px rgba(0,0,0,.35);
+
+  --blur-8:blur(8px); --blur-12:blur(12px); --blur-24:blur(24px); --blur-32:blur(32px);
+  --blur:blur(24px); --blur-card:blur(12px); --blur-sheet:blur(24px); --blur-modal:blur(32px);
+
+  --t-fast:150ms; --t-mid:300ms; --t-slow:400ms;
+  --ease:cubic-bezier(0.4,0,0.2,1); --ease-in:cubic-bezier(0.4,0,1,1); --ease-out:cubic-bezier(0,0,0.2,1);
+
+  --s1:.5rem; --s2:1rem; --s3:1.5rem; --s4:2rem; --s5:2.5rem;
+  --s6:3rem; --s7:4rem; --s8:5rem; --s9:6rem; --s10:8rem;
+
+  --display:'Playfair Display','Noto Serif SC',serif;
+  --heading:'Playfair Display','Noto Serif SC',serif;
+  --body:'Inter','Noto Sans SC',sans-serif;
+  --mono:'JetBrains Mono','Fira Code',monospace;
+
+  --bg:#06080d; --bg-card:#0a0c14; --bg-float:#0d1018;
+
+  --t1:#f0f4f8; --t2:#a0a8b8; --t3:#5a6270; --t4:#2e3440;
+}
+
+/* ── Page Reset ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--t2);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+/* ── Layout ── */
+.page-header{text-align:center;padding:var(--s10) var(--s4) var(--s6);position:relative}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 0%,rgba(20,184,166,.05),transparent);pointer-events:none}
+.page-header h1{font-family:var(--display);font-size:clamp(2rem,5vw,3.4rem);font-weight:800;color:var(--t1);letter-spacing:-.02em;margin-bottom:.5rem}
+.page-header h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.page-header p{color:var(--t3);font-size:.95rem;max-width:600px;margin:0 auto;font-weight:300}
+.page-header .meta{margin-top:var(--s3);display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
+.page-header .meta span{font-size:.7rem;color:var(--t4);letter-spacing:.12em;text-transform:uppercase;background:var(--surface);border:1px solid var(--border);padding:.25rem .7rem;border-radius:6px;font-family:var(--mono)}
+
+.container{max-width:1200px;margin:0 auto;padding:0 var(--s4) var(--s10)}
+
+/* ── Section ── */
+.section{margin-bottom:var(--s8)}
+.section-header{margin-bottom:var(--s4);padding-bottom:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:.8rem}
+.section-num{font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--accent);opacity:.6}
+.section-title{font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--t1)}
+.section-sub{font-size:.8rem;color:var(--t3);font-weight:300;margin-top:.2rem}
+
+/* ── Color Palette ── */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem}
+.swatch{border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color var(--t-fast) var(--ease)}
+.swatch:hover{border-color:var(--border-h)}
+.swatch-swatch{height:72px}
+.swatch-info{padding:.6rem .7rem;background:var(--bg-card)}
+.swatch-name{font-family:var(--mono);font-size:.7rem;color:var(--t1);font-weight:500;word-break:break-all}
+.swatch-value{font-size:.62rem;color:var(--t3);margin-top:2px;font-family:var(--mono)}
+
+/* ── Typography ── */
+.type-grid{display:flex;flex-direction:column;gap:2rem}
+.type-row{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.type-label{padding:.5rem .8rem;background:var(--surface);border-bottom:1px solid var(--border);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);font-weight:600}
+.type-sample{padding:1.5rem 1.2rem}
+.type-display{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--t1);line-height:1.1}
+.type-heading{font-family:var(--heading);font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--t1);line-height:1.2}
+.type-body{font-family:var(--body);font-size:clamp(.9rem,1.5vw,1.1rem);color:var(--t2);line-height:1.7}
+.type-mono{font-family:var(--mono);font-size:.85rem;color:var(--c-teal);line-height:1.6}
+.type-meta{margin-top:.8rem;font-size:.7rem;color:var(--t3);font-family:var(--mono)}
+
+/* ── Spacing Grid ── */
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.8rem}
+.sp-item{border:1px solid var(--border);border-radius:10px;padding:.8rem;text-align:center;transition:border-color var(--t-fast) var(--ease)}
+.sp-item:hover{border-color:var(--accent)}
+.sp-bar{background:var(--accent);border-radius:4px;opacity:.4;margin:0 auto .5rem}
+.sp-name{font-family:var(--mono);font-size:.7rem;color:var(--t1)}
+.sp-val{font-size:.65rem;color:var(--t3)}
+
+/* ── Blur/Glass ── */
+.blur-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
+.blur-card{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.blur-preview{height:80px;position:relative;background:linear-gradient(135deg,var(--accent),var(--accent-2),var(--c-info))}
+.blur-preview::after{content:'';position:absolute;inset:0;background:var(--bg);opacity:0}
+.blur-name{padding:.6rem .8rem;font-family:var(--mono);font-size:.7rem;color:var(--t1)}
+.blur-val{font-size:.62rem;color:var(--t3)}
+
+/* ── Timing ── */
+.timing-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.t-chip{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem 1.1rem;min-width:120px;flex:1}
+.t-chip .label{font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
+.t-chip .value{font-family:var(--mono);font-size:1rem;color:var(--t1);font-weight:600}
+
+.easing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.easing-card{border:1px solid var(--border);border-radius:12px;padding:1rem}
+.easing-name{font-family:var(--mono);font-size:.75rem;color:var(--accent);margin-bottom:.6rem}
+.easing-ball{width:40px;height:40px;border-radius:50%;background:var(--accent);position:relative}
+.easing-anim{animation:tBounce var(--ease) 1.5s infinite alternate}
+@keyframes tBounce{0%{transform:translateX(0)}100%{transform:translateX(180px)}}
+
+/* ── Border/Shadow ── */
+.effect-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.effect-card{border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center}
+.effect-preview{height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:.8rem;border-radius:8px;background:var(--bg-float)}
+.effect-name{font-family:var(--mono);font-size:.7rem;color:var(--t1)}
+.effect-val{font-size:.62rem;color:var(--t3);font-family:var(--mono)}
+
+/* ── Token Table ── */
+.token-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.token-table th{text-align:left;padding:.5rem .8rem;color:var(--t3);font-weight:500;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--border)}
+.token-table td{padding:.45rem .8rem;border-bottom:1px solid var(--border);color:var(--t2)}
+.token-table .name{font-family:var(--mono);font-size:.7rem;color:var(--c-teal)}
+.token-table .val{font-family:var(--mono);font-size:.7rem;color:var(--t1)}
+.token-table .cat{font-size:.6rem;color:var(--t3)}
+.token-table .req{font-size:.6rem;padding:.1rem .4rem;border-radius:4px;background:var(--c-teal-dim);color:var(--c-teal)}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:var(--s5) var(--s4);color:var(--t4);font-size:.7rem;border-top:1px solid var(--border)}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .container{padding:0 var(--s3) var(--s6)}
+  .color-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+  .blur-grid{grid-template-columns:repeat(2,1fr)}
+  .sp-grid{grid-template-columns:repeat(5,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <p class="meta"><span>104 Tokens</span><span>21 Categories</span><span>v4.0.0</span></p>
+  <h1>Design System <em>Reference</em></h1>
+  <p>Power Squad 單一事實來源。三套 HTML 投影片共用設計体系：color · typography · spacing · blur · timing · border。</p>
+</header>
+
+<div class="container">
+
+<!-- ════════════════ 01 COLOR PALETTE ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <div><div class="section-title">Color Palette</div><div class="section-sub">顏色階梯 · Christina Canonical — --ink-50 到 --ink-950，11 級灰度</div></div>
+  </div>
+  <div class="color-grid" id="ink-palette"></div>
+</section>
+
+<!-- ════════════════ 02 SEMANTIC COLORS ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <div><div class="section-title">Semantic Colors</div><div class="section-sub">語意顏色 — 文字層級、狀態色、品牌色</div></div>
+  </div>
+  <div class="color-grid" id="semantic-colors"></div>
+</section>
+
+<!-- ════════════════ 03 TYPOGRAPHY ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <div><div class="section-title">Typography</div><div class="section-sub">字體對比階梯 — Display → Heading → Body → Mono</div></div>
+  </div>
+  <div class="type-grid">
+    <div class="type-row">
+      <div class="type-label">Display — Playfair Display / Noto Serif SC</div>
+      <div class="type-sample"><div class="type-display">IMPACTs 智能製造</div><div class="type-meta">font-size: clamp() · weight 700-900 · 封面/章節大標</div></div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Heading — Playfair Display / Inter</div>
+      <div class="type-sample"><div class="type-heading">先進排程與碳管理解決方案</div><div class="type-meta">--heading-1: 2.25rem · --heading-2: 1.625rem · --heading-3: 1.25rem</div></div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Body — Inter / Noto Sans SC</div>
+      <div class="type-sample"><div class="type-body">從訂單到出貨全流程最佳化，提升準交率與產能利用率。三套解決方案覆蓋工廠營運全鏈路。</div><div class="type-meta">--body-1: 1rem · --body-2: 0.875rem · --body-3: 0.75rem</div></div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Mono — JetBrains Mono</div>
+      <div class="type-sample"><div class="type-mono">--accent: #14b8a6<br>--c-t1: #f0f4f8<br>--t-fast: 150ms</div><div class="type-meta">Token 名稱 / 數值 / 程式碼展示</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ 04 SPACING ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <div><div class="section-title">Spacing Grid</div><div class="section-sub">間距系統 — --s1 (0.5rem) 到 --s10 (8rem)，10 級間距</div></div>
+  </div>
+  <div class="sp-grid" id="sp-grid"></div>
+</section>
+
+<!-- ════════════════ 05 BLUR / GLASS ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <div><div class="section-title">Blur & Glassmorphism</div><div class="section-sub">模糊/玻璃態效果 — 8 / 12 / 24 / 32 / glass 五級</div></div>
+  </div>
+  <div class="blur-grid" id="blur-grid"></div>
+</section>
+
+<!-- ════════════════ 06 TIMING ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <div><div class="section-title">Timing & Easing</div><div class="section-sub">動畫時長與曲線 — 控制元素進場速度與節奏</div></div>
+  </div>
+  <div class="timing-row">
+    <div class="t-chip"><div class="label">fast</div><div class="value">--t-fast</div><div style="font-size:.65rem;color:var(--t3);font-family:var(--mono)">150ms</div></div>
+    <div class="t-chip"><div class="label">mid</div><div class="value">--t-mid</div><div style="font-size:.65rem;color:var(--t3);font-family:var(--mono)">300ms</div></div>
+    <div class="t-chip"><div class="label">slow</div><div class="value">--t-slow</div><div style="font-size:.65rem;color:var(--t3);font-family:var(--mono)">400ms</div></div>
+  </div>
+  <div class="section-sub" style="margin:1rem 0">Easing 曲線</div>
+  <div class="easing-grid" id="easing-grid"></div>
+</section>
+
+<!-- ════════════════ 07 BORDER / SHADOW ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <div><div class="section-title">Border & Shadow</div><div class="section-sub">邊框與陰影系統</div></div>
+  </div>
+  <div class="effect-grid" id="effect-grid"></div>
+</section>
+
+<!-- ════════════════ 08 TOKEN TABLE ════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <div><div class="section-title">Complete Token Registry</div><div class="section-sub">104 tokens × 21 categories — 完整清單</div></div>
+  </div>
+  <table class="token-table" id="token-table">
+    <thead><tr><th>Token</th><th>Value</th><th>Category</th><th>Required</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+</div>
+
+<footer class="footer">Power Squad Design System Reference · v4.0.0 · 2026-05-20 · 104 tokens · 21 categories · generated from showcase/tokens.json</footer>
+
+<script>
+// ═══════════════════════════════════════
+// Data from tokens.json (inline for standalone)
+// ═══════════════════════════════════════
+const TOKENS = {
+  ink: ["--ink-50: #f8fafc","--ink-100: #f1f5f9","--ink-200: #e2e8f0","--ink-300: #cbd5e1","--ink-400: #94a3b8","--ink-500: #64748b","--ink-600: #475569","--ink-700: #334155","--ink-800: #1e293b","--ink-900: #0f172a","--ink-950: #06080d"],
+  semantic: ["--c-t1: #f0f4f8","--c-t2: #94a3b8","--c-t3: #64748b","--c-t4: #3b5068","--c-error: #ef4444","--c-success: #22c55e","--c-warning: #f59e0b","--c-info: #3b82f6","--accent: #14b8a6","--accent-mid: #2dd4bf"],
+  spacing: ["--s1: 0.5rem","--s2: 1rem","--s3: 1.5rem","--s4: 2rem","--s5: 2.5rem","--s6: 3rem","--s7: 4rem","--s8: 5rem","--s9: 6rem","--s10: 8rem"],
+  blur: ["--blur-8: blur(8px)","--blur-12: blur(12px)","--blur-24: blur(24px)","--blur-32: blur(32px)","--blur-card: blur(12px)","--blur-sheet: blur(24px)","--blur-modal: blur(32px)"],
+  timing: ["--t-fast: 150ms","--t-mid: 300ms","--t-slow: 400ms"],
+  easing: ["--ease: cubic-bezier(0.4,0,0.2,1)","--ease-in: cubic-bezier(0.4,0,1,1)","--ease-out: cubic-bezier(0,0,0.2,1)"],
+  border: ["--border: rgba(255,255,255,.08)","--border-md: rgba(255,255,255,.10)","--border-a: rgba(20,184,166,.12)"],
+  shadow: ["--shadow: 0 8px 40px rgba(0,0,0,.35)"],
+};
+
+// ═══════════════════════════════════════
+// Render Color Palette
+// ═══════════════════════════════════════
+function renderSwatch(containerId, tokens) {
+  const el = document.getElementById(containerId);
+  tokens.forEach(t => {
+    const [name, val] = t.split(': ');
+    const sw = document.createElement('div');
+    sw.className = 'swatch';
+    sw.innerHTML = `<div class="swatch-swatch" style="background:${val}"></div><div class="swatch-info"><div class="swatch-name">${name}</div><div class="swatch-value">${val}</div></div>`;
+    el.appendChild(sw);
+  });
+}
+renderSwatch('ink-palette', TOKENS.ink);
+renderSwatch('semantic-colors', TOKENS.semantic);
+
+// ═══════════════════════════════════════
+// Render Spacing Grid
+// ═══════════════════════════════════════
+const spEl = document.getElementById('sp-grid');
+const spVals = [8,16,24,32,48,64,96,128,192,256];
+TOKENS.spacing.forEach((t, i) => {
+  const [name, val] = t.split(': ');
+  const px = spVals[i];
+  const item = document.createElement('div');
+  item.className = 'sp-item';
+  item.innerHTML = `<div class="sp-bar" style="width:${Math.min(px/2.56, 90)}%;height:6px"></div><div class="sp-name">${name}</div><div class="sp-val">${val} (${px}px)</div>`;
+  spEl.appendChild(item);
+});
+
+// ═══════════════════════════════════════
+// Render Blur Grid
+// ═══════════════════════════════════════
+const blurEl = document.getElementById('blur-grid');
+const blurData = [
+  {name:'--blur-8', val:'blur(8px)', bg:'rgba(20,184,166,.6)'},
+  {name:'--blur-12', val:'blur(12px)', bg:'rgba(99,91,255,.6)'},
+  {name:'--blur-24', val:'blur(24px)', bg:'rgba(59,130,246,.6)'},
+  {name:'--blur-32', val:'blur(32px)', bg:'rgba(34,197,94,.6)'},
+  {name:'--blur-card', val:'blur(12px)', bg:'rgba(239,68,68,.6)'},
+  {name:'--blur-sheet', val:'blur(24px)', bg:'rgba(245,158,11,.6)'},
+  {name:'--blur-modal', val:'blur(32px)', bg:'rgba(167,139,250,.6)'},
+];
+blurData.forEach(b => {
+  const card = document.createElement('div');
+  card.className = 'blur-card';
+  card.innerHTML = `<div class="blur-preview" style="backdrop-filter:${b.val}"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-family:var(--mono);text-shadow:0 0 10px #000">${b.val}</div></div><div class="blur-name">${b.name}</div><div class="blur-val">${b.val}</div>`;
+  blurEl.appendChild(card);
+});
+
+// ═══════════════════════════════════════
+// Render Easing
+// ═══════════════════════════════════════
+const easeEl = document.getElementById('easing-grid');
+const easings = [
+  {name:'--ease', val:'cubic-bezier(0.4, 0, 0.2, 1)', desc:'Standard'},
+  {name:'--ease-in', val:'cubic-bezier(0.4, 0, 1, 1)', desc:'Enter'},
+  {name:'--ease-out', val:'cubic-bezier(0, 0, 0.2, 1)', desc:'Exit'},
+];
+easeEl.innerHTML = '';
+easings.forEach(e => {
+  const card = document.createElement('div');
+  card.className = 'easing-card';
+  card.innerHTML = `<div class="easing-name">${e.name}</div><div class="easing-ball" style="animation:easeIn ${e.name==='--ease'?'1.5s':e.name==='--ease-in'?'1s':'1.2s'} infinite alternate; animation-timing-function:${e.val}"></div><div style="font-size:.6rem;color:var(--t3);margin-top:.4rem;font-family:var(--mono)">${e.desc}</div>`;
+  easeEl.appendChild(card);
+});
+
+// ═══════════════════════════════════════
+// Render Border / Shadow
+// ═══════════════════════════════════════
+const effEl = document.getElementById('effect-grid');
+const effects = [
+  {name:'--border', val:'rgba(255,255,255,.08)', css:`border:1px solid rgba(255,255,255,.08)`},
+  {name:'--border-md', val:'rgba(255,255,255,.10)', css:`border:1px solid rgba(255,255,255,.10)`},
+  {name:'--border-a', val:'rgba(20,184,166,.12)', css:`border:1px solid rgba(20,184,166,.12)`},
+  {name:'--shadow', val:'0 8px 40px rgba(0,0,0,.35)', css:`box-shadow:0 8px 40px rgba(0,0,0,.35)`},
+  {name:'--r-sm', val:'6px', css:`border-radius:6px`},
+  {name:'--r-md', val:'12px', css:`border-radius:12px`},
+  {name:'--r-lg', val:'16px', css:`border-radius:16px`},
+  {name:'--r-xl', val:'24px', css:`border-radius:24px`},
+];
+effects.forEach(e => {
+  const card = document.createElement('div');
+  card.className = 'effect-card';
+  const isBorder = e.name.startsWith('--border') || e.name.startsWith('--r-');
+  const isShadow = e.name === '--shadow';
+  card.innerHTML = `<div class="effect-preview" style="${isBorder?e.css:isShadow?e.css:''}"></div><div class="effect-name">${e.name}</div><div class="effect-val">${e.val}</div>`;
+  effEl.appendChild(card);
+});
+
+// ═══════════════════════════════════════
+// Render Token Table
+// ═══════════════════════════════════════
+const fullTokens = {
+  "🎨 Color Palette": TOKENS.ink,
+  "🎨 Semantic": TOKENS.semantic,
+  "📏 Spacing": TOKENS.spacing,
+  "🔮 Blur": TOKENS.blur,
+  "⏱️ Timing": TOKENS.timing,
+  "⏱️ Easing": TOKENS.easing,
+  "🔲 Border": TOKENS.border,
+  "🖤 Shadow": TOKENS.shadow,
+};
+const tbody = document.querySelector('#token-table tbody');
+Object.entries(fullTokens).forEach(([cat, tokens]) => {
+  tokens.forEach(t => {
+    const [name, val] = t.split(': ');
+    const row = document.createElement('tr');
+    row.innerHTML = `<td class="name">${name}</td><td class="val">${val}</td><td class="cat">${cat}</td><td><span class="req">common</span></td>`;
+    tbody.appendChild(row);
+  });
+});
+</script>
+</body>
+</html>

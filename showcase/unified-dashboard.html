@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>潤思科技 — 雙板聯合 QA Dashboard</title>
+<style>
+:root {
+  --ds-bg: #0c0e14;
+  --ds-bg2: #131620;
+  --ds-bg3: #1a1f2e;
+  --ds-surface: #1e2435;
+  --ds-surface2: #242b3d;
+  --ds-border: rgba(255,255,255,0.08);
+  --ds-border-a: rgba(255,255,255,0.12);
+  --ds-text-body: #a0a8c0;
+  --ds-text-heading: #e0e4f0;
+  --ds-text-display: #ffffff;
+  --ds-accent: #6c5ce7;
+  --ds-accent-2: #00cec9;
+  --ds-cris-carbon: #00b894;
+  --ds-aps-violet: #a29bfe;
+  --ds-impacts-brand: #fd79a8;
+  --ds-c-teal: #00cec9;
+  --ds-c-teal-dim: rgba(0,206,201,0.12);
+  --ds-c-teal-glow: 0 0 24px rgba(0,206,201,0.15);
+  --ds-c-success: #00b894;
+  --ds-c-warning: #fdcb6e;
+  --ds-c-error: #ff7675;
+  --ds-c-info: #74b9ff;
+  --ds-c-surface: #1e2435;
+  --ds-c-surface2: #242b3d;
+  --ds-c-glass: rgba(30,36,53,0.6);
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px;
+  --s6: 24px; --s7: 28px; --s8: 32px; --s9: 36px; --s10: 40px;
+  --blur: 12px;
+  --blur-card: 8px;
+  --t-fast: 150ms; --t-mid: 300ms; --t-slow: 500ms;
+  --r-md: 8px; --r-lg: 12px; --r-xl: 16px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --heading: 600;
+  --body-1: 14px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--ds-bg);
+  color: var(--ds-text-body);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
+  font-size: var(--body-1);
+}
+a { color: var(--ds-c-teal); text-decoration: none; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--ds-bg2) 0%, var(--ds-bg3) 50%, var(--ds-surface) 100%);
+  padding: var(--s10) var(--s6);
+  text-align: center;
+  border-bottom: 1px solid var(--ds-border);
+}
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--ds-text-display);
+  margin-bottom: var(--s2);
+}
+.hero p {
+  font-size: 1.1rem;
+  color: var(--ds-text-body);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--s6) var(--s4);
+}
+
+/* Section */
+.section {
+  margin-bottom: var(--s8);
+}
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--ds-text-heading);
+  margin-bottom: var(--s4);
+  padding-bottom: var(--s2);
+  border-bottom: 2px solid var(--ds-accent);
+  display: inline-block;
+}
+
+/* Cards / Tables */
+.card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--r-lg);
+  padding: var(--s5);
+  backdrop-filter: blur(var(--blur-card));
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--s4);
+}
+
+/* Stats row */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--s3);
+  margin-bottom: var(--s4);
+}
+.stat {
+  background: var(--ds-surface2);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--r-md);
+  padding: var(--s4);
+  text-align: center;
+}
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ds-text-display);
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--ds-text-body);
+  margin-top: var(--s1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Comparison table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th, td {
+  padding: var(--s3) var(--s4);
+  text-align: left;
+  border-bottom: 1px solid var(--ds-border);
+}
+th {
+  color: var(--ds-text-heading);
+  font-weight: 600;
+  background: var(--ds-bg3);
+}
+tr:hover td { background: var(--ds-c-teal-dim); }
+td.pass { color: var(--ds-c-success); font-weight: 600; }
+td.warn { color: var(--ds-c-warning); }
+
+/* Heatmap */
+.heatmap-cell {
+  display: inline-block;
+  width: 32px; height: 32px;
+  border-radius: 4px;
+  margin: 2px;
+}
+.heatmap-covered { background: var(--ds-c-success); }
+.heatmap-partial { background: var(--ds-c-warning); }
+.heatmap-missing { background: var(--ds-c-error); opacity: 0.3; }
+.heatmap-na { background: transparent; border: 1px dashed var(--ds-border); }
+.heatmap-legend {
+  display: flex; gap: var(--s3); align-items: center; font-size: 0.8rem; margin-top: var(--s2);
+}
+.heatmap-legend span { display: inline-flex; align-items: center; gap: var(--s1); }
+
+/* Flow diagram */
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  padding: var(--s4);
+}
+.flow-node {
+  background: var(--ds-surface2);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--r-md);
+  padding: var(--s3) var(--s4);
+  font-size: 0.85rem;
+  text-align: center;
+  min-width: 100px;
+}
+.flow-node strong { color: var(--ds-text-heading); display: block; }
+.flow-arrow {
+  font-size: 1.2rem;
+  color: var(--ds-accent);
+}
+.flow-arrow-down { transform:rotate(90deg); display: inline-block; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: var(--s6); }
+.timeline::before {
+  content: '';
+  position: absolute; left: 12px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--ds-accent), var(--ds-cris-carbon));
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: var(--s4);
+  padding-left: var(--s5);
+}
+.timeline-item::before {
+  content: '';
+  position: absolute; left: -22px; top: 4px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--ds-accent);
+  border: 2px solid var(--ds-bg);
+}
+.timeline-item.done::before { background: var(--ds-c-success); }
+.timeline-date { font-size: 0.75rem; color: var(--ds-text-body); }
+.timeline-title { font-weight: 600; color: var(--ds-text-heading); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.8rem; }
+  .container { padding: var(--s4) var(--s3); }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .flow { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🏆 潤思科技 雙板聯合 QA Dashboard</h1>
+  <p>Sprint 1 閉門 • Power Squad + CRIS SWAT 協同成果 • 2026-05-20</p>
+</div>
+
+<div class="container">
+
+<!-- Section 1: 核心指標 -->
+<div class="section">
+  <h2 class="section-title">📊 雙板核心指標</h2>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-value">7</div>
+      <div class="stat-label">Pipeline Stages 已認證</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">50+</div>
+      <div class="stat-label">Total Deliveries</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Bugs / Regressions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">100%</div>
+      <div class="stat-label">QA Gate Pass Rate</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">73</div>
+      <div class="stat-label">Canonical Tokens</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Agents Across 2 Boards</div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 1.5: 兩板對照總表 -->
+<div class="section">
+  <h2 class="section-title">📋 兩板對照總表</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>維度</th>
+          <th>Power Squad</th>
+          <th>CRIS SWAT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Team Size</td>
+          <td>3 agents (Smart / Technus / Christina)</td>
+          <td>2 agents (Vesper / Vision) + Luna (Audit)</td>
+        </tr>
+        <tr>
+          <td>模式</td>
+          <td>Pipeline B — Spec→Design→Dev→QA 專職接力</td>
+          <td>Role-Rotation — 7-stage 帽子輪轉</td>
+        </tr>
+        <tr>
+          <td>Sprint Deliveries</td>
+          <td class="pass">67 tasks done</td>
+          <td class="pass">ThemeToggle + OTD</td>
+        </tr>
+        <tr>
+          <td>QA Gate</td>
+          <td class="pass">51P/0F/0W (3 products × 17)</td>
+          <td class="pass">7/7 QA scorecard</td>
+        </tr>
+        <tr>
+          <td>Token Unification</td>
+          <td class="pass">73 common / 0 canonical gaps / exit 0</td>
+          <td class="pass">CSS var contract passed</td>
+        </tr>
+        <tr>
+          <td>WCAG a11y</td>
+          <td class="pass">17P/0F/0W (gen_slides v5)</td>
+          <td class="pass">15.4:1 / 13.1:1 contrast</td>
+        </tr>
+        <tr>
+          <td>CI Automation</td>
+          <td class="pass">QA gate auto (extract-tokens --canonical)</td>
+          <td class="pass">vitest T1-T8 suite</td>
+        </tr>
+        <tr>
+          <td>Design Doc</td>
+          <td class="pass">ADR ×5 + PLAYBOOK 44KB + WORKFLOW</td>
+          <td class="pass">CSS var contract + matchMedia spec</td>
+        </tr>
+        <tr>
+          <td>關鍵教訓</td>
+          <td>Design Stage 補上最大流程缺口</td>
+          <td>帽子輪轉讓盲點無處可藏</td>
+        </tr>
+        <tr>
+          <td>Cycle Time</td>
+          <td>~30m (3-station pipeline)</td>
+          <td>~3h (7-stage rotation, 2-person)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 2: Token 覆蓋矩陣 -->
+<div class="section">
+  <h2 class="section-title">🎨 Token 覆蓋矩陣（73 Common Tokens × 3 Products）</h2>
+  <div class="card">
+    <div style="display:flex;gap:var(--s6);flex-wrap:wrap;align-items:flex-start;">
+      <div>
+        <h4 style="color:var(--ds-text-heading);margin-bottom:var(--s2);">APS AI Agent</h4>
+        <div style="display:flex;flex-wrap:wrap;max-width:300px;">
+          <div class="heatmap-cell heatmap-covered" title="73/73"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+        </div>
+        <span style="font-size:0.8rem;color:var(--ds-c-success);margin-top:var(--s1);display:inline-block;">
+          100/100 tokens (73 common + 27 product-only) ✅
+        </span>
+      </div>
+      <div>
+        <h4 style="color:var(--ds-text-heading);margin-bottom:var(--s2);">CRIS IMPACTs Carbon</h4>
+        <div style="display:flex;flex-wrap:wrap;max-width:300px;">
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+        </div>
+        <span style="font-size:0.8rem;color:var(--ds-c-success);margin-top:var(--s1);display:inline-block;">
+          73/73 common (native canonical naming) ✅
+        </span>
+      </div>
+      <div>
+        <h4 style="color:var(--ds-text-heading);margin-bottom:var(--s2);">潤思 IMPACTs Partner</h4>
+        <div style="display:flex;flex-wrap:wrap;max-width:300px;">
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+          <div class="heatmap-cell heatmap-covered"></div>
+        </div>
+        <span style="font-size:0.8rem;color:var(--ds-c-success);margin-top:var(--s1);display:inline-block;">
+          75/75 tokens (73 common + 2 product-only) ✅
+        </span>
+      </div>
+    </div>
+    <div class="heatmap-legend">
+      <span><span class="heatmap-cell heatmap-covered" style="width:16px;height:16px;"></span> 全覆蓋</span>
+      <span><span class="heatmap-cell heatmap-partial" style="width:16px;height:16px;"></span> 部分</span>
+      <span><span class="heatmap-cell heatmap-missing" style="width:16px;height:16px;"></span> 缺失</span>
+    </div>
+    <p style="margin-top:var(--s3);font-size:0.85rem;">
+      Canonical gate: <code>extract-tokens.py --canonical</code> → exit code 0 🎯<br>
+      Cross-product real gaps: 0 | Product-only tokens allowed by design (PRODUCT_ONLY allowlist)
+    </p>
+  </div>
+</div>
+
+<!-- Section 3: Pipeline B vs Role-Rotation -->
+<div class="section">
+  <h2 class="section-title">⚡ Pipeline B vs Role-Rotation 對比</h2>
+  <div class="card-grid">
+    <div class="card" style="border-left:3px solid var(--ds-accent);">
+      <h3 style="color:var(--ds-text-heading);margin-bottom:var(--s2);">Pipeline B — Power Squad</h3>
+      <p style="margin-bottom:var(--s3);">Spec → Design(D1-D3) → Dev → QA → Done</p>
+      <table>
+        <tr><td>Team</td><td>3 agents 專職接力</td></tr>
+        <tr><td>Cycle Time</td><td class="pass">~30m</td></tr>
+        <tr><td>Handoff</td><td>@mention 手動</td></tr>
+        <tr><td>QA Gate</td><td class="pass">自動化 (exit 0)</td></tr>
+        <tr><td>Defect Catch</td><td class="pass">100% CI-pass</td></tr>
+        <tr><td>Overhead</td><td>Design stage + manual handoff</td></tr>
+        <tr><td>Best For</td><td>複雜多產品 pipeline</td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-left:3px solid var(--ds-cris-carbon);">
+      <h3 style="color:var(--ds-text-heading);margin-bottom:var(--s2);">Role-Rotation — CRIS SWAT</h3>
+      <p style="margin-bottom:var(--s3);">Spec → Design → Dev → Integrate → QA → Deploy → Audit</p>
+      <table>
+        <tr><td>Team</td><td>2 agents 帽子輪轉</td></tr>
+        <tr><td>Cycle Time</td><td class="pass">~3h (7-stage)</td></tr>
+        <tr><td>Handoff</td><td class="pass">角色自動輪轉</td></tr>
+        <tr><td>QA Gate</td><td class="pass">獨立驗證 (7/7)</td></tr>
+        <tr><td>Defect Catch</td><td class="pass">Integrate stage 抓盲點</td></tr>
+        <tr><td>Overhead</td><td>7 stages × context switch</td></tr>
+        <tr><td>Best For</td><td>小 team 快速迭代</td></tr>
+      </table>
+    </div>
+  </div>
+  <div style="margin-top:var(--s4);padding:var(--s4);background:var(--ds-c-teal-dim);border-radius:var(--r-md);text-align:center;">
+    <strong style="color:var(--ds-text-heading);">共同核心原則</strong><br>
+    獨立驗證角色（QA gate / Integrate role）≠ 開發者自評 → 品質不退的唯一保證
+  </div>
+</div>
+
+<!-- Section 4: OTD 產品線進度 -->
+<div class="section">
+  <h2 class="section-title">🏭 OTD 產品線進度</h2>
+  <div class="timeline">
+    <div class="timeline-item done">
+      <div class="timeline-date">Sprint 1 — Day 1</div>
+      <div class="timeline-title">OTD v0.1 Skeleton</div>
+      <p>models.py 463 行 — Order/Schedule/Production/Shipment 四模組骨架</p>
+    </div>
+    <div class="timeline-item done">
+      <div class="timeline-date">Sprint 1 — Day 2</div>
+      <div class="timeline-title">OTD v0.2 Station Dispatch</div>
+      <p>station_dispatch.py 19.6KB — 逐小時步進 + WIP tracking + yield decay</p>
+    </div>
+    <div class="timeline-item done">
+      <div class="timeline-date">Sprint 1 — Day 3 AM</div>
+      <div class="timeline-title">OTD v0.3 Production Routing + Shipment</div>
+      <p>WO routing (A/B/C per-product) + warehouse FIFO + transit_delay + avg_lead_time 14.7d</p>
+    </div>
+    <div class="timeline-item done">
+      <div class="timeline-date">Sprint 1 — Day 3 PM</div>
+      <div class="timeline-title">OTD Dashboard — Technus</div>
+      <p>拓撲圖 + WIP 監控 + 瓶頸 report + 交期分佈 → 資料口對接完成</p>
+    </div>
+    <div class="timeline-item done">
+      <div class="timeline-date">Sprint 1 — Day 3 PM</div>
+      <div class="timeline-title">OTD v0.4 Policy Comparison — Christina</div>
+      <p>FIFO / EDD / SPT 三 policy → EDD wins (OTD 45.7%, avg_lead 32.8d)</p>
+    </div>
+    <div class="timeline-item done">
+      <div class="timeline-date">Sprint 1 — Day 4 AM</div>
+      <div class="timeline-title">OTD v0.5 Due Date Adapter — Smart</div>
+      <p>DueDateAdapter 五格式 (ISO8601/epoch/date/relative/custom) → factory.json 一鍵切換</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Sprint 2 — TBD</div>
+      <div class="timeline-title">OTD v0.6 Real Data Injection</div>
+      <p>等 Allen 確認 due_date 格式 → 真實訂單數據驅動 → 三 policy 真實對比</p>
+    </div>
+  </div>
+</div>
+
+<!-- Section 5: 跨板流轉示意 -->
+<div class="section">
+  <h2 class="section-title">🔄 跨板流轉示意</h2>
+  <div class="card">
+    <div class="flow">
+      <div class="flow-node">
+        <strong>CRIS SWAT Dev</strong>
+        ThemeToggle<br>7-stage rotation
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <strong>Design Token<br>Contract</strong>
+        CSS var spec
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <strong>Power Squad<br>QA Gate</strong>
+        extract-tokens<br>--canonical
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <strong>Showcase<br>Dashboard</strong>
+        landing.html<br>unified-dashboard
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="background:var(--ds-c-teal-dim);">
+        <strong>Allen Review</strong>
+        🚦 綠燈
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:var(--s4);font-size:0.85rem;color:var(--ds-text-body);">
+      雙板數據最終匯流到統一 Showcase → Allen 一頁看全貌<br>
+      潤思統一開發模式 v1 已獲雙板實戰驗證 ✅
+    </p>
+  </div>
+</div>
+
+<!-- Section: Agent Scoreboard -->
+<div class="section">
+  <h2 class="section-title">👥 Agent 成績板</h2>
+  <div class="card-grid">
+    <div class="card">
+      <table>
+        <thead><tr><th>Power Squad</th><th>交付</th><th>角色</th></tr></thead>
+        <tbody>
+          <tr><td>Smart</td><td class="pass">17</td><td>QA Gate + Engine + Retro</td></tr>
+          <tr><td>Technus</td><td class="pass">16</td><td>Dev + Dashboard + CI</td></tr>
+          <tr><td>Christina</td><td class="pass">14</td><td>Design + Policy Compare</td></tr>
+          <tr style="background:var(--ds-c-teal-dim);"><td><strong>Total</strong></td><td class="pass"><strong>47</strong></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>CRIS SWAT</th><th>角色</th><th>成果</th></tr></thead>
+        <tbody>
+          <tr><td>Vesper</td><td>Spec / Design / Integrate / Deploy</td><td class="pass">4 stages</td></tr>
+          <tr><td>Vision</td><td>Dev / QA</td><td class="pass">2 stages</td></tr>
+          <tr><td>Luna</td><td>Audit</td><td class="pass">1 stage</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;padding:var(--s8) 0;border-top:1px solid var(--ds-border);margin-top:var(--s6);">
+  <p style="font-size:0.8rem;color:var(--ds-text-body);">
+    潤思科技 雙板聯合 QA Dashboard · Sprint 1 Retro · 2026-05-20<br>
+    Powered by Pipeline B + Role-Rotation 統一開發模式
+  </p>
+</div>
+
+</div>
+</body>
+</html>

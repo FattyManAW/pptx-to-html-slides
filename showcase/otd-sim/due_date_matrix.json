@@ -1,0 +1,269 @@
+[
+  {
+    "format": "default",
+    "policy": "FIFO",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 26.3,
+    "avg_queue_wait_hrs": 8.7,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 51.48,
+    "wip_alerts": [
+      "[L1-S1] WIP 714/500 (143%) >= threshold 80%",
+      "[L1-S2] WIP 433/400 (108%) >= threshold 80%"
+    ],
+    "shipped": 412,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 5573,
+    "avg_wip": 382.33
+  },
+  {
+    "format": "default",
+    "policy": "SPT",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 46.3,
+    "avg_queue_wait_hrs": 10.5,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 53.077,
+    "wip_alerts": [
+      "[L1-S1] WIP 833/500 (167%) >= threshold 80%"
+    ],
+    "shipped": 417,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 15480,
+    "avg_wip": 465.33
+  },
+  {
+    "format": "default",
+    "policy": "EDD",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 37.6,
+    "avg_queue_wait_hrs": 12.4,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 34.071,
+    "wip_alerts": [
+      "[L1-S2] WIP 349/400 (87%) >= threshold 80%"
+    ],
+    "shipped": 428,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 21416,
+    "avg_wip": 308.33
+  },
+  {
+    "format": "iso8601",
+    "policy": "FIFO",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 26.3,
+    "avg_queue_wait_hrs": 7.4,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 17.493,
+    "wip_alerts": [],
+    "shipped": 410,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 5538,
+    "avg_wip": 208.33
+  },
+  {
+    "format": "iso8601",
+    "policy": "SPT",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 45.9,
+    "avg_queue_wait_hrs": 11.2,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 41.2,
+    "wip_alerts": [
+      "[L1-S1] WIP 440/500 (88%) >= threshold 80%",
+      "[L1-S2] WIP 440/400 (110%) >= threshold 80%"
+    ],
+    "shipped": 421,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 15458,
+    "avg_wip": 293.33
+  },
+  {
+    "format": "iso8601",
+    "policy": "EDD",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 36.5,
+    "avg_queue_wait_hrs": 12.7,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 55.292,
+    "wip_alerts": [
+      "[L1-S1] WIP 805/500 (161%) >= threshold 80%"
+    ],
+    "shipped": 429,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 21442,
+    "avg_wip": 400.33
+  },
+  {
+    "format": "epoch",
+    "policy": "FIFO",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 26.3,
+    "avg_queue_wait_hrs": 8.0,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 46.5,
+    "wip_alerts": [
+      "[L1-S1] WIP 714/500 (143%) >= threshold 80%"
+    ],
+    "shipped": 410,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 5554,
+    "avg_wip": 399.67
+  },
+  {
+    "format": "epoch",
+    "policy": "SPT",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 45.0,
+    "avg_queue_wait_hrs": 10.4,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 50.655,
+    "wip_alerts": [
+      "[L1-S1] WIP 833/500 (167%) >= threshold 80%"
+    ],
+    "shipped": 418,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 15463,
+    "avg_wip": 427.67
+  },
+  {
+    "format": "epoch",
+    "policy": "EDD",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 38.0,
+    "avg_queue_wait_hrs": 12.2,
+    "bottleneck": "L1-S2",
+    "bottleneck_score": 27.02,
+    "wip_alerts": [],
+    "shipped": 430,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 21411,
+    "avg_wip": 76.33
+  },
+  {
+    "format": "arrival_plus_N",
+    "policy": "FIFO",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 26.2,
+    "avg_queue_wait_hrs": 8.7,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 21.319,
+    "wip_alerts": [],
+    "shipped": 410,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 5554,
+    "avg_wip": 208.33
+  },
+  {
+    "format": "arrival_plus_N",
+    "policy": "SPT",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 45.3,
+    "avg_queue_wait_hrs": 10.3,
+    "bottleneck": "L1-S2",
+    "bottleneck_score": 23.803,
+    "wip_alerts": [
+      "[L1-S2] WIP 440/400 (110%) >= threshold 80%"
+    ],
+    "shipped": 418,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 15412,
+    "avg_wip": 275.33
+  },
+  {
+    "format": "arrival_plus_N",
+    "policy": "EDD",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 37.0,
+    "avg_queue_wait_hrs": 11.9,
+    "bottleneck": "L1-S2",
+    "bottleneck_score": 32.239,
+    "wip_alerts": [
+      "[L1-S2] WIP 377/400 (94%) >= threshold 80%"
+    ],
+    "shipped": 428,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 21376,
+    "avg_wip": 125.67
+  },
+  {
+    "format": "product_lead",
+    "policy": "FIFO",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 26.3,
+    "avg_queue_wait_hrs": 9.0,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 40.454,
+    "wip_alerts": [
+      "[L1-S1] WIP 423/500 (85%) >= threshold 80%",
+      "[L1-S2] WIP 485/400 (121%) >= threshold 80%"
+    ],
+    "shipped": 410,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 5562,
+    "avg_wip": 302.67
+  },
+  {
+    "format": "product_lead",
+    "policy": "SPT",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 44.6,
+    "avg_queue_wait_hrs": 11.3,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 44.631,
+    "wip_alerts": [
+      "[L1-S1] WIP 542/500 (108%) >= threshold 80%"
+    ],
+    "shipped": 418,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 15428,
+    "avg_wip": 218.0
+  },
+  {
+    "format": "product_lead",
+    "policy": "EDD",
+    "otd": 100.0,
+    "on_time_rate": 1.0,
+    "avg_lead_days": 38.3,
+    "avg_queue_wait_hrs": 13.1,
+    "bottleneck": "L1-S1",
+    "bottleneck_score": 55.311,
+    "wip_alerts": [
+      "[L1-S1] WIP 805/500 (161%) >= threshold 80%"
+    ],
+    "shipped": 429,
+    "total_orders": 900,
+    "overdue": 0,
+    "defects": 21360,
+    "avg_wip": 293.33
+  }
+]

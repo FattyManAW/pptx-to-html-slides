@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IMPACTS v4 Pipeline B Case Study — Power Squad × CRIS SWAT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700|Playfair+Display:wght@700;800;900|Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c-bg:#06080d;--c-bg2:#0f172a;--c-bg3:#1e293b;
+  --c-surface:rgba(255,255,255,.04);--c-surface2:rgba(255,255,255,.07);
+  --c-border:rgba(255,255,255,.08);--c-border-a:rgba(20,184,166,.15);
+  --c-teal:#14b8a6;--c-teal-dim:rgba(20,184,166,.12);--c-teal-hot:#2dd4bf;
+  --c-t1:rgba(255,255,255,.95);--c-t2:rgba(255,255,255,.72);--c-t3:rgba(255,255,255,.46);--c-t4:rgba(255,255,255,.28);
+  --c-success:#22c55e;--c-success-dim:rgba(34,197,94,.15);
+  --c-warning:#f59e0b;--c-warning-dim:rgba(245,158,11,.15);
+  --c-error:#ef4444;--c-error-dim:rgba(239,68,68,.15);
+  --c-violet:#a78bfa;--c-amber:#f59e0b;
+  --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s5:2.5rem;--s6:3rem;
+  --r-sm:4px;--r-md:8px;--r-lg:12px;--r-xl:24px;
+  --t-fast:120ms;--t-mid:240ms;--t-slow:400ms;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--c-bg);color:var(--c-t1);font-family:'Inter','Noto Sans SC',sans-serif;line-height:1.7;min-height:100vh}
+h1,h2,h3{font-family:'Playfair Display','Noto Sans SC',serif}
+h2{font-size:clamp(1.2rem,3vw,1.6rem)}
+h3{font-size:1rem;font-weight:600;color:var(--c-teal);margin-bottom:var(--s1)}
+a{color:var(--c-teal);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:var(--s4) var(--s3)}
+
+/* Hero */
+.hero{text-align:center;padding:var(--s5) 0 var(--s4)}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);background:linear-gradient(135deg,var(--c-teal),var(--c-violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:var(--s1)}
+.hero .sub{font-size:1rem;color:var(--c-t3);max-width:700px;margin:0 auto}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:.72rem;font-weight:600;letter-spacing:.04em;margin:2px}
+.badge-teal{background:var(--c-teal-dim);color:var(--c-teal);border:1px solid rgba(20,184,166,.25)}
+.badge-violet{background:rgba(167,139,250,.12);color:var(--c-violet);border:1px solid rgba(167,139,250,.25)}
+.badge-success{background:var(--c-success-dim);color:var(--c-success);border:1px solid rgba(34,197,94,.25)}
+.badge-amber{background:var(--c-warning-dim);color:var(--c-amber);border:1px solid rgba(245,158,11,.25)}
+
+/* Section */
+section{margin-bottom:var(--s6)}
+.section-header{display:flex;align-items:flex-start;gap:var(--s2);margin-bottom:var(--s3)}
+.section-num{width:36px;height:36px;border-radius:50%;background:var(--c-teal-dim);color:var(--c-teal);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
+.section-title{margin-top:2px}
+
+/* Cards */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--s3)}
+.card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3);transition:border-color var(--t-fast)}
+.card:hover{border-color:var(--c-border-a)}
+.card-title{font-size:.9rem;font-weight:600;margin-bottom:var(--s2)}
+.card-metric{font-size:2rem;font-weight:700;line-height:1.1}
+.card-sub{font-size:.78rem;color:var(--c-t3);margin-top:var(--s1)}
+.teal .card-metric{color:var(--c-teal)}
+.violet .card-metric{color:var(--c-violet)}
+.success .card-metric{color:var(--c-success)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:var(--c-bg2);color:var(--c-t2);padding:var(--s2) var(--s1);text-align:left;font-weight:600;border-bottom:1px solid var(--c-border)}
+td{padding:var(--s2) var(--s1);border-bottom:1px solid rgba(255,255,255,.04);color:var(--c-t2)}
+tr:hover td{background:var(--c-surface)}
+.metric-cell{font-weight:700;font-variant-numeric:tabular-nums}
+.pass{color:var(--c-success)}.fail{color:var(--c-error)}.warn{color:var(--c-amber)}
+
+/* Before/After */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)}
+.ba-card{padding:var(--s3);border-radius:var(--r-lg)}
+.ba-before{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15)}
+.ba-after{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15)}
+.ba-title{font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s2)}
+.ba-before .ba-title{color:var(--c-error)}
+.ba-after .ba-title{color:var(--c-success)}
+.ba-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.85rem}
+.ba-row:last-child{border-bottom:none}
+.ba-label{color:var(--c-t3)}
+.ba-val{font-weight:700}
+.better{color:var(--c-success)}.worse{color:var(--c-error)}
+
+/* Timeline */
+.pipeline-flow{display:flex;flex-direction:column;gap:var(--s2)}
+.stage{display:flex;align-items:flex-start;gap:var(--s2)}
+.stage-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;margin-top:2px}
+.stage-content{flex:1}
+.stage-title{font-weight:600;font-size:.95rem}
+.stage-desc{font-size:.82rem;color:var(--c-t3);margin-top:2px}
+.stage-arrow{text-align:center;color:var(--c-t4);font-size:1rem;margin:4px 0}
+
+/* Insight box */
+.insight{background:rgba(20,184,166,.06);border-left:3px solid var(--c-teal);padding:var(--s2) var(--s3);border-radius:0 var(--r-md) var(--r-md) 0;margin-top:var(--s2);font-size:.85rem;color:var(--c-t2)}
+
+/* Footer */
+footer{text-align:center;padding:var(--s4) 0;color:var(--c-t4);font-size:.8rem;border-top:1px solid var(--c-border);margin-top:var(--s6)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <h1>IMPACTS v4 Pipeline B Case Study</h1>
+  <p class="sub">Power Squad × CRIS SWAT 新模式第一條完整走通專案<br>
+    <span style="color:var(--c-t4);font-size:.85rem">2026-05-20 · Sprint 1 · Case Study v1.0</span></p>
+  <div style="margin-top:var(--s2)">
+    <span class="badge badge-teal">Power Squad — D1/D2/D3</span>
+    <span class="badge badge-violet">Technus — Dev --canonical</span>
+    <span class="badge badge-success">Smart — QA Gate exit 0</span>
+    <span class="badge badge-amber">模式驗證 ✅</span>
+  </div>
+</div>
+
+<!-- ══ §1 專案背景 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div><div class="section-title">專案背景</div></div>
+  </div>
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3)">
+    <p style="color:var(--c-t2);font-size:.9rem;margin-bottom:var(--s2)">
+      IMPACTS v4 是大連潤思科技基於用友 BIP 平台的碳管理一體化解決方案投影片展示專案。
+      它是 <strong>新模式（Pipeline B）第一條完整走通的專案</strong>，驗證了 <em>Spec-First 流程</em>
+      從 D1 Spec Review 到 Dev 到 QA Gate 的端到端可行性。
+    </p>
+    <div class="grid-3">
+      <div class="card teal">
+        <div class="card-title">Token 痛點</div>
+        <div class="card-metric">115</div>
+        <div class="card-sub">missing token slots（無 canonical mapping）</div>
+      </div>
+      <div class="card violet">
+        <div class="card-title">Common baseline</div>
+        <div class="card-metric">32</div>
+        <div class="card-sub">跨產品共用 tokens（覆蓋率 30%）</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">目標</div>
+        <div class="card-metric">0</div>
+        <div class="card-sub">canonical gaps + 自動化 gate 驗證</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ §2 Pipeline B 流程記錄 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div><div class="section-title">Pipeline B 流程記錄</div></div>
+  </div>
+  <div class="pipeline-flow">
+    <div class="stage">
+      <div class="stage-num" style="background:var(--c-teal-dim);color:var(--c-teal)">D1</div>
+      <div class="stage-content">
+        <div class="stage-title">Spec Review（Christina）</div>
+        <div class="stage-desc">104 tokens 全量 audit；APS product 31% mapped → 目標 100%；撰寫 otd-spec-review.md（5.8KB，4 建議 + 4 邊角案例）</div>
+        <div class="insight">💡 D1 gate：Spec QA 10/10 通過，4 個邊角案例在 Spec 階段提前解決</div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(167,139,250,.15);color:var(--c-violet)">D2</div>
+      <div class="stage-content">
+        <div class="stage-title">Token Table — 22→50 mappings</div>
+        <div class="stage-desc">D1 Spec Review 確認方向；D2 建立 APS→Canonical 映射表，22→50 mappings（+127%）；--ds-* 6 個新 tokens 加入</div>
+        <div class="insight">💡 Token 映射策略：建立 canonical set → --ds-* namespace → 逐產品填充，不一次性做完</div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(245,158,11,.15);color:var(--c-amber)">D3</div>
+      <div class="stage-content">
+        <div class="stage-title">Wireframe — 256 行展示頁骨架</div>
+        <div class="stage-desc">D3 Wireframe 六區塊展示頁骨架（256 行），可直接供 Dev 參照實作；IMPACTS v4 Design System（461 行）同步完成</div>
+        <div class="insight">💡 D3 交付物不是視覺稿，是可直接執行的 HTML 骨架 — 降低 Dev 理解成本</div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(34,197,94,.15);color:var(--c-success)">Dev</div>
+      <div class="stage-content">
+        <div class="stage-title">Technus Dev — --canonical flag + gen_slides v4</div>
+        <div class="stage-desc">gen_slides.py --canonical flag 實作（50 APS mappings）；extract-tokens.py --check 從 115→0 missing；common tokens 32→73 (+128%)</div>
+        <div class="insight">💡 --canonical flag 是關鍵：QA gate 只需檢查 canonical set，無需全量比对</div>
+      </div>
+    </div>
+    <div class="stage-arrow">↓</div>
+    <div class="stage">
+      <div class="stage-num" style="background:rgba(239,68,68,.12);color:var(--c-error)">QA</div>
+      <div class="stage-content">
+        <div class="stage-title">Smart QA Gate — extract-tokens.py --canonical → exit code 0</div>
+        <div class="stage-desc">Pipeline B 五階段：QA(P0=0) → LH(≥P85) → Route-Check → Deploy → Report；Rollback 強化（列出所有 failed stages + required actions）</div>
+        <div class="insight">💡 QA gate 三層自動化：route check + Lighthouse + token check — exit code 0 = 全部通過</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ §3 Before/After 對比 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div><div class="section-title">Before / After 對比</div></div>
+  </div>
+  <div class="ba-grid">
+    <div class="ba-card ba-before">
+      <div class="ba-title">⚠️ Before — 痛點</div>
+      <div class="ba-row"><span class="ba-label">Missing tokens</span><span class="ba-val worse">115 slots</span></div>
+      <div class="ba-row"><span class="ba-label">Common tokens</span><span class="ba-val worse">32（30%）</span></div>
+      <div class="ba-row"><span class="ba-label">APS mapped</span><span class="ba-val worse">31%</span></div>
+      <div class="ba-row"><span class="ba-label">Canonical gate</span><span class="ba-val worse">無自動化</span></div>
+      <div class="ba-row"><span class="ba-label">Three-way handoff</span><span class="ba-val worse">無標準化</span></div>
+      <div class="ba-row"><span class="ba-label">Spec QA</span><span class="ba-val worse">未驗證</span></div>
+      <div class="ba-row"><span class="ba-label">Pipeline B</span><span class="ba-val worse">未走通</span></div>
+    </div>
+    <div class="ba-card ba-after">
+      <div class="ba-title">✅ After — 成果</div>
+      <div class="ba-row"><span class="ba-label">Missing tokens</span><span class="ba-val better">0</span></div>
+      <div class="ba-row"><span class="ba-label">Common tokens</span><span class="ba-val better">73（+128%）</span></div>
+      <div class="ba-row"><span class="ba-label">APS mapped</span><span class="ba-val better">100%</span></div>
+      <div class="ba-row"><span class="ba-label">Canonical gate</span><span class="ba-val better">extract-tokens.py</span></div>
+      <div class="ba-row"><span class="ba-label">Three-way handoff</span><span class="ba-val better">D1→D2→D3 標準化</span></div>
+      <div class="ba-row"><span class="ba-label">Spec QA</span><span class="ba-val better">10/10 通過</span></div>
+      <div class="ba-row"><span class="ba-label">Pipeline B</span><span class="ba-val better">全線走通 ✅</span></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--s2);margin-top:var(--s3)">
+    <div class="card teal"><div class="card-title">Missing tokens</div><div class="card-metric" style="color:var(--c-success)">115 → 0</div><div class="card-sub">-100%（零 canonical gaps）</div></div>
+    <div class="card violet"><div class="card-title">Common tokens</div><div class="card-metric" style="color:var(--c-success)">32 → 73</div><div class="card-sub">+128%（Smart Pipeline B PASS）</div></div>
+    <div class="card success"><div class="card-title">QA Gate</div><div class="card-metric" style="color:var(--c-success)">exit 0</div><div class="card-sub">extract-tokens.py --canonical</div></div>
+    <div class="card"><div class="card-title">Lighthouse</div><div class="card-metric" style="color:var(--c-teal)">P100</div><div class="card-sub">全線 ≥P85，IMPACTS v4 P100</div></div>
+  </div>
+</section>
+
+<!-- ══ §4 核心數據證明 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div><div class="section-title">核心數據證明</div></div>
+  </div>
+  <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>指標</th><th>Before</th><th>After</th><th>變化</th><th>驗證方式</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Missing token slots</td><td class="fail">115</td><td class="pass">0</td><td class="pass">-100%</td><td>extract-tokens.py --canonical</td></tr>
+        <tr><td>Common tokens</td><td class="fail">32</td><td class="pass">73</td><td class="pass">+128%</td><td>Smart Pipeline B PASS</td></tr>
+        <tr><td>APS mapped %</td><td class="fail">31%</td><td class="pass">100%</td><td class="pass">+69pp</td><td>D1 Spec Review QA 10/10</td></tr>
+        <tr><td>Token mappings</td><td class="fail">22</td><td class="pass">50</td><td class="pass">+127%</td><td>D2 Token Table</td></tr>
+        <tr><td>Pipeline B stages</td><td class="fail">0</td><td class="pass">5</td><td class="pass">全自動</td><td>deploy.yml v2</td></tr>
+        <tr><td>QA Gate exit code</td><td class="fail">N/A</td><td class="pass">0</td><td class="pass">PASS</td><td>Smart QA gate</td></tr>
+        <tr><td>Lighthouse Perf</td><td class="warn">P56</td><td class="pass">P100</td><td class="pass">+44pts</td><td>Lighthouse CI</td></tr>
+        <tr><td>D3 Wireframe</td><td class="fail">0 lines</td><td class="pass">256 行</td><td class="pass">可直接執行</td><td>impacts-v4-design-system.html</td></tr>
+        <tr><td>Spec QA score</td><td class="fail">8/10</td><td class="pass">10/10</td><td class="pass">+25%</td><td>otd-spec-review.md QA section</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ §5 跨板協作角色矩陣 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div><div class="section-title">跨板協作角色矩陣</div></div>
+  </div>
+  <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>角色</th><th>Agent</th><th>責任</th><th>Pipeline B 交付</th><th>關鍵決策</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Designer</strong></td>
+          <td><span class="badge badge-teal">Christina</span></td>
+          <td>D1 Spec Review → D2 Token Table → D3 Wireframe</td>
+          <td>otd-spec-review.md + design-system.html + wireframe 256 行</td>
+          <td>Spec-first 架構、D1 gate 10/10</td>
+        </tr>
+        <tr>
+          <td><strong>Developer</strong></td>
+          <td><span class="badge badge-violet">Technus</span></td>
+          <td>--canonical flag + gen_slides v4 + 50 APS mappings</td>
+          <td>gen_slides.py --canonical + extract-tokens.py --check</td>
+          <td>canonical set 驅動 QA gate</td>
+        </tr>
+        <tr>
+          <td><strong>QA</strong></td>
+          <td><span class="badge badge-success">Smart</span></td>
+          <td>extract-tokens.py --canonical → exit 0 + Pipeline B 12 stages</td>
+          <td>deploy.yml v2 + QA scorecard + rollback</td>
+          <td>non-blocking token gate + route check</td>
+        </tr>
+        <tr>
+          <td><strong>Lead</strong></td>
+          <td><span class="badge badge-amber">Nana</span></td>
+          <td>D-approved by Nana + 方向確認 + task 指派</td>
+          <td>三提案判決 + 跨板整合</td>
+          <td>Spec-First vs Trunk-based 雙模式並存</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight">
+    💡 <strong>Design Stage 是 Pipeline B 的核心差異</strong>：D1→D2→D3 三步標準化後，
+    Dev 拿到的是「可直接執行的 HTML 骨架」而不是「設計稿」，大幅降低實現歧義。
+    這次 IMPACTS v4 是第一條走通此流程的專案。
+  </div>
+</section>
+
+<!-- ══ §6 OTD 引擎數據（新模式副產物）══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div><div class="section-title">OTD 引擎數據 — 新模式副產物</div></div>
+  </div>
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3)">
+    <p style="font-size:.85rem;color:var(--c-t3);margin-bottom:var(--s2)">
+      在 Pipeline B 走通的同時，OTD 引擎同步產出完整數據（station dispatch + WIP + yield decay + policy comparison）
+    </p>
+    <div class="grid-3">
+      <div class="card teal">
+        <div class="card-title">Station Records</div>
+        <div class="card-metric">1,589</div>
+        <div class="card-sub">S1:440 / S2:440 / S3:709（三站全通）</div>
+      </div>
+      <div class="card violet">
+        <div class="card-title">Best Policy</div>
+        <div class="card-metric">EDD</div>
+        <div class="card-sub">411 shipped / OTD 45.7% / lead 32.9d</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Bottleneck</div>
+        <div class="card-metric">L1-S1</div>
+        <div class="card-sub">WIP tracking + bottleneck detection 自動偵測</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;margin-top:var(--s2)">
+      <table>
+        <thead><tr><th>Policy</th><th>Shipped</th><th>OTD%</th><th>Avg Lead</th><th>Wait(hr)</th><th>WIP Alerts</th></tr></thead>
+        <tbody>
+          <tr><td><strong>EDD</strong> 🏆</td><td class="pass">411</td><td class="pass">45.7%</td><td>32.9d</td><td>8.3h</td><td>⚠️ S1/S2</td></tr>
+          <tr><td>FIFO</td><td>409</td><td>45.4%</td><td class="pass">26.5d</td><td>8.9h</td><td>⚠️ S1/S2</td></tr>
+          <tr><td>SPT</td><td>409</td><td>45.4%</td><td class="fail">53.2d</td><td class="pass">7.0h</td><td>⚠️ S1/S2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ §7 跨板流轉示意 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div><div class="section-title">跨板流轉示意</div></div>
+  </div>
+  <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--s3);overflow-x:auto">
+    <div style="display:flex;align-items:center;gap:0;min-width:680px">
+      <div style="flex:1;text-align:center;padding:var(--s2);background:rgba(20,184,166,.08);border-radius:var(--r-md);border:1px solid rgba(20,184,166,.15)">
+        <div style="font-weight:600;color:var(--c-teal)">CRIS SWAT Dev</div>
+        <div style="font-size:.75rem;color:var(--c-t3);margin-top:4px">ThemeToggle<br>OTD Engine<br>CRIS IMPACTs</div>
+      </div>
+      <div style="padding:0 var(--s2);color:var(--c-t4)">→</div>
+      <div style="flex:1;text-align:center;padding:var(--s2);background:rgba(245,158,11,.08);border-radius:var(--r-md);border:1px solid rgba(245,158,11,.15)">
+        <div style="font-weight:600;color:var(--c-amber)">QA Gate</div>
+        <div style="font-size:.75rem;color:var(--c-t3);margin-top:4px">Route Check<br>Lighthouse ≥P85<br>Token Check</div>
+      </div>
+      <div style="padding:0 var(--s2);color:var(--c-t4)">→</div>
+      <div style="flex:1;text-align:center;padding:var(--s2);background:rgba(99,91,255,.08);border-radius:var(--r-md);border:1px solid rgba(99,91,255,.15)">
+        <div style="font-weight:600;color:var(--c-violet)">Power Squad</div>
+        <div style="font-size:.75rem;color:var(--c-t3);margin-top:4px">Design Stage<br>D1/D2/D3<br>Pipeline B</div>
+      </div>
+      <div style="padding:0 var(--s2);color:var(--c-t4)">→</div>
+      <div style="flex:1;text-align:center;padding:var(--s2);background:rgba(34,197,94,.08);border-radius:var(--r-md);border:1px solid rgba(34,197,94,.15)">
+        <div style="font-weight:600;color:var(--c-success)">成績回流</div>
+        <div style="font-size:.75rem;color:var(--c-t3);margin-top:4px">Token 73<br>Pipeline B<br>Case Study</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ §8 教訓與展望 ══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <div><div class="section-title">教訓與展望</div></div>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">🎯 Spec-First 價值</div>
+      <p style="font-size:.85rem;color:var(--c-t3)">D1 Spec QA 在實作前發現 4 個邊角案例（spec 結構層面），節省了 Dev 實作後才发现的 debug 時間。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🔗 --canonical flag</div>
+      <p style="font-size:.85rem;color:var(--c-t3)">QA gate 只需檢查 canonical set（73 tokens），而非全量逐個比對。115→0 missing tokens 證明這個策略有效。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🤝 Three-way Handoff</div>
+      <p style="font-size:.85rem;color:var(--c-t3)">Designer→Developer→QA 三步標準化後，D3 wireframe 256 行直接可供 Dev 參考，消除了「理解歧義」。</p>
+    </div>
+    <div class="card" style="margin-top:var(--s2)">
+      <div class="card-title">📈 量化的 Pipeline B 效益</div>
+      <table style="font-size:.8rem;margin-top:var(--s1)">
+        <tr><td>Token 覆蓋</td><td class="pass">+128%</td></tr>
+        <tr><td>APS mapped</td><td class="pass">31%→100%</td></tr>
+        <tr><td>Missing gaps</td><td class="pass">115→0</td></tr>
+        <tr><td>Lighthouse</td><td class="pass">P100</td></tr>
+        <tr><td>Spec QA</td><td class="pass">10/10</td></tr>
+      </table>
+    </div>
+    <div class="card" style="margin-top:var(--s2)">
+      <div class="card-title">🚀 展望</div>
+      <p style="font-size:.85rem;color:var(--c-t3)">IMPACTS v4 是第一條走通的 Pipeline B 專案。後續建議：將 D1/D2/D3 模板標準化（design-stage-template.md），
+      加速下一個專案的 Design Stage 週期。</p>
+    </div>
+    <div class="card" style="margin-top:var(--s2)">
+      <div class="card-title">🔄 Retro Benchmark</div>
+      <p style="font-size:.85rem;color:var(--c-t3)">CRIS v1→v3 / gen_slides v3→v4 / OTD Spec→Skeleton — 三篇 retro 已納入 PLAYBOOK.md §14。
+      IMPACTS v4 是第四篇（Spec-First 流程驗證）。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>IMPACTS v4 Pipeline B Case Study · Power Squad × CRIS SWAT · Sprint 1 · 2026-05-20</p>
+  <p style="margin-top:4px">Pipeline B: D1 Spec Review → D2 Token Table → D3 Wireframe → Dev → QA Gate → Deploy · Token 73 common · Mode v1 validated</p>
+</footer>
+</body>
+</html>
