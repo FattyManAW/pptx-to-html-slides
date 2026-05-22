@@ -1,77 +1,72 @@
 {
-  "run_at": "2026-05-21T04:45:52.167589",
+  "run_at": "2026-05-22T05:07:05.511802",
+  "source": "real_data",
+  "order_count": 50,
   "seed": 42,
-  "sim_days": 90,
+  "sim_days": 30,
   "results": [
     {
       "policy": "FIFO",
-      "total_orders": 900,
-      "shipped": 411,
-      "on_time": 411,
-      "overdue": 0,
-      "avg_lead_days": 26.3,
-      "on_time_rate": 0.4567,
-      "avg_queue_wait_hrs": 8.9,
+      "total_orders": 50,
+      "shipped": 50,
+      "on_time": 49,
+      "overdue": 1,
+      "avg_lead_days": 0.4,
+      "on_time_rate": 0.98,
+      "avg_queue_wait_hrs": 6.0,
+      "avg_yield_rate": 0.9882,
       "bottleneck_station": "L1-S1",
-      "bottleneck_score": 39.642,
+      "bottleneck_score": 16.448,
       "station_throughput": {
-        "L1-S1": 127307,
-        "L1-S2": 86457,
-        "L1-S3": 98584
+        "L1-S1": 18115,
+        "L1-S2": 14838,
+        "L1-S3": 16296
       },
-      "wip_alerts": [
-        "[L1-S1] WIP 423/500 (85%) >= threshold 80%",
-        "[L1-S2] WIP 433/400 (108%) >= threshold 80%"
-      ],
-      "total_defects": 5574,
-      "avg_yield_rate": 0.9534,
-      "records": 1260
-    },
-    {
-      "policy": "EDD",
-      "total_orders": 900,
-      "shipped": 411,
-      "on_time": 411,
-      "overdue": 0,
-      "avg_lead_days": 33.0,
-      "on_time_rate": 0.4567,
-      "avg_queue_wait_hrs": 9.4,
-      "bottleneck_station": "L1-S1",
-      "bottleneck_score": 61.55,
-      "station_throughput": {
-        "L1-S1": 126965,
-        "L1-S2": 86717,
-        "L1-S3": 98450
-      },
-      "wip_alerts": [
-        "[L1-S1] WIP 821/500 (164%) >= threshold 80%"
-      ],
-      "total_defects": 5579,
-      "avg_yield_rate": 0.9534,
-      "records": 1261
+      "wip_alerts": [],
+      "total_defects": 214,
+      "records": 150
     },
     {
       "policy": "SPT",
-      "total_orders": 900,
-      "shipped": 409,
-      "on_time": 409,
-      "overdue": 0,
-      "avg_lead_days": 53.6,
-      "on_time_rate": 0.4544,
-      "avg_queue_wait_hrs": 9.1,
+      "total_orders": 50,
+      "shipped": 50,
+      "on_time": 46,
+      "overdue": 4,
+      "avg_lead_days": 2.4,
+      "on_time_rate": 0.92,
+      "avg_queue_wait_hrs": 6.0,
+      "avg_yield_rate": 0.9757,
       "bottleneck_station": "L1-S1",
-      "bottleneck_score": 43.164,
+      "bottleneck_score": 16.256,
       "station_throughput": {
-        "L1-S1": 127056,
-        "L1-S2": 86420,
-        "L1-S3": 98611
+        "L1-S1": 36504,
+        "L1-S2": 29575,
+        "L1-S3": 32855
       },
-      "wip_alerts": [
-        "[L1-S1] WIP 464/500 (93%) >= threshold 80%"
-      ],
-      "total_defects": 5421,
-      "avg_yield_rate": 0.9538,
-      "records": 1255
+      "wip_alerts": [],
+      "total_defects": 363,
+      "records": 150
+    },
+    {
+      "policy": "EDD",
+      "total_orders": 50,
+      "shipped": 50,
+      "on_time": 50,
+      "overdue": 0,
+      "avg_lead_days": 0.7,
+      "on_time_rate": 1.0,
+      "avg_queue_wait_hrs": 6.2,
+      "avg_yield_rate": 0.9622,
+      "bottleneck_station": "L1-S1",
+      "bottleneck_score": 17.142,
+      "station_throughput": {
+        "L1-S1": 55173,
+        "L1-S2": 44180,
+        "L1-S3": 49713
+      },
+      "wip_alerts": [],
+      "total_defects": 529,
+      "records": 150
     }
   ]
 }

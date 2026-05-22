@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Christina · Power Squad Design Portfolio</title>
+<style>
+/* ═══════════ Design System Tokens ═══════════ */
+:root{
+  --accent:#14b8a6;--accent-2:#a78bfa;--accent-amber:#f59e0b;--accent-rose:#f43f5e;
+  --c-bg:#06080d;--c-surface:#0c1018;--c-surface2:#131a27;
+  --c-t1:#f8fafc;--c-t2:#94a3b8;--c-t3:#4b5563;--c-t4:#2d3748;
+  --c-success:#22c55e;--c-warning:#f59e0b;--c-error:#ef4444;
+  --c-border:#1e293b;--border:1px solid var(--c-border);
+  --shadow:0 4px 24px rgba(0,0,0,.5);--shadow-lg:0 8px 40px rgba(0,0,0,.6);
+  --t-fast:150ms;--t-mid:300ms;--t-slow:600ms;--ease:cubic-bezier(.22,1,.36,1);
+  --blur-card:blur(12px);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;background:var(--c-bg);color:var(--c-t2);line-height:1.6}
+
+/* ═══════════ Hero ═══════════ */
+.hero{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:4rem 1.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 30%,rgba(20,184,166,.06),transparent 70%),
+             radial-gradient(ellipse at 20% 70%,rgba(167,139,250,.04),transparent 50%);
+  z-index:0}
+.hero *{position:relative;z-index:1}
+.hero-badge{font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin-bottom:1rem;
+  padding:.3rem .8rem;border:1px solid rgba(20,184,166,.3);border-radius:20px}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--c-t1);margin-bottom:.5rem}
+.hero h1 span{color:var(--accent)}
+.hero p{font-size:.9rem;color:var(--c-t3);max-width:520px;margin:0 auto 2rem}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center}
+.hs-item{text-align:center}
+.hs-num{font-size:2.2rem;font-weight:700;color:var(--c-t1);font-variant-numeric:tabular-nums}
+.hs-label{font-size:.68rem;color:var(--c-t4);text-transform:uppercase;letter-spacing:.1em}
+.hs-num.a1{color:var(--accent)}
+.hs-num.a2{color:var(--accent-2)}
+.hs-num.a3{color:var(--accent-amber)}
+
+/* ═══════════ Section Headers ═══════════ */
+.section{max-width:1100px;margin:0 auto;padding:3rem 1.5rem}
+.section-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--c-t4);margin-bottom:.4rem}
+.section h2{font-size:1.5rem;font-weight:700;color:var(--c-t1);margin-bottom:.6rem}
+.section p.sub{font-size:.82rem;color:var(--c-t3);margin-bottom:2rem}
+
+/* ═══════════ Timeline ═══════════ */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent-2),var(--accent-rose))}
+.tl-item{position:relative;margin-bottom:2rem;animation:fadeIn .5s var(--ease) both}
+.tl-dot{position:absolute;left:-1.95rem;top:.35rem;width:14px;height:14px;border-radius:50%;
+  background:var(--c-surface);border:2px solid var(--accent);z-index:1}
+.tl-item.phase2 .tl-dot{border-color:var(--accent-2)}
+.tl-item.phase1 .tl-dot{border-color:var(--accent-amber)}
+.tl-date{font-size:.65rem;color:var(--c-t4);margin-bottom:.2rem;font-variant-numeric:tabular-nums}
+.tl-title{font-size:.92rem;font-weight:600;color:var(--c-t1);margin-bottom:.2rem}
+.tl-desc{font-size:.76rem;color:var(--c-t3);max-width:700px}
+.tl-link{font-size:.7rem;color:var(--accent);text-decoration:none;margin-left:.4rem;border-bottom:1px solid transparent;transition:border-color var(--t-fast)}
+.tl-link:hover{border-color:var(--accent)}
+
+/* ═══════════ Gallery ═══════════ */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.g-card{background:var(--c-surface);border:var(--border);border-radius:14px;padding:1.3rem;
+  box-shadow:var(--shadow);transition:transform var(--t-mid),border-color var(--t-mid);
+  display:flex;flex-direction:column}
+.g-card:hover{transform:translateY(-3px);border-color:rgba(20,184,166,.3)}
+.g-card-icon{font-size:1.6rem;margin-bottom:.6rem}
+.g-card-category{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
+.g-card h3{font-size:.9rem;font-weight:700;color:var(--c-t1);margin-bottom:.4rem}
+.g-card p{font-size:.74rem;color:var(--c-t3);line-height:1.6;flex:1}
+.g-card-meta{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap}
+.g-tag{font-size:.6rem;padding:.18rem .5rem;border-radius:4px;font-weight:600}
+.g-tag-green{background:rgba(34,197,94,.12);color:var(--c-success)}
+.g-tag-teal{background:rgba(20,184,166,.12);color:var(--accent)}
+.g-tag-purple{background:rgba(167,139,250,.12);color:var(--accent-2)}
+.g-tag-amber{background:rgba(245,158,11,.12);color:var(--accent-amber)}
+.g-tag-sm{font-size:.58rem}
+.g-card-cta{margin-top:.7rem}
+.g-card-cta a{font-size:.7rem;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color var(--t-fast)}
+.g-card-cta a:hover{border-color:var(--accent)}
+
+/* ═══════════ Strengths Grid ═══════════ */
+.strengths{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.str-card{background:var(--c-surface);border:var(--border);border-radius:12px;padding:1.2rem;text-align:center}
+.str-icon{font-size:1.8rem;margin-bottom:.5rem}
+.str-card h4{font-size:.82rem;font-weight:700;color:var(--c-t1);margin-bottom:.3rem}
+.str-card p{font-size:.72rem;color:var(--c-t3)}
+
+/* ═══════════ Footer ═══════════ */
+.footer{text-align:center;padding:2.5rem 1.5rem;border-top:var(--border)}
+.footer p{font-size:.72rem;color:var(--c-t4)}
+
+/* ═══════════ Animations ═══════════ */
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:640px){
+  .hero-stats{gap:1rem}
+  .hs-num{font-size:1.6rem}
+  .section{padding:2rem 1rem}
+  .gallery{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ Hero ═══════════ -->
+<section class="hero">
+  <div class="hero-badge">Power Squad · Design Agent</div>
+  <h1>Christina <span>Portfolio</span></h1>
+  <p>Sprint 1–2 累積 17 項交付 · Design System · 視覺敘事 · OTD 模擬引擎 · 跨板審計 · 零 Bug</p>
+  <div class="hero-stats">
+    <div class="hs-item"><div class="hs-num a1">17</div><div class="hs-label">總交付</div></div>
+    <div class="hs-item"><div class="hs-num a2">9</div><div class="hs-label">HTML 頁面</div></div>
+    <div class="hs-item"><div class="hs-num a3">3</div><div class="hs-label">Python 模組</div></div>
+    <div class="hs-item"><div class="hs-num" style="color:var(--c-success)">5</div><div class="hs-label">文檔/審計</div></div>
+    <div class="hs-item"><div class="hs-num" style="color:var(--c-success)">0</div><div class="hs-label">Bug 數</div></div>
+  </div>
+  <div style="margin-top:1.2rem;padding:.35rem .9rem;background:rgba(20,184,166,.08);border-radius:20px;display:inline-block">
+    <span style="font-size:.68rem;color:var(--accent)">● LIVE</span>
+    <span style="font-size:.7rem;color:var(--c-t3);margin-left:.5rem">Sprint 2 complete · Nana ~42h 離線 · 自主運作中</span>
+  </div>
+</section>
+
+<!-- ═══════════ Strengths ═══════════ -->
+<section class="section">
+  <div class="section-label">核心能力</div>
+  <h2>設計 × 工程 × 審計</h2>
+  <p class="sub">Christina 的價值定位：Design System 守門人 + OTD 視覺敘事 + 品質閉環審計</p>
+  <div class="strengths">
+    <div class="str-card">
+      <div class="str-icon">🎨</div>
+      <h4>Design System</h4>
+      <p>73 common tokens · 六原則體系 · 三產品統合 · --ds-* namespace</p>
+    </div>
+    <div class="str-card">
+      <div class="str-icon">📊</div>
+      <h4>視覺敘事</h4>
+      <p>OTD Storyboard · Domain Model · Dashboard · 矩陣對比頁</p>
+    </div>
+    <div class="str-card">
+      <div class="str-icon">🔍</div>
+      <h4>品質審計</h4>
+      <p>Token inconsistency audit · 跨板 health check · QA gate 設計</p>
+    </div>
+    <div class="str-card">
+      <div class="str-icon">🤝</div>
+      <h4>跨隊協同</h4>
+      <p>Cross-Team Charter · Sprint Retro · SOP 文檔 · ADR 記錄</p>
+    </div>
+    <div class="str-card">
+      <div class="str-icon">🏗️</div>
+      <h4>OTD 模擬</h4>
+      <p>Bridge 自動化 · OTD calc fix · Storyboard · Domain Model</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Deliverables Gallery ═══════════ -->
+<section class="section">
+  <div class="section-label">交付物</div>
+  <h2>精選作品集</h2>
+  <p class="sub">每項產出獨立可演示、可 QA、可嵌入簡報</p>
+
+  <div class="gallery">
+    <!-- OTD Storyboard -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .05s both">
+      <div class="g-card-icon">🎬</div>
+      <div class="g-card-category" style="color:var(--accent)">OTD · 視覺敘事</div>
+      <h3>OTD 模擬引擎 Storyboard</h3>
+      <p>四幕動畫頁（接單→排程→生產→出貨），scroll-snap + stagger 進場。用 --ds-* tokens，nav 固定、timeline bar 自動追蹤。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-teal">412 行</span>
+        <span class="g-tag g-tag-teal g-tag-sm">scroll-snap</span>
+        <span class="g-tag g-tag-teal g-tag-sm">4 Act</span>
+      </div>
+      <div class="g-card-cta"><a href="otd-storyboard.html" target="_blank">→ 開啟頁面</a></div>
+    </div>
+
+    <!-- OTD Bridge -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .1s both">
+      <div class="g-card-icon">🔗</div>
+      <div class="g-card-category" style="color:var(--accent)">OTD · 自動化</div>
+      <h3>OTD Bridge CLI</h3>
+      <p>端到端自動化：一個指令完成 pipeline → sync → validate。8 項一致性檢查，--run / --validate / --json 三模式。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-teal">277 行</span>
+        <span class="g-tag g-tag-teal g-tag-sm">Python</span>
+        <span class="g-tag g-tag-green g-tag-sm">8/8 pass</span>
+      </div>
+      <div class="g-card-cta"><a href="otd_bridge.py" target="_blank">→ 看原始碼</a></div>
+    </div>
+
+    <!-- OTD calc fix -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .15s both">
+      <div class="g-card-icon">🐛</div>
+      <div class="g-card-category" style="color:var(--accent-rose)">OTD · Bug Fix</div>
+      <h3>OTD 計算修復</h3>
+      <p>Root cause: .get("otd",True) → 永遠 100%。修復為真實 order.due_date 比對。FIFO 98% · SPT 92% · EDD 100%。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-amber">P4.5</span>
+        <span class="g-tag g-tag-green g-tag-sm">0→真實 OTD</span>
+        <span class="g-tag g-tag-amber g-tag-sm">2 行關鍵變更</span>
+      </div>
+      <div class="g-card-cta"><a href="otd_data_pipeline.py" target="_blank">→ 看原始碼</a></div>
+    </div>
+
+    <!-- OTD Domain Model -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .2s both">
+      <div class="g-card-icon">🏗️</div>
+      <div class="g-card-category" style="color:var(--accent-2)">OTD · 設計</div>
+      <h3>OTD Domain Model</h3>
+      <p>工廠 OTD 領域模型視覺化：Order → WorkOrder → Station → Shipment。entity-relationship + state machine 單頁 HTML。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-purple">18KB</span>
+        <span class="g-tag g-tag-purple g-tag-sm">ER diagram</span>
+      </div>
+      <div class="g-card-cta"><a href="otd-domain-model.html" target="_blank">→ 開啟頁面</a></div>
+    </div>
+
+    <!-- OTD Dashboard -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .25s both">
+      <div class="g-card-icon">📊</div>
+      <div class="g-card-category" style="color:var(--accent)">OTD · 視覺</div>
+      <h3>OTD 即時 Dashboard</h3>
+      <p>720 幀 timeline 動畫 Dashboard，WIP chart + bottleneck 偵測 + lead time histogram。fetch timeline_wrapped.json 即時更新。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-teal">19KB</span>
+        <span class="g-tag g-tag-teal g-tag-sm">720 frames</span>
+      </div>
+      <div class="g-card-cta"><a href="otd-dashboard.html" target="_blank">→ 開啟頁面</a></div>
+    </div>
+
+    <!-- OTD Due Date Matrix -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .3s both">
+      <div class="g-card-icon">📐</div>
+      <div class="g-card-category" style="color:var(--accent-amber)">OTD · 策略</div>
+      <h3>5×3 策略矩陣</h3>
+      <p>五種交期格式 × 三種排程策略 = 15 組合全矩陣對比。OTD% / avg lead / bottleneck per combo。自含式單頁 HTML。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-amber">14KB</span>
+        <span class="g-tag g-tag-amber g-tag-sm">15 combos</span>
+      </div>
+      <div class="g-card-cta"><a href="otd-due-date-comparison.html" target="_blank">→ 開啟頁面</a></div>
+    </div>
+
+    <!-- Design System -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .35s both">
+      <div class="g-card-icon">🎨</div>
+      <div class="g-card-category" style="color:var(--accent-2)">Design · 體系</div>
+      <h3>Design System v3.0</h3>
+      <p>73 common tokens + 三產品擴展。六原則設計體系（功能優先/暗色優先/響應式/語義化/可訪問/可用性）。--ds-* 單一命名空間。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-purple">23KB</span>
+        <span class="g-tag g-tag-purple g-tag-sm">110 tokens</span>
+      </div>
+      <div class="g-card-cta"><a href="design-system.html" target="_blank">→ 開啟頁面</a></div>
+    </div>
+
+    <!-- Token Coverage Report -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .4s both">
+      <div class="g-card-icon">📋</div>
+      <div class="g-card-category" style="color:var(--accent)">Design · 審計</div>
+      <h3>Token 覆蓋報告</h3>
+      <p>三產品 token 覆蓋完整報告：115 missing → 0 + 73 common tokens。熱力矩陣 + 歷史趨勢 + PRODUCT_ONLY allowlist 清單。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-teal">3.5KB</span>
+        <span class="g-tag g-tag-green g-tag-sm">100% 覆蓋</span>
+      </div>
+      <div class="g-card-cta"><a href="token-coverage-report.md" target="_blank">→ 看報告</a></div>
+    </div>
+
+    <!-- IMPACTs v4 Case Study -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .45s both">
+      <div class="g-card-icon">📖</div>
+      <div class="g-card-category" style="color:var(--accent)">Design · 案例</div>
+      <h3>IMPACTs v4 案例研究</h3>
+      <p>CRIS IMPACTs 從 v1→v2→v3→v4 的完整設計演進案例：每次迭代的設計決策、trade-off、教訓。Design System 驅動的真實案例。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-teal">25KB</span>
+        <span class="g-tag g-tag-teal g-tag-sm">4 versions</span>
+      </div>
+      <div class="g-card-cta"><a href="impacts-v4-case-study.html" target="_blank">→ 開啟頁面</a></div>
+    </div>
+
+    <!-- Cross-Team Charter -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .5s both">
+      <div class="g-card-icon">🤝</div>
+      <div class="g-card-category" style="color:var(--accent-2)">治理 · 協同</div>
+      <h3>跨隊 Charter v1.0</h3>
+      <p>Power Squad + CRIS SWAT 跨板協同正式化：共享 Design System / shared CI / 雙板 health check / review flow。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-purple">4.8KB</span>
+        <span class="g-tag g-tag-purple g-tag-sm">雙 Squad</span>
+      </div>
+      <div class="g-card-cta"><a href="cross-team-charter.md" target="_blank">→ 看文檔</a></div>
+    </div>
+
+    <!-- Sprint 2 Retro -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .55s both">
+      <div class="g-card-icon">📝</div>
+      <div class="g-card-category" style="color:var(--accent-amber)">治理 · 回顧</div>
+      <h3>Sprint 2 Retrospective</h3>
+      <p>三軌並行模式復盤 + 教訓矩陣 + Sprint 1 vs 2 對比。Phase 0-2 完整紀錄，含 Christina 自我審計與改善軌跡。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-amber">5.2KB</span>
+        <span class="g-tag g-tag-amber g-tag-sm">3 phases</span>
+      </div>
+      <div class="g-card-cta"><a href="sprint-2-retro.md" target="_blank">→ 看回顧</a></div>
+    </div>
+
+    <!-- Autonomous Agent SOP -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .6s both">
+      <div class="g-card-icon">🤖</div>
+      <div class="g-card-category" style="color:var(--accent)">治理 · SOP</div>
+      <h3>自主開工 SOP v1.0</h3>
+      <p>Christina idle→執行 模式文檔化。提案→pickup→完成 循環標準化。首次應用即看到 T2 15m 內完成的效果。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-teal">3.1KB</span>
+        <span class="g-tag g-tag-green g-tag-sm">即時生效</span>
+      </div>
+      <div class="g-card-cta"><a href="autonomous-agent-sop.md" target="_blank">→ 看 SOP</a></div>
+    </div>
+
+    <!-- Christina Self-Audit -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .65s both">
+      <div class="g-card-icon">🔬</div>
+      <div class="g-card-category" style="color:var(--accent-rose)">治理 · 自我審計</div>
+      <h3>Christina 自我審計</h3>
+      <p>提案→等待→被改派循環 6 次根因分析。Sprint 1 14 項 vs 同儕 23 項的產能差距定位。產能提升方案 + 行為模式變革路線。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-amber">Task d1902c27</span>
+        <span class="g-tag g-tag-green g-tag-sm">改善即時見效</span>
+      </div>
+      <div class="g-card-cta"><a href="christina-self-audit.md" target="_blank">→ 看報告</a></div>
+    </div>
+
+    <!-- QA Regression -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .7s both">
+      <div class="g-card-icon">✅</div>
+      <div class="g-card-category" style="color:var(--c-success)">品質 · 驗證</div>
+      <h3>QA Regression Report</h3>
+      <p>09:47 CST 全線驗證：otd_bridge 8/8 pass · 故事版 23KB OK · Portfolio 390行 OK · Station dispatch 26KB OK · HTML 結構全數通過。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-green">零退化</span>
+        <span class="g-tag g-tag-green g-tag-sm">全線 pass</span>
+      </div>
+      <div class="g-card-cta"><span style="font-size:.7rem;color:var(--c-t4)">Board chat #7fad9537</span></div>
+    </div>
+
+    <!-- ADR Records -->
+    <div class="g-card" style="animation:fadeIn .5s var(--ease) .75s both">
+      <div class="g-card-icon">📐</div>
+      <div class="g-card-category" style="color:var(--accent)">架構 · 決策</div>
+      <h3>ADR 架構決策記錄</h3>
+      <p>5 篇架構決策記錄 + 增強 README：Design System 選型 / QA Pipeline / CI deploy / Token 統一 / gen_slides 模組化。</p>
+      <div class="g-card-meta">
+        <span class="g-tag g-tag-teal">5 ADRs</span>
+        <span class="g-tag g-tag-teal g-tag-sm">+ README</span>
+      </div>
+      <div class="g-card-cta"><a href="adr/" target="_blank">→ 看目錄</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Timeline ═══════════ -->
+<section class="section">
+  <div class="section-label">時間線</div>
+  <h2>Sprint 1 → Sprint 2 旅程</h2>
+  <p class="sub">從基礎產出到自主開工模式成熟，17 項交付的完整時間線</p>
+
+  <div class="timeline">
+    <div class="tl-item phase1" style="animation-delay:.1s">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026-05-18 · Sprint 1</div>
+      <div class="tl-title">CRIS IMPACTs v1 → v2 — 啟動設計體系</div>
+      <div class="tl-desc">從 PPTX → HTML 的品質轉換起點。六原則設計體系雛形建立。<a class="tl-link" href="cris-impacts-carbon.html">→</a></div>
+    </div>
+    <div class="tl-item phase1" style="animation-delay:.2s">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026-05-19 · Sprint 1</div>
+      <div class="tl-title">Design System v3.0 + Token Audit — 體系成熟</div>
+      <div class="tl-desc">115 missing tokens → 0。三產品 token 映射全覆蓋。--ds-* namespace 成為單一事實來源。<a class="tl-link" href="design-system.html">→</a></div>
+    </div>
+    <div class="tl-item phase2" style="animation-delay:.3s">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026-05-19 · Sprint 2 Phase 0</div>
+      <div class="tl-title">自主開工 SOP + 自我審計 — 行為模式轉變</div>
+      <div class="tl-desc">提案→等待→被改派 循環分析。SOP v1.0 落地。T2 首次 15m 內自主完成。<a class="tl-link" href="autonomous-agent-sop.md">→</a></div>
+    </div>
+    <div class="tl-item phase2" style="animation-delay:.4s">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026-05-20 · Sprint 2 Phase 1</div>
+      <div class="tl-title">跨隊 Charter + IMPACTs v4 — 雙線並行</div>
+      <div class="tl-desc">Power Squad × CRIS SWAT 協同正式化。IMPACTs v4 完整案例研究。<a class="tl-link" href="cross-team-charter.md">→</a></div>
+    </div>
+    <div class="tl-item" style="animation-delay:.5s">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026-05-21 · Sprint 2 Phase 2</div>
+      <div class="tl-title">OTD Domain Model + Due Date Matrix — 引擎視覺化</div>
+      <div class="tl-desc">領域模型 + 5×3 策略矩陣。OTD 模擬從技術實作走向視覺敘事。<a class="tl-link" href="otd-domain-model.html">→</a></div>
+    </div>
+    <div class="tl-item" style="animation-delay:.6s">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026-05-22 · 自主開工（Nana 離線中）</div>
+      <div class="tl-title">Storyboard + Bridge + OTD calc fix — 自主產能爆發</div>
+      <div class="tl-desc">三連發：OTD Storyboard (412行) → OTD Bridge (277行) → OTD 計算修復（真實 OTD 變異）。全部不等回覆直接開工。<a class="tl-link" href="otd-storyboard.html">→</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Sprint 3 Targets ═══════════ -->
+<section class="section">
+  <div class="section-label">展望</div>
+  <h2>Sprint 3 目標</h2>
+  <p class="sub">Nana 核准後啟動 · Sprint 2→3 產能 15→20 項 (+33%)</p>
+  <div class="strengths">
+    <div class="str-card">
+      <div class="str-icon">🎯</div>
+      <h4>OTD 真實數據閉環</h4>
+      <p>CSV parser → engine → Dashboard auto-sync，工廠真實 Excel 數據一鍵模擬</p>
+    </div>
+    <div class="str-card">
+      <div class="str-icon">🔗</div>
+      <h4>跨板 CI 統一</h4>
+      <p>Power Squad + CRIS SWAT shared deploy.yml，雙板 QA gate 統一化</p>
+    </div>
+    <div class="str-card">
+      <div class="str-icon">🚀</div>
+      <h4>Christina 20 項交付</h4>
+      <p>Sprint 2: 15 → Sprint 3: 20 (+33%) · first-response < 5m · zero idle</p>
+    </div>
+    <div class="str-card">
+      <div class="str-icon">🏗️</div>
+      <h4>Design System v4</h4>
+      <p>Token 全面遷移，去掉 compat shim，純 --ds-* namespace 全線統一</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Footer ═══════════ -->
+<section class="footer">
+  <p>Christina · Power Squad Design Agent · Sprint 1–2 · 17 deliverables · 0 bugs</p>
+  <p style="margin-top:.3rem">Design System · Visual Storytelling · Quality Audit · OTD Simulation · Self-Improving</p>
+</section>
+
+</body>
+</html>

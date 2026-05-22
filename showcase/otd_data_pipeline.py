@@ -427,48 +427,79 @@ def run_pipeline(
         for st_cfg in line.get("stations", []):
             stations[st_cfg["id"]] = Station(st_cfg["id"], st_cfg)
 
+    import copy
+
     results = []
     for policy in policies:
         print(f"  ▶ Running {policy} with {len(orders)} real orders...")
 
+        # Deep-copy orders so each policy gets fresh RECEIVED-state orders
+        policy_orders = copy.deepcopy(orders)
+
         # Fresh engine per policy
         sim = models.SimulationEngine(cfg, seed=seed)
-        sim.orders = orders  # Inject real orders
+        sim.orders = policy_orders
         sim.scheduler.rule = policy
 
-        # Generate work orders from real orders
-        wos = sim._schedule_orders(orders)
+        # Generate work orders from policy-specific orders
+        wos = sim._schedule_orders(policy_orders)
 
         # Run dispatch loop
         loop = StationDispatchLoop(stations, dispatch_policy=policy)
         loop.run(wos, sim_days)
 
-        # Metrics
+        # Metrics — compute OTD + lead_time from actual order due_date
+        # Build order_id → due_date lookup (using original orders, not deepcopy)
+        order_due_map: dict[str, datetime] = {}
+        order_arrival_map: dict[str, int] = {}
+        for o in orders:
+            order_due_map[o.order_id] = o.due_date
+            order_arrival_map[o.order_id] = o.arrival_day
+
         tracker = WIPTrackingMixin()
         bn_report = tracker.get_bottleneck_report(loop)
         alerts = tracker.check_wip_alert(loop)
 
         shipped = len(loop._warehouse_shipments)
-        on_time = sum(1 for s in loop._warehouse_shipments if s.get("otd", True))
 
+        # Real OTD: delivery_date <= due_date (not .get("otd", True))
+        on_time = 0
         lead_times = []
         for sh in loop._warehouse_shipments:
-            arr_day = next(
-                (o.arrival_day for o in orders if o.order_id == sh.get("order_id", "")),
-                0,
-            )
+            oid = sh.get("order_id", "")
+            order_due = order_due_map.get(oid)
+
+            # Parse delivery date from shipment
             dd_str = sh.get("delivery_date", "")
+            delivery_dt = None
             if dd_str:
                 try:
-                    dd = datetime.fromisoformat(dd_str)
-                    delivery_day = (dd - datetime(2025, 1, 1)).days
+                    delivery_dt = datetime.fromisoformat(dd_str)
                 except (ValueError, TypeError):
-                    delivery_day = sh.get("completed_day", 0) + sh.get("transit_days", 0)
+                    pass
+
+            # OTD: delivery_date exists AND is <= due_date
+            if delivery_dt and order_due:
+                if delivery_dt <= order_due:
+                    on_time += 1
+            elif delivery_dt:
+                # No due_date info → can't determine OTD
+                pass
+
+            # Lead time: delivery_day - arrival_day
+            arr_day = order_arrival_map.get(oid, 0)
+            if delivery_dt:
+                delivery_day = (delivery_dt - datetime(2025, 1, 1)).days
+                lt = delivery_day - arr_day
+                if lt >= 0:
+                    lead_times.append(lt)
             else:
-                delivery_day = sh.get("completed_day", 0) + sh.get("transit_days", 0)
-            lt = delivery_day - arr_day
-            if lt > 0:
-                lead_times.append(lt)
+                # Fallback: completed_day + transit
+                comp_day = sh.get("completed_day", 0)
+                transit = sh.get("transit_days", 0)
+                lt = comp_day + transit - arr_day
+                if lt >= 0:
+                    lead_times.append(lt)
 
         avg_lead = round(sum(lead_times) / len(lead_times), 1) if lead_times else 0.0
 
@@ -554,7 +585,7 @@ def _write_sample_csv(path: str, n_orders: int = 50) -> None:
             product = random.choice(products)
             qty = random.choice([50, 100, 200, 500, 1000])
             arr_date = base_date + timedelta(days=random.randint(0, 30))
-            lead_days = 14 + random.randint(-3, 7)
+            lead_days = random.randint(1, 8)  # tight deadlines → real OTD variance
             due_date = arr_date + timedelta(days=lead_days)
             priority = 2 if random.random() < 0.1 else 1  # 10% rush
             writer.writerow([order_id, customer, product, qty,
