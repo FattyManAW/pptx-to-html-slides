@@ -797,6 +797,28 @@ button:disabled, .nav button:disabled {
 .story-title { font-size:clamp(2rem,5vw,3.5rem); font-weight:700; }
 .story-sub { font-size:1rem; color:rgba(255,255,255,.5); max-width:480px; }
 
+
+/* === Gate 3 — prefers-reduced-motion (WCAG 2.1 AA) === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* === Gate 3 — Shortcuts Panel (Linear-inspired) === */
+.shortcuts-panel { position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,.85);
+  backdrop-filter:blur(12px); display:none; align-items:center; justify-content:center; }
+.shortcuts-panel.show { display:flex; }
+.shortcuts-content { background:var(--surface, #1a1a2e); border:1px solid var(--border, rgba(255,255,255,.1));
+  border-radius:12px; padding:24px 32px; max-width:420px; width:90%; }
+.shortcuts-content h3 { font-size:1.1rem; margin-bottom:16px; color:var(--c-t1, #fff); }
+.shortcuts-content table { width:100%; border-collapse:collapse; }
+.shortcuts-content td { padding:6px 0; font-size:.85rem; color:var(--c-t2, rgba(255,255,255,.6)); }
+.shortcuts-content td:first-child { width:120px; }
+.shortcuts-content kbd { display:inline-block; padding:1px 6px; border:1px solid rgba(255,255,255,.2);
+  border-radius:4px; font-size:.75rem; font-family:monospace; background:rgba(255,255,255,.05); }
 </style>
 </head>
 
@@ -1347,6 +1369,7 @@ button:disabled, .nav button:disabled {
     if (e.key === 'Home') { e.preventDefault(); go(0); }
     if (e.key === 'End')  { e.preventDefault(); go(slides.length - 1); }
         if (e.key === 'Escape') { e.preventDefault(); toggleOverview(); }
+    if (e.key === '?' || (e.key === '/' && e.shiftKey)) { e.preventDefault(); toggleShortcuts(); }
     if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFs(); }
   });
 

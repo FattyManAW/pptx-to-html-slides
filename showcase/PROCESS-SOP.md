@@ -199,12 +199,12 @@ G0: 標竿確認 ──→ G1: 正式提案 ──→ G2: Lead審批 ──→ G
 
 | 角色 | 狀態 | 日期 |
 |------|:----:|------|
-| 監察組審批（Christina） | ✅ | 2026-05-22 |
-| 監察組審批（Smart） | ⏳ | — |
+| 監察組主審（Christina） | ✅ | 2026-05-22 10:58 |
+| 監察組覆核（Commander-D） | ⏳ | — |
+| 監察組（Smart） | ⏳ | — |
 | 執行組確認（Technus） | ⏳ | — |
-| Lead 審批（Nana） | ⏳ | — |
-| 最終審批（Allen） | ⏳ | — |
+| **Lead 審批（Allen — Gate 2）** | ⏳ | — |
 
 ---
 
-*PROCESS-SOP.md v1.0 · 合併完成 · 待審批生效*
+*PROCESS-SOP.md v1.1 · Commander-D 框架合併完成 · 待 Allen 審批生效*
